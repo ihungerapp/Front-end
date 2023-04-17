@@ -2,13 +2,207 @@ object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 480
-  ClientWidth = 640
+  ClientHeight = 693
+  ClientWidth = 425
+  Fill.Kind = Solid
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnActivate = FormActivate
   OnCreate = FormCreate
+  OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
-  OnShow = FormShow
+  OnKeyUp = FormKeyUp
   DesignerMasterStyle = 3
+  object lblMesa: TLabel
+    Align = Top
+    StyledSettings = [Family, Style]
+    Position.Y = 66.000000000000000000
+    Size.Width = 425.000000000000000000
+    Size.Height = 39.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 16.000000000000000000
+    TextSettings.HorzAlign = Center
+    Text = 'N'#250'mero da mesa recebido da leitura do QRCode'
+    TabOrder = 2
+  end
+  object layRodape: TLayout
+    Align = Bottom
+    Margins.Bottom = 10.000000000000000000
+    Position.Y = 623.000000000000000000
+    Size.Width = 425.000000000000000000
+    Size.Height = 60.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object recRodape: TRectangle
+      Align = Contents
+      Fill.Color = xFFF83923
+      Padding.Left = 40.000000000000000000
+      Padding.Right = 40.000000000000000000
+      Size.Width = 425.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claWhite
+      Stroke.Cap = Round
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      object spbHome: TSpeedButton
+        Align = Left
+        StyledSettings = []
+        Position.X = 40.000000000000000000
+        Position.Y = 6.000000000000000000
+        Size.Width = 70.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Home'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.VertAlign = Trailing
+        object pathHome: TPath
+          Align = Contents
+          Data.Path = {
+            17000000000000009A99214133330B41010000000000A0410000803F01000000
+            3333EF4133330B41010000003333EF416666A641020000003333EF416811AB41
+            020000007958ED41788BAF4102000000780BEA4145D8B2410200000077BEE641
+            4625B641020000009C44E2410000B841020000009A99DD410000B84101000000
+            CDCC44410000B84102000000C9763B410000B84102000000AA8232414625B641
+            02000000A7E82B4145D8B241020000000E4F2541788BAF41020000009A992141
+            6811AB41020000009A9921416666A641010000009A99214133330B4103000000
+            9A99214133330B41000000009A9985410000B841010000009A99854100004041
+            010000006666BA4100004041010000006666BA410000B841}
+          Fill.Kind = None
+          HitTest = False
+          Margins.Left = 15.000000000000000000
+          Size.Width = 55.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claWhite
+          Stroke.Thickness = 2.000000000000000000
+          WrapMode = Original
+        end
+      end
+      object spbPedidos: TSpeedButton
+        Align = Center
+        StyledSettings = []
+        Padding.Left = 12.000000000000000000
+        Size.Width = 70.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Pedidos'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.VertAlign = Trailing
+        object pathPedidos: TPath
+          Align = Contents
+          Data.Path = {
+            23000000000000003333EB410000803F0100000066669E410000803F02000000
+            D94E99410000803F02000000C06C9441B75DA03F02000000F2D29041F0F9D93F
+            0200000024398D413ECB09400200000033338B41DBDC30400200000033338B41
+            9A9959400100000033338B41CDCCB4410200000033338B415AE4B94102000000
+            24398D41A8C6BE4102000000F2D290417660C24102000000C06C944110FAC541
+            02000000D94E99410000C8410200000066669E410000C84101000000CDCC0842
+            0000C8410200000093580B420000C84102000000BAC90D4210FAC54102000000
+            A1960F427660C2410200000088631142A8C6BE4102000000666612425AE4B941
+            0200000066661242CDCCB441010000006666124233330341010000003333EB41
+            0000803F030000003333EB410000803F000000006666FE413333634101000000
+            9A99B14133336341000000003333EB410000803F010000003333EB4133330341
+            010000006666124233330341000000006666FE4100009841010000009A99B141
+            0000984100000000CDCCC4417B661641010000003333BB417B66164101000000
+            9A99B1417B661641}
+          Fill.Kind = None
+          HitTest = False
+          Margins.Left = 8.000000000000000000
+          Size.Width = 62.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claWhite
+          Stroke.Thickness = 2.000000000000000000
+          WrapMode = Original
+        end
+      end
+      object spbCarrinho: TSpeedButton
+        Align = Right
+        StyledSettings = []
+        Position.X = 315.000000000000000000
+        Position.Y = 6.000000000000000000
+        Size.Width = 70.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Carrinho'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.VertAlign = Trailing
+        object pathCarrinho: TPath
+          Align = Contents
+          Data.Path = {
+            2E000000000000006666CA41FF32BB4102000000E01CCF41FF32BB4102000000
+            CCEED2411361B74102000000CCEED24199AAB24102000000CCEED2411FF4AD41
+            02000000E01CCF41FF21AA41020000006666CA41FF21AA4102000000ECAFC541
+            FF21AA4102000000CCDDC1411FF4AD4102000000CCDDC14199AAB24102000000
+            CCDDC1411361B74102000000ECAFC541FF32BB41020000006666CA41FF32BB41
+            030000006666CA41FF32BB410000000019221442FF32BB4102000000567D1642
+            FF32BB4102000000666618421361B741020000006666184299AAB24102000000
+            666618421FF4AD4102000000567D1642FF21AA410200000019221442FF21AA41
+            02000000DCC61142FF21AA4102000000CCDD0F421FF4AD4102000000CCDD0F42
+            99AAB24102000000CCDD0F421361B74102000000DCC61142FF32BB4102000000
+            19221442FF32BB410300000019221442FF32BB4100000000342286410000803F
+            010000003344A8410000803F01000000D122BF41F0857441020000007FEABF41
+            7C617C4102000000B90DC2411DB8814102000000712CC541303B844102000000
+            294BC8410EBE8641020000009632CC41A913884102000000D033D04100008841
+            01000000BD92114200008841020000005B931342A91388410200000011871542
+            0EBE8641020000006D161742303B844102000000E3A518421DB8814102000000
+            66B719427C617C4102000000571B1A42F085744101000000E6EE2042A4AACA40
+            01000000CDCCB041A4AACA40}
+          Fill.Kind = None
+          HitTest = False
+          Margins.Left = 3.000000000000000000
+          Size.Width = 67.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claWhite
+          Stroke.Thickness = 2.000000000000000000
+          WrapMode = Original
+        end
+      end
+    end
+  end
+  object layCabecalho: TLayout
+    Align = Top
+    Margins.Bottom = 10.000000000000000000
+    Size.Width = 425.000000000000000000
+    Size.Height = 56.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Rectangle1: TRectangle
+      Align = Contents
+      Fill.Color = xFFF83923
+      Size.Width = 425.000000000000000000
+      Size.Height = 56.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claWhite
+      Stroke.Cap = Round
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      object lblHungerApp: TLabel
+        Align = Center
+        StyledSettings = []
+        Size.Width = 245.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 20.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'HUNGER APP'
+        TabOrder = 1
+      end
+    end
+  end
 end

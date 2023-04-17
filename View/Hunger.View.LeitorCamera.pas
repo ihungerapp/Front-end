@@ -26,6 +26,7 @@ type
     FScanManager : TScanManager;
     FScanInProgress : Boolean;
     FFrameTake : Integer;
+    procedure ProcessImage;
   public
     codigo: String;
   end;
@@ -39,45 +40,8 @@ implementation
 
 procedure TfrmLeitorCamera.CameraComponentSampleBufferReady(Sender: TObject;
   const ATime: TMediaTime);
-var
-  bmp : TBitmap;
-  ReadResult : TReadResult;
 begin
-  CameraComponent.SampleBufferToBitmap(img_camera.Bitmap, true);
-
-  if FScanInProgress then
-    exit;
-
-  inc(FFrameTake);
-
-  if (FFrameTake mod 4 <> 0) then
-    exit;
-
-  bmp := TBitmap.Create;
-  bmp.Assign(img_camera.Bitmap);
-  ReadResult := nil;
-
-  try
-    FScanInProgress := true;
-
-    try
-      ReadResult := FScanManager.Scan(bmp);
-
-      if ReadResult <> nil then
-      begin
-        CameraComponent.Active := false;
-        codigo := ReadResult.text;
-        close;
-      end;
-
-    except on ex:exception do
-      lbl_erro.Text := ex.Message;
-    end;
-  finally
-    bmp.DisposeOf;
-    ReadResult.DisposeOf;
-    FScanInProgress := false;
-  end;
+  ProcessImage;
 end;
 
 procedure TfrmLeitorCamera.FormCreate(Sender: TObject);
@@ -104,6 +68,48 @@ procedure TfrmLeitorCamera.img_closeClick(Sender: TObject);
 begin
   CameraComponent.Active := false;
   close;
+end;
+
+procedure TfrmLeitorCamera.ProcessImage;
+var
+  bmp : TBitmap;
+  ReadResult : TReadResult;
+begin
+  CameraComponent.SampleBufferToBitmap(img_camera.Bitmap, true);
+
+  if FScanInProgress then
+    exit;
+
+  inc(FFrameTake);
+
+  if (FFrameTake mod 2 <> 0) then
+   exit;
+
+  bmp := TBitmap.Create;
+  bmp.Assign(img_camera.Bitmap);
+  ReadResult := nil;
+
+  try
+    FScanInProgress := true;
+
+    try
+      ReadResult := FScanManager.Scan(bmp);
+
+      if ReadResult <> nil then
+      begin
+        CameraComponent.Active := false;
+        codigo := ReadResult.text;
+        close;
+      end;
+
+    except on ex:exception do
+      lbl_erro.Text := ex.Message;
+    end;
+  finally
+    bmp.DisposeOf;
+    ReadResult.DisposeOf;
+    FScanInProgress := false;
+  end;
 end;
 
 end.
