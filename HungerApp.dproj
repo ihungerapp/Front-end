@@ -126,6 +126,7 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <SanitizedProjectName>HungerApp</SanitizedProjectName>
+        <DCC_UnitSearchPath>C:\Arquivos\DelphiProjetos\trunk\RestClientComponent;C:\Arquivos\ComponentesDelphi\DataSetConverter4Delphi\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_UsePackage>fmx;DbxCommonDriver;bindengine;IndyIPCommon;emsclient;IndyProtocols;dbxcds;FmxTeeUI;FireDACSqliteDriver;DbxClientDriver;soapmidas;dbexpress;inet;FireDACDBXDriver;CustomIPTransport;ZCore;ZParseSql;IndySystem;FireDACCommon;ZComponent;bindcompdbx;rtl;DBXSqliteDriver;DataSnapFireDAC;FireDAC;xmlrtl;dsnap;DataSnapNativeClient;FireDACCommonDriver;IndyIPClient;bindcompfmx;fmxFireDAC;DataSnapCommon;dbrtl;DBXInterBaseDriver;bindcomp;IndyCore;RESTBackendComponents;ZPlain;RESTComponents;IndyIPServer;dsnapxml;DataSnapClient;DataSnapProviderClient;emsclientfiredac;FireDACDSDriver;tethering;ZDbc;CloudService;FMXTee;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
@@ -266,16 +267,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Android64)'!=''">
         <VerInfo_Build>1</VerInfo_Build>
-        <Android_LauncherIcon36>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_36x36.png</Android_LauncherIcon36>
-        <Android_LauncherIcon48>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_48x48.png</Android_LauncherIcon48>
-        <Android_LauncherIcon72>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_72x72.png</Android_LauncherIcon72>
-        <Android_LauncherIcon96>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_96x96.png</Android_LauncherIcon96>
-        <Android_LauncherIcon144>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_144x144.png</Android_LauncherIcon144>
-        <Android_LauncherIcon192>E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_192x192.png</Android_LauncherIcon192>
-        <Android_SplashImage426>E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png</Android_SplashImage426>
-        <Android_SplashImage470>E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_470x320.9.png</Android_SplashImage470>
-        <Android_SplashImage640>E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_640x480.9.png</Android_SplashImage640>
-        <Android_SplashImage960>E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_960x720.9.png</Android_SplashImage960>
         <VerInfo_Keys>package=com.hungerapp.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
@@ -335,6 +326,8 @@
             <Form>frmLeitorCamera</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Model\Entidade\Hunger.Model.Produto.pas"/>
+        <DCCReference Include="Model\Pkg.Json.DTO.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -446,12 +439,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Configuration="Release" Class="Android_SplashImage640">
-                    <Platform Name="Android64">
-                        <RemoteName>splash_image_def.9.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Configuration="Debug" Class="Android_SplashImage426">
                     <Platform Name="Android">
                         <RemoteName>splash_image_def.9.png</RemoteName>
@@ -460,6 +447,12 @@
                 </DeployFile>
                 <DeployFile LocalName="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Configuration="Release" Class="Android_SplashImage426">
                     <Platform Name="Android">
+                        <RemoteName>splash_image_def.9.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Configuration="Release" Class="Android_SplashImage640">
+                    <Platform Name="Android64">
                         <RemoteName>splash_image_def.9.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -1792,8 +1785,8 @@
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>

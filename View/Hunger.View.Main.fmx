@@ -43,6 +43,7 @@ object frmPrincipal: TfrmPrincipal
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
+      Stroke.Thickness = 3.000000000000000000
       Stroke.Cap = Round
       XRadius = 5.000000000000000000
       YRadius = 5.000000000000000000
@@ -186,6 +187,7 @@ object frmPrincipal: TfrmPrincipal
       Size.Height = 56.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
+      Stroke.Thickness = 3.000000000000000000
       Stroke.Cap = Round
       XRadius = 5.000000000000000000
       YRadius = 5.000000000000000000
