@@ -1,0 +1,85 @@
+unit Hunger.Model.Produto;
+
+interface
+
+uses
+  Hunger.Model.Entidade.Produto, System.Generics.Collections, System.JSON,
+  Client.Connection;
+
+type
+  TModelProduto = class
+  private
+    FProdutos: TProdutoList;
+    FProdutoPrecificacao: TProdutoPrecificacaoList;
+  public
+    constructor create;
+    destructor destroy;
+    function PopularListaProduto(aJsonObject: TJSONObject): TObjectList<TProduto>;
+    function ConsultarProduto(aConnection: TClientConnection): TJSONObject;
+  end;
+
+implementation
+
+uses
+  REST.Json, System.SysUtils, FMX.Dialogs;
+
+{ TModelProduto }
+
+constructor TModelProduto.create;
+begin
+  inherited create;
+end;
+
+destructor TModelProduto.destroy;
+begin
+  inherited destroy;
+end;
+
+function TModelProduto.PopularListaProduto(
+  aJsonObject: TJSONObject): TObjectList<TProduto>;
+var
+  LJSONArray: TJSONArray;
+  LJSONValue: TJSONValue;
+  produto: TProduto;
+  lstProduto: TObjectList<TProduto>;
+  i: Integer;
+begin
+  Result := nil;
+  FProdutos := nil;
+  FProdutos := TProdutoList.Create;
+  lstProduto:= TObjectList<TProduto>.Create;
+  LJSONArray := aJSONObject.GetValue('produtos') as TJSONArray;
+  try
+    for LJSONValue in LJSONArray do
+    begin
+      produto := TJson.JsonToObject<TProduto>(LJSONValue.ToString);
+      lstProduto.Add(produto);
+    end;
+    FProdutos.Produtos := lstProduto;
+    Result := FProdutos.Produtos;
+  finally
+    FreeAndNil(LJSONArray);
+  end;
+end;
+
+function TModelProduto.ConsultarProduto(
+  aConnection: TClientConnection): TJSONObject;
+var
+  LJsonResponse: TJSONObject;
+begin
+  Result := nil;
+  try
+    LJsonResponse := aConnection.Execute('produto?method=ListarProdutos', tpGet, nil);
+
+    if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then
+      Result := LJsonResponse;
+  except on E:Exception do
+    begin
+      ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+                  E.Message);
+      Exit;
+    end;
+  end;
+end;
+
+end.

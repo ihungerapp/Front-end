@@ -14,18 +14,6 @@ object frmPrincipal: TfrmPrincipal
   OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp
   DesignerMasterStyle = 3
-  object lblMesa: TLabel
-    Align = Top
-    StyledSettings = [Family, Style]
-    Position.Y = 66.000000000000000000
-    Size.Width = 425.000000000000000000
-    Size.Height = 39.000000000000000000
-    Size.PlatformDefault = False
-    TextSettings.Font.Size = 16.000000000000000000
-    TextSettings.HorzAlign = Center
-    Text = 'N'#250'mero da mesa recebido da leitura do QRCode'
-    TabOrder = 2
-  end
   object layRodape: TLayout
     Align = Bottom
     Margins.Bottom = 10.000000000000000000
@@ -195,7 +183,7 @@ object frmPrincipal: TfrmPrincipal
         Align = Center
         StyledSettings = []
         Size.Width = 245.000000000000000000
-        Size.Height = 60.000000000000000000
+        Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Family = 'Inter'
         TextSettings.Font.Size = 20.000000000000000000
@@ -205,6 +193,124 @@ object frmPrincipal: TfrmPrincipal
         Text = 'HUNGER APP'
         TabOrder = 1
       end
+    end
+  end
+  object Timer: TTimer
+    Interval = 3000
+    OnTimer = TimerTimer
+    Left = 224
+    Top = 176
+  end
+  object imgFoto: TImage
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 48.000000000000000000
+    Position.Y = 472.000000000000000000
+    Visible = False
+  end
+  object lytLista: TLayout
+    Align = Client
+    Size.Width = 425.000000000000000000
+    Size.Height = 557.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object lvConsultaProduto: TListView
+      ItemAppearanceClassName = 'TDynamicAppearance'
+      ItemEditAppearanceClassName = 'TDynamicAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      Align = Client
+      Size.Width = 425.000000000000000000
+      Size.Height = 486.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearance.ItemHeight = 120
+      ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'descricao'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.Width = 322.000000000000000000
+          Appearance.Height = 23.000000000000000000
+          Appearance.PlaceOffset.X = 65.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'complemento'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.TextVertAlign = Leading
+          Appearance.TextColor = xFF1D78CE
+          Appearance.Width = 322.000000000000000000
+          Appearance.Height = 19.000000000000000000
+          Appearance.PlaceOffset.X = 65.000000000000000000
+          Appearance.PlaceOffset.Y = 20.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'valor'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.TextAlign = Leading
+          Appearance.TextVertAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.TextColor = xFF8D8D8D
+          Appearance.Width = 322.000000000000000000
+          Appearance.Height = 20.000000000000000000
+          Appearance.PlaceOffset.X = 65.000000000000000000
+          Appearance.PlaceOffset.Y = 40.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'imgProduto'
+          AppearanceClassName = 'TImageObjectAppearance'
+          Appearance.Width = 50.000000000000000000
+          Appearance.Height = 50.000000000000000000
+          Appearance.PlaceOffset.X = 8.000000000000000000
+          Appearance.PlaceOffset.Y = 8.000000000000000000
+        end>
+      ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'Text1'
+          AppearanceClassName = 'TTextObjectAppearance'
+        end>
+      CanSwipeDelete = False
+    end
+    object edtPesquisar: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 0
+      TextSettings.Font.Size = 13.000000000000000000
+      Position.Y = 39.000000000000000000
+      Size.Width = 425.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TextPrompt = 'Pesquisar...'
+      StyledSettings = [Family, Style, FontColor]
+      object SpeedButton1: TSpeedButton
+        Align = Right
+        Position.X = 377.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'searchtoolbutton'
+      end
+    end
+    object lblMesa: TLabel
+      Align = Top
+      StyledSettings = []
+      Size.Width = 425.000000000000000000
+      Size.Height = 39.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Inter'
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.HorzAlign = Center
+      Text = 'N'#250'mero da mesa recebido da leitura do QRCode'
+      TabOrder = 2
     end
   end
 end
