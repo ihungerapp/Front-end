@@ -202,11 +202,16 @@ object frmPrincipal: TfrmPrincipal
     Top = 176
   end
   object imgFoto: TImage
+    MultiResBitmap.Height = 36
+    MultiResBitmap.Width = 36
     MultiResBitmap = <
       item
       end>
     Position.X = 48.000000000000000000
     Position.Y = 472.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
     Visible = False
   end
   object lytLista: TLayout
@@ -234,9 +239,9 @@ object frmPrincipal: TfrmPrincipal
           Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
-          Appearance.Width = 322.000000000000000000
+          Appearance.Width = 310.000000000000000000
           Appearance.Height = 23.000000000000000000
-          Appearance.PlaceOffset.X = 65.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
         end
         item
           AppearanceObjectName = 'complemento'
@@ -246,9 +251,9 @@ object frmPrincipal: TfrmPrincipal
           Appearance.TextAlign = Leading
           Appearance.TextVertAlign = Leading
           Appearance.TextColor = xFF1D78CE
-          Appearance.Width = 322.000000000000000000
+          Appearance.Width = 310.000000000000000000
           Appearance.Height = 19.000000000000000000
-          Appearance.PlaceOffset.X = 65.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 20.000000000000000000
         end
         item
@@ -259,16 +264,16 @@ object frmPrincipal: TfrmPrincipal
           Appearance.TextVertAlign = Leading
           Appearance.WordWrap = True
           Appearance.TextColor = xFF8D8D8D
-          Appearance.Width = 322.000000000000000000
+          Appearance.Width = 310.000000000000000000
           Appearance.Height = 20.000000000000000000
-          Appearance.PlaceOffset.X = 65.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 40.000000000000000000
         end
         item
           AppearanceObjectName = 'imgProduto'
           AppearanceClassName = 'TImageObjectAppearance'
-          Appearance.Width = 50.000000000000000000
-          Appearance.Height = 50.000000000000000000
+          Appearance.Width = 65.000000000000000000
+          Appearance.Height = 65.000000000000000000
           Appearance.PlaceOffset.X = 8.000000000000000000
           Appearance.PlaceOffset.Y = 8.000000000000000000
         end>

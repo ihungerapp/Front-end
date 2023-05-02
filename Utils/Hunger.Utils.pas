@@ -7,8 +7,10 @@ uses
 
 type
   TUtils = class
+  private
   public
     class function Base64ToStream(aBase64: String): TMemoryStream; static;
+    class function RetirarQuebraDeLinha(aText : string): string; static;
   end;
 
 implementation
@@ -19,23 +21,34 @@ class function TUtils.Base64ToStream(aBase64: String): TMemoryStream;
 var
   bstBytes: TBytesStream;
   mstImg: TMemoryStream;
+  base64: AnsiString;
+  arrBytes: TArray<Byte>;
 begin
-  bstBytes := TBytesStream.Create(TNetEncoding.Base64.DecodeStringToBytes(aBase64));
+  base64 := RetirarQuebraDeLinha(aBase64);
+  bstBytes := TBytesStream.Create;
+  bstBytes.SetSize(Length(base64));
+  SetLength(arrBytes, Length(base64));
+  arrBytes := TNetEncoding.Base64.DecodeStringToBytes(base64);
+  bstBytes.Write(arrBytes, Length(arrBytes));
   mstImg := TMemoryStream.Create;
+  mstImg.SetSize(Length(bstBytes.Bytes));
   Result := nil;
   try
     if Length(bstBytes.Bytes) > 0 then
     begin
-      mstImg.SaveToStream(bstBytes);
-      mstImg.WriteData(mstImg, Length(bstBytes.Bytes));
+      mstImg.LoadFromStream(bstBytes);
       mstImg.Position := 0;
       Result := mstImg;
     end;
   finally
     FreeAndNil(bstBytes);
-    FreeAndNil(mstImg);
   end;
+end;
 
+class function TUtils.RetirarQuebraDeLinha(aText: string): string;
+begin
+  Result := StringReplace(aText, #$D#$A, '', [rfReplaceAll]);
+  Result := StringReplace(Result, #13#10, '', [rfReplaceAll]);
 end;
 
 end.

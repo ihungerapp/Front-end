@@ -3,13 +3,14 @@ unit Hunger.View.Main;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   Hunger.Model.Permissions, Hunger.View.LeitorCamera, FMX.Objects, FMX.Layouts,
   FMX.Controls.Presentation, FMX.StdCtrls, Authentication, System.JSON,
   Client.Connection, Hunger.Model.Produto, Hunger.Model.Entidade.Produto,
   System.Generics.Collections, FMX.ListView.Types, FMX.ListView.Appearances,
-  FMX.ListView.Adapters.Base, FMX.Edit, FMX.ListView, Hunger.Utils
+  FMX.ListView.Adapters.Base, FMX.Edit, FMX.ListView, Hunger.Utils,
+  System.NetEncoding, System.Classes
   {$IFDEF ANDROID}
   , Androidapi.Helpers
   {$ENDIF ANDROID}
@@ -195,12 +196,12 @@ var
 begin
   lvConsultaProduto.Items.Clear;
   lvConsultaProduto.BeginUpdate;
+  imgFoto.MultiResBitmap.Clear;
 
   t := TThread.CreateAnonymousThread(procedure
   var
     LItem: TListViewItem;
     I: Integer;
-    imgStream: TMemoryStream;
   begin
     for I := 0 to Pred(aProdutos.Count) do
     begin
@@ -211,15 +212,12 @@ begin
         begin
           Height := 90;
           Tag := I;
-          imgFoto.MultiResBitmap.Items[0].Clear;
           if aProdutos[I].Imagem <> EmptyStr then
           begin
-            imgStream := FUtils.Base64ToStream(aProdutos[I].Imagem);
-            if Assigned(imgStream) then
-            begin
-              imgFoto.MultiResBitmap.Insert(0).Bitmap.LoadFromStream(imgStream);
+            imgFoto.MultiResBitmap.Add;
+            imgFoto.MultiResBitmap.Items[I].Bitmap.LoadFromStream(FUtils.Base64ToStream(aProdutos[I].Imagem));
+            if not imgFoto.Bitmap.IsEmpty then
               TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.Bitmap;
-            end;
           end;
           TListItemText(Objects.FindDrawable('descricao')).Text := aProdutos[I].Descricao;
           TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
