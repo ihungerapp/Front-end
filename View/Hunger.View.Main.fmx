@@ -196,6 +196,7 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object Timer: TTimer
+    Enabled = False
     Interval = 3000
     OnTimer = TimerTimer
     Left = 224
@@ -314,7 +315,7 @@ object frmPrincipal: TfrmPrincipal
       TextSettings.Font.Size = 16.000000000000000000
       TextSettings.Font.StyleExt = {00070000000000000004000000}
       TextSettings.HorzAlign = Center
-      Text = 'N'#250'mero da mesa recebido da leitura do QRCode'
+      Text = 'Aguardando conex'#227'o...'
       TabOrder = 2
     end
   end

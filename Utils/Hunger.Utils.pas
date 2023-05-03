@@ -26,12 +26,12 @@ var
 begin
   base64 := RetirarQuebraDeLinha(aBase64);
   bstBytes := TBytesStream.Create;
-  bstBytes.SetSize(Length(base64));
+  //bstBytes.SetSize(Length(base64));
   SetLength(arrBytes, Length(base64));
   arrBytes := TNetEncoding.Base64.DecodeStringToBytes(base64);
   bstBytes.Write(arrBytes, Length(arrBytes));
   mstImg := TMemoryStream.Create;
-  mstImg.SetSize(Length(bstBytes.Bytes));
+  //mstImg.SetSize(Length(bstBytes.Bytes));
   Result := nil;
   try
     if Length(bstBytes.Bytes) > 0 then

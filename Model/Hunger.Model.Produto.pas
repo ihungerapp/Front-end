@@ -21,7 +21,7 @@ type
 implementation
 
 uses
-  REST.Json, System.SysUtils, FMX.Dialogs;
+  REST.Json, System.SysUtils, FMX.Dialogs, FMX.DialogService;
 
 { TModelProduto }
 
@@ -75,7 +75,7 @@ begin
       Result := LJsonResponse;
   except on E:Exception do
     begin
-      ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+      TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
                   E.Message);
       Exit;
     end;

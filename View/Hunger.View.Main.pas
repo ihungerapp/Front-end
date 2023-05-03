@@ -46,7 +46,7 @@ type
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
-    FAutenticar_API: TAuthentication;
+    FAuthentication: TAuthentication;
     FModelProduto: TModelProduto;
     FProdutos: TObjectList<TProduto>;
 
@@ -58,9 +58,9 @@ type
     FPass_API: String;
 
     procedure LerQRCode;
-    procedure SetAutenticar_API(const aAutenticar_API: TAuthentication);
+    procedure Autenticar_API;
     procedure ConsultarProduto;
-    function ValidarMesaUUID(aMesaUUID: String): Boolean;
+    function ValidarMesaUUID: Boolean;
     procedure PreencherListView(aProdutos: TObjectList<TProduto>);
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
@@ -68,7 +68,7 @@ type
     property URL_API: String read FURL_API write FURL_API;
     property User_API: String read FUser_API write FUser_API;
     property Pass_API: String read FPass_API write FPass_API;
-    property Autenticar_API: TAuthentication read FAutenticar_API write SetAutenticar_API;
+    property Authentication: TAuthentication read FAuthentication;
   end;
 
 var
@@ -76,14 +76,57 @@ var
 
 implementation
 
+uses
+  FMX.DialogService;
+
 {$R *.fmx}
+
+procedure TfrmPrincipal.Autenticar_API;
+begin
+  try
+    Timer.Enabled := False;
+    if not Assigned(FAuthentication) then
+      FAuthentication := TAuthentication.GetInstance(Self);
+
+    try
+      if (MesaUUID <> EmptyStr) and (FAuthentication.Token = EmptyStr) then
+      begin
+        FAuthentication.URLServer := FURL_API;
+        FAuthentication.BodyString :=
+          '{'+
+          '  "user":"'+ FUser_API +'",'+
+          '  "password":"'+ FPass_API +'"' +
+          '}';
+        FAuthentication.UseURL := True;
+        FAuthentication.Authentication;
+      end;
+      if (FAuthentication.Token <> EmptyStr) then
+      begin
+        if ValidarMesaUUID then
+          ConsultarProduto
+        else
+        begin
+          TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
+          LerQRCode;
+        end;
+      end;
+    except on E:Exception do
+      begin
+        TDialogService.ShowMessage('Tentativa de conexão falhou! Vamos tentar novamente. ' + E.Message);
+        Autenticar_API;
+      end;
+    end;
+  finally
+    Timer.Enabled := FAuthentication.Token = EmptyStr;
+  end;
+end;
 
 procedure TfrmPrincipal.ConsultarProduto;
 var
   LJsonResponse: TJSONObject;
 begin
   try
-    LJsonResponse := FModelProduto.ConsultarProduto(FAutenticar_API.Connection);
+    LJsonResponse := FModelProduto.ConsultarProduto(FAuthentication.Connection);
 
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then
     begin
@@ -97,7 +140,7 @@ begin
     end;
   except on E:Exception do
     begin
-      ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+       TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
                   E.Message);
       Exit;
     end;
@@ -107,7 +150,6 @@ end;
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
   LerQRCode;
-
   {$IFDEF MSWINDOWS}
   FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
   FMesaDescricao := 'MESA 01';
@@ -115,9 +157,8 @@ begin
   FUser_API := 'hunger';
   FPass_API := 'rm045369';
   lblMesa.Text := FMesaDescricao;
+  Autenticar_API;
   {$ENDIF MSWINDOWS}
-
-  SetAutenticar_API(FAutenticar_API);
 end;
 
 procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -140,8 +181,15 @@ procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   FPermissions := TPermissions.Create;
   FModelProduto := TModelProduto.create;
+  FMesaUUID := EmptyStr;
+  FMesaDescricao := EmptyStr;
+  FURL_API := EmptyStr;
+  FUser_API := EmptyStr;
+  FPass_API := EmptyStr;
+  FContentImage := EmptyStr;
+
   {$IFDEF ANDROID}
-  Application.FormFactor.Orientations := [TFormOrientation.Landscape];
+  Application.FormFactor.Orientations := [TFormOrientation.Portrait];
   Application.FormFactor.AdjustToScreenSize;
   {$ENDIF ANDROID}
 end;
@@ -176,15 +224,20 @@ begin
     FrmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
     begin
       FContentImage := FrmLeitorCamera.codigo;
+      if FContentImage = EmptyStr then
+      begin
+        TDialogService.ShowMessage('Não foi possível ler o QRCode. Tente novamente!');
+        LerQRCode;
+        Exit;
+      end;
       LParams := FContentImage.Split(['|']);
-
       FMesaUUID := LParams[0];
       FMesaDescricao := LParams[1];
       FURL_API := LParams[2];
       FUser_API := LParams[3];
       FPass_API := LParams[4];
-
       lblMesa.Text := FMesaDescricao;
+      Timer.Enabled := True;
     end);
   end;
   {$ENDIF ANDROID}
@@ -217,7 +270,7 @@ begin
             imgFoto.MultiResBitmap.Add;
             imgFoto.MultiResBitmap.Items[I].Bitmap.LoadFromStream(FUtils.Base64ToStream(aProdutos[I].Imagem));
             if not imgFoto.Bitmap.IsEmpty then
-              TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.Bitmap;
+              TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.MultiResBitmap.Items[I].Bitmap;
           end;
           TListItemText(Objects.FindDrawable('descricao')).Text := aProdutos[I].Descricao;
           TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
@@ -232,56 +285,26 @@ begin
   t.Start;
 end;
 
-procedure TfrmPrincipal.SetAutenticar_API(const aAutenticar_API: TAuthentication);
-begin
-  if not Assigned(aAutenticar_API) then
-    FAutenticar_API := TAuthentication.GetInstance(Self);
-
-  try
-    FAutenticar_API.URLServer := FURL_API;
-    FAutenticar_API.BodyString :=
-      '{'+
-      '  "user":"'+ FUser_API +'",'+
-      '  "password":"'+ FPass_API +'"' +
-      '}';
-    FAutenticar_API.UseURL := True;
-    FAutenticar_API.Authentication;
-  except on E:Exception do
-    ShowMessage('Autenticação na API falhou: ' + E.Message);
-  end;
-end;
-
 procedure TfrmPrincipal.TimerTimer(Sender: TObject);
 begin
-  if Assigned(FAutenticar_API) then
-    if (FAutenticar_API.Token <> EmptyStr) then
-    begin
-      Timer.Enabled := False;
-      if ValidarMesaUUID(FMesaUUID) then
-        ConsultarProduto
-      else
-      begin
-        ShowMessage('Mesa inválida! Entre em contato com o estabelecimento.');
-        Application.Terminate;
-      end;
-    end
-    else
-      SetAutenticar_API(FAutenticar_API);
+  Autenticar_API;
 end;
 
-function TfrmPrincipal.ValidarMesaUUID(aMesaUUID: String): Boolean;
+function TfrmPrincipal.ValidarMesaUUID: Boolean;
 var
   LJsonResponse: TJSONObject;
 begin
   Result := False;
   try
-    LJsonResponse := Autenticar_API.Connection.Execute(
-      'mesa?search=mesa_uuid:' + aMesaUUID + '&JSON=<!"TypeSearch":"no incidence"!>', tpGet, nil);
+    //StringReplace(FMesaUUID, '{}', '', [rfReplaceAll]);
+    TDialogService.ShowMessage(MesaUUID);
+    LJsonResponse := FAuthentication.Connection.Execute(
+      'mesa?search=mesa_uuid:' + FMesaUUID + '&JSON=<!"TypeSearch":"no incidence"!>', tpGet, nil);
 
     Result := (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{}');
   except on E:Exception do
     begin
-      ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+      TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
                   E.Message);
       Exit;
     end;
