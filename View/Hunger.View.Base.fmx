@@ -4,10 +4,11 @@ object frmBase: TfrmBase
   Caption = 'Form2'
   ClientHeight = 693
   ClientWidth = 425
+  Fill.Kind = Solid
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  DesignerMasterStyle = 0
+  DesignerMasterStyle = 3
   object layCabecalho: TLayout
     Align = Top
     Margins.Bottom = 10.000000000000000000
@@ -22,10 +23,8 @@ object frmBase: TfrmBase
       Size.Height = 56.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
-      Stroke.Thickness = 3.000000000000000000
+      Stroke.Thickness = 0.000000000000000000
       Stroke.Cap = Round
-      XRadius = 5.000000000000000000
-      YRadius = 5.000000000000000000
       object lblHungerApp: TLabel
         Align = Center
         StyledSettings = []
@@ -44,8 +43,7 @@ object frmBase: TfrmBase
   end
   object layRodape: TLayout
     Align = Bottom
-    Margins.Bottom = 10.000000000000000000
-    Position.Y = 623.000000000000000000
+    Position.Y = 633.000000000000000000
     Size.Width = 425.000000000000000000
     Size.Height = 60.000000000000000000
     Size.PlatformDefault = False
@@ -54,21 +52,22 @@ object frmBase: TfrmBase
       Align = Contents
       Fill.Color = xFFF83923
       Padding.Left = 40.000000000000000000
+      Padding.Top = 5.000000000000000000
       Padding.Right = 40.000000000000000000
+      Padding.Bottom = 1.000000000000000000
       Size.Width = 425.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
-      Stroke.Thickness = 3.000000000000000000
+      Stroke.Thickness = 0.000000000000000000
       Stroke.Cap = Round
-      XRadius = 5.000000000000000000
-      YRadius = 5.000000000000000000
       object spbHome: TSpeedButton
         Align = Left
         StyledSettings = []
         Position.X = 40.000000000000000000
+        Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
-        Size.Height = 60.000000000000000000
+        Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         Text = 'Home'
         TextSettings.Font.Family = 'Inter'
@@ -92,7 +91,7 @@ object frmBase: TfrmBase
           HitTest = False
           Margins.Left = 15.000000000000000000
           Size.Width = 55.000000000000000000
-          Size.Height = 60.000000000000000000
+          Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = claWhite
           Stroke.Thickness = 2.000000000000000000
@@ -144,8 +143,9 @@ object frmBase: TfrmBase
         Align = Right
         StyledSettings = []
         Position.X = 315.000000000000000000
+        Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
-        Size.Height = 60.000000000000000000
+        Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         Text = 'Carrinho'
         TextSettings.Font.Family = 'Inter'
@@ -178,7 +178,7 @@ object frmBase: TfrmBase
           HitTest = False
           Margins.Left = 3.000000000000000000
           Size.Width = 67.000000000000000000
-          Size.Height = 60.000000000000000000
+          Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = claWhite
           Stroke.Thickness = 2.000000000000000000
@@ -190,7 +190,7 @@ object frmBase: TfrmBase
   object lytLista: TLayout
     Align = Client
     Size.Width = 425.000000000000000000
-    Size.Height = 557.000000000000000000
+    Size.Height = 567.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     object lblMesa: TLabel

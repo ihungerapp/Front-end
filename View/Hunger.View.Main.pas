@@ -81,7 +81,7 @@ var
 implementation
 
 uses
-  FMX.DialogService;
+  FMX.DialogService, Hunger.View.Produto;
 
 {$R *.fmx}
 
@@ -153,7 +153,8 @@ end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
-  LerQRCode;
+  if FMesaUUID = EmptyStr then
+    LerQRCode;
   {$IFDEF MSWINDOWS}
   FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
   FMesaDescricao := 'MESA 01';
@@ -251,7 +252,19 @@ procedure TfrmPrincipal.lvConsultaProdutoItemClickEx(const Sender: TObject;
   ItemIndex: Integer; const LocalClickPos: TPointF;
   const ItemObject: TListItemDrawable);
 begin
-  //Abrir tela de inclusão do item no pedido
+  //Abrir tela de inclusão do item no carrinho
+  if not Assigned(frmProduto) then
+    Application.CreateForm(TfrmProduto, frmProduto);
+
+  with frmProduto do
+  begin
+    lblMesa.Text := FMesaDescricao;
+    imgProduto.Bitmap := imgFoto.MultiResBitmap.Items[ItemIndex].Bitmap;
+    Produto := FProdutos[ItemIndex];
+  end;
+  frmProduto.ShowModal(procedure(ModalResult: TModalResult)
+    begin
+    end);
 end;
 
 procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>);

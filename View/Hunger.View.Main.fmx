@@ -16,8 +16,7 @@ object frmPrincipal: TfrmPrincipal
   DesignerMasterStyle = 3
   object layRodape: TLayout
     Align = Bottom
-    Margins.Bottom = 10.000000000000000000
-    Position.Y = 623.000000000000000000
+    Position.Y = 633.000000000000000000
     Size.Width = 425.000000000000000000
     Size.Height = 60.000000000000000000
     Size.PlatformDefault = False
@@ -26,20 +25,20 @@ object frmPrincipal: TfrmPrincipal
       Align = Contents
       Fill.Color = xFFF83923
       Padding.Left = 40.000000000000000000
+      Padding.Top = 5.000000000000000000
       Padding.Right = 40.000000000000000000
+      Padding.Bottom = 1.000000000000000000
       Size.Width = 425.000000000000000000
       Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
-      Stroke.Thickness = 3.000000000000000000
+      Stroke.Thickness = 0.000000000000000000
       Stroke.Cap = Round
-      XRadius = 5.000000000000000000
-      YRadius = 5.000000000000000000
       object spbHome: TSpeedButton
         Align = Left
         StyledSettings = []
         Position.X = 40.000000000000000000
-        Position.Y = 6.000000000000000000
+        Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
@@ -117,7 +116,7 @@ object frmPrincipal: TfrmPrincipal
         Align = Right
         StyledSettings = []
         Position.X = 315.000000000000000000
-        Position.Y = 6.000000000000000000
+        Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
@@ -175,10 +174,8 @@ object frmPrincipal: TfrmPrincipal
       Size.Height = 56.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claWhite
-      Stroke.Thickness = 3.000000000000000000
+      Stroke.Thickness = 0.000000000000000000
       Stroke.Cap = Round
-      XRadius = 5.000000000000000000
-      YRadius = 5.000000000000000000
       object lblHungerApp: TLabel
         Align = Center
         StyledSettings = []
@@ -218,7 +215,7 @@ object frmPrincipal: TfrmPrincipal
   object lytLista: TLayout
     Align = Client
     Size.Width = 425.000000000000000000
-    Size.Height = 557.000000000000000000
+    Size.Height = 567.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     object lvConsultaProduto: TListView
@@ -228,7 +225,7 @@ object frmPrincipal: TfrmPrincipal
       FooterAppearanceClassName = 'TListHeaderObjects'
       Align = Client
       Size.Width = 425.000000000000000000
-      Size.Height = 486.000000000000000000
+      Size.Height = 496.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       ItemAppearance.ItemHeight = 120

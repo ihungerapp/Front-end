@@ -1,11 +1,21 @@
-inherited frmBase1: TfrmBase1
-  Caption = 'frmBase1'
-  DesignerMasterStyle = 0
+inherited frmProduto: TfrmProduto
+  Caption = 'frmProduto'
+  OnShow = FormShow
+  DesignerMasterStyle = 3
   inherited layCabecalho: TLayout
     inherited Rectangle1: TRectangle
       inherited lblHungerApp: TLabel
         TextSettings.Font.StyleExt = {00070000000000000004000000}
       end
+    end
+    object spbVoltar: TSpeedButton
+      Align = Left
+      Position.Y = 4.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'priortoolbuttonbordered'
+      OnClick = spbVoltarClick
     end
   end
   inherited layRodape: TLayout
@@ -24,6 +34,63 @@ inherited frmBase1: TfrmBase1
   inherited lytLista: TLayout
     inherited lblMesa: TLabel
       TextSettings.Font.StyleExt = {00070000000000000004000000}
+    end
+    object imgProduto: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Align = Top
+      Position.Y = 39.000000000000000000
+      Size.Width = 425.000000000000000000
+      Size.Height = 90.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object vsbProduto: TVertScrollBox
+      Align = Client
+      Padding.Left = 10.000000000000000000
+      Padding.Right = 10.000000000000000000
+      Size.Width = 425.000000000000000000
+      Size.Height = 438.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Viewport.Width = 425.000000000000000000
+      Viewport.Height = 438.000000000000000000
+      object texDescricao: TText
+        Align = Top
+        Position.X = 10.000000000000000000
+        Size.Width = 405.000000000000000000
+        Size.Height = 35.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Descri'#231#227'o do produto'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = xFFF83923
+        TextSettings.HorzAlign = Leading
+      end
+      object texComplemento: TText
+        Align = Top
+        Position.X = 10.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 405.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Complemento do produto'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.FontColor = claGray
+        TextSettings.HorzAlign = Leading
+      end
+      object lvProduto: TListView
+        ItemAppearanceClassName = 'TListItemAppearance'
+        ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+        HeaderAppearanceClassName = 'TListHeaderObjects'
+        FooterAppearanceClassName = 'TListHeaderObjects'
+        Align = Client
+        Size.Width = 405.000000000000000000
+        Size.Height = 381.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+      end
     end
   end
 end
