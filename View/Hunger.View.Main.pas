@@ -43,6 +43,10 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure TimerTimer(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure lvConsultaProdutoItemClickEx(const Sender: TObject;
+      ItemIndex: Integer; const LocalClickPos: TPointF;
+      const ItemObject: TListItemDrawable);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -243,6 +247,13 @@ begin
   {$ENDIF ANDROID}
 end;
 
+procedure TfrmPrincipal.lvConsultaProdutoItemClickEx(const Sender: TObject;
+  ItemIndex: Integer; const LocalClickPos: TPointF;
+  const ItemObject: TListItemDrawable);
+begin
+  //Abrir tela de inclusão do item no pedido
+end;
+
 procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>);
 var
   t: TThread;
@@ -285,6 +296,11 @@ begin
   t.Start;
 end;
 
+procedure TfrmPrincipal.SpeedButton1Click(Sender: TObject);
+begin
+  TDialogService.ShowMessage(FMesaUUID);
+end;
+
 procedure TfrmPrincipal.TimerTimer(Sender: TObject);
 begin
   Autenticar_API;
@@ -293,21 +309,16 @@ end;
 function TfrmPrincipal.ValidarMesaUUID: Boolean;
 var
   LJsonResponse: TJSONObject;
+  Mesa: String;
 begin
   Result := False;
   try
-    //StringReplace(FMesaUUID, '{}', '', [rfReplaceAll]);
-    TDialogService.ShowMessage(MesaUUID);
     LJsonResponse := FAuthentication.Connection.Execute(
       'mesa?search=mesa_uuid:' + FMesaUUID + '&JSON=<!"TypeSearch":"no incidence"!>', tpGet, nil);
-
     Result := (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{}');
   except on E:Exception do
-    begin
-      TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
-                  E.Message);
-      Exit;
-    end;
+    TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+                               E.Message);
   end;
 end;
 

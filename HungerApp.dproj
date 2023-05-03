@@ -330,6 +330,14 @@
         <DCCReference Include="Model\Pkg.Json.DTO.pas"/>
         <DCCReference Include="Model\Hunger.Model.Produto.pas"/>
         <DCCReference Include="Utils\Hunger.Utils.pas"/>
+        <DCCReference Include="View\Hunger.View.Base.pas">
+            <Form>frmBase</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="View\Hunger.View.Produto.pas">
+            <Form>frmBase1</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -598,12 +606,6 @@
                 <DeployFile LocalName="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Configuration="Release" Class="AndroidLibnativeArmeabiFile">
                     <Platform Name="Android">
                         <RemoteName>libHungerApp.so</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win64\Debug\HungerApp.rsm" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win64">
-                        <RemoteName>HungerApp.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

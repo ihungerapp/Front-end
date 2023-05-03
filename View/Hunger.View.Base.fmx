@@ -1,19 +1,47 @@
-object frmPrincipal: TfrmPrincipal
+object frmBase: TfrmBase
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = 'Form2'
   ClientHeight = 693
   ClientWidth = 425
-  Fill.Kind = Solid
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnActivate = FormActivate
-  OnCreate = FormCreate
-  OnCloseQuery = FormCloseQuery
-  OnDestroy = FormDestroy
-  OnKeyUp = FormKeyUp
-  DesignerMasterStyle = 3
+  DesignerMasterStyle = 0
+  object layCabecalho: TLayout
+    Align = Top
+    Margins.Bottom = 10.000000000000000000
+    Size.Width = 425.000000000000000000
+    Size.Height = 56.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Rectangle1: TRectangle
+      Align = Contents
+      Fill.Color = xFFF83923
+      Size.Width = 425.000000000000000000
+      Size.Height = 56.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claWhite
+      Stroke.Thickness = 3.000000000000000000
+      Stroke.Cap = Round
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      object lblHungerApp: TLabel
+        Align = Center
+        StyledSettings = []
+        Size.Width = 245.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 20.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'HUNGER APP'
+        TabOrder = 1
+      end
+    end
+  end
   object layRodape: TLayout
     Align = Bottom
     Margins.Bottom = 10.000000000000000000
@@ -39,9 +67,8 @@ object frmPrincipal: TfrmPrincipal
         Align = Left
         StyledSettings = []
         Position.X = 40.000000000000000000
-        Position.Y = 6.000000000000000000
         Size.Width = 70.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
         Text = 'Home'
         TextSettings.Font.Family = 'Inter'
@@ -65,7 +92,7 @@ object frmPrincipal: TfrmPrincipal
           HitTest = False
           Margins.Left = 15.000000000000000000
           Size.Width = 55.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 60.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = claWhite
           Stroke.Thickness = 2.000000000000000000
@@ -117,9 +144,8 @@ object frmPrincipal: TfrmPrincipal
         Align = Right
         StyledSettings = []
         Position.X = 315.000000000000000000
-        Position.Y = 6.000000000000000000
         Size.Width = 70.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 60.000000000000000000
         Size.PlatformDefault = False
         Text = 'Carrinho'
         TextSettings.Font.Family = 'Inter'
@@ -152,7 +178,7 @@ object frmPrincipal: TfrmPrincipal
           HitTest = False
           Margins.Left = 3.000000000000000000
           Size.Width = 67.000000000000000000
-          Size.Height = 48.000000000000000000
+          Size.Height = 60.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = claWhite
           Stroke.Thickness = 2.000000000000000000
@@ -161,152 +187,12 @@ object frmPrincipal: TfrmPrincipal
       end
     end
   end
-  object layCabecalho: TLayout
-    Align = Top
-    Margins.Bottom = 10.000000000000000000
-    Size.Width = 425.000000000000000000
-    Size.Height = 56.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 0
-    object Rectangle1: TRectangle
-      Align = Contents
-      Fill.Color = xFFF83923
-      Size.Width = 425.000000000000000000
-      Size.Height = 56.000000000000000000
-      Size.PlatformDefault = False
-      Stroke.Color = claWhite
-      Stroke.Thickness = 3.000000000000000000
-      Stroke.Cap = Round
-      XRadius = 5.000000000000000000
-      YRadius = 5.000000000000000000
-      object lblHungerApp: TLabel
-        Align = Center
-        StyledSettings = []
-        Size.Width = 245.000000000000000000
-        Size.Height = 50.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Family = 'Inter'
-        TextSettings.Font.Size = 20.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.FontColor = claWhite
-        TextSettings.HorzAlign = Center
-        Text = 'HUNGER APP'
-        TabOrder = 1
-      end
-    end
-  end
-  object Timer: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = TimerTimer
-    Left = 224
-    Top = 176
-  end
-  object imgFoto: TImage
-    MultiResBitmap.Height = 36
-    MultiResBitmap.Width = 36
-    MultiResBitmap = <
-      item
-      end>
-    Position.X = 48.000000000000000000
-    Position.Y = 472.000000000000000000
-    Size.Width = 50.000000000000000000
-    Size.Height = 50.000000000000000000
-    Size.PlatformDefault = False
-    Visible = False
-  end
   object lytLista: TLayout
     Align = Client
     Size.Width = 425.000000000000000000
     Size.Height = 557.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
-    object lvConsultaProduto: TListView
-      ItemAppearanceClassName = 'TDynamicAppearance'
-      ItemEditAppearanceClassName = 'TDynamicAppearance'
-      HeaderAppearanceClassName = 'TListHeaderObjects'
-      FooterAppearanceClassName = 'TListHeaderObjects'
-      Align = Client
-      Size.Width = 425.000000000000000000
-      Size.Height = 486.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      ItemAppearance.ItemHeight = 120
-      ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
-        item
-          AppearanceObjectName = 'descricao'
-          AppearanceClassName = 'TTextObjectAppearance'
-          Appearance.Font.Size = 13.000000000000000000
-          Appearance.Font.StyleExt = {00070000000000000004000000}
-          Appearance.TextAlign = Leading
-          Appearance.WordWrap = True
-          Appearance.Width = 310.000000000000000000
-          Appearance.Height = 23.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
-        end
-        item
-          AppearanceObjectName = 'complemento'
-          AppearanceClassName = 'TTextObjectAppearance'
-          Appearance.Font.Size = 13.000000000000000000
-          Appearance.Font.StyleExt = {00070000000000000004000000}
-          Appearance.TextAlign = Leading
-          Appearance.TextVertAlign = Leading
-          Appearance.TextColor = xFF1D78CE
-          Appearance.Width = 310.000000000000000000
-          Appearance.Height = 19.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
-          Appearance.PlaceOffset.Y = 20.000000000000000000
-        end
-        item
-          AppearanceObjectName = 'valor'
-          AppearanceClassName = 'TTextObjectAppearance'
-          Appearance.Font.Size = 13.000000000000000000
-          Appearance.TextAlign = Leading
-          Appearance.TextVertAlign = Leading
-          Appearance.WordWrap = True
-          Appearance.TextColor = xFF8D8D8D
-          Appearance.Width = 310.000000000000000000
-          Appearance.Height = 20.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
-          Appearance.PlaceOffset.Y = 40.000000000000000000
-        end
-        item
-          AppearanceObjectName = 'imgProduto'
-          AppearanceClassName = 'TImageObjectAppearance'
-          Appearance.Width = 65.000000000000000000
-          Appearance.Height = 65.000000000000000000
-          Appearance.PlaceOffset.X = 8.000000000000000000
-          Appearance.PlaceOffset.Y = 8.000000000000000000
-        end>
-      ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
-        item
-          AppearanceObjectName = 'Text1'
-          AppearanceClassName = 'TTextObjectAppearance'
-        end>
-      CanSwipeDelete = False
-      OnItemClickEx = lvConsultaProdutoItemClickEx
-    end
-    object edtPesquisar: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Align = Top
-      TabOrder = 0
-      TextSettings.Font.Size = 13.000000000000000000
-      Position.Y = 39.000000000000000000
-      Size.Width = 425.000000000000000000
-      Size.Height = 32.000000000000000000
-      Size.PlatformDefault = False
-      TextPrompt = 'Pesquisar...'
-      StyledSettings = [Family, Style, FontColor]
-      object SpeedButton1: TSpeedButton
-        Align = Right
-        Position.X = 377.000000000000000000
-        Size.Width = 48.000000000000000000
-        Size.Height = 48.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'searchtoolbutton'
-        OnClick = SpeedButton1Click
-      end
-    end
     object lblMesa: TLabel
       Align = Top
       StyledSettings = []
@@ -318,7 +204,7 @@ object frmPrincipal: TfrmPrincipal
       TextSettings.Font.StyleExt = {00070000000000000004000000}
       TextSettings.HorzAlign = Center
       Text = 'Aguardando conex'#227'o...'
-      TabOrder = 2
+      TabOrder = 0
     end
   end
 end

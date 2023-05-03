@@ -1,0 +1,29 @@
+inherited frmBase1: TfrmBase1
+  Caption = 'frmBase1'
+  DesignerMasterStyle = 0
+  inherited layCabecalho: TLayout
+    inherited Rectangle1: TRectangle
+      inherited lblHungerApp: TLabel
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+  end
+  inherited layRodape: TLayout
+    inherited recRodape: TRectangle
+      inherited spbHome: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      inherited spbPedidos: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      inherited spbCarrinho: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+  end
+  inherited lytLista: TLayout
+    inherited lblMesa: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+    end
+  end
+end
