@@ -80,16 +80,30 @@ inherited frmProduto: TfrmProduto
         TextSettings.FontColor = claGray
         TextSettings.HorzAlign = Leading
       end
-      object lvProduto: TListView
-        ItemAppearanceClassName = 'TListItemAppearance'
-        ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
-        HeaderAppearanceClassName = 'TListHeaderObjects'
-        FooterAppearanceClassName = 'TListHeaderObjects'
+      object lbProdutoPrecificacao: TListBox
         Align = Client
         Size.Width = 405.000000000000000000
-        Size.Height = 381.000000000000000000
+        Size.Height = 349.000000000000000000
         Size.PlatformDefault = False
+        StyleLookup = 'transparentlistboxstyle'
         TabOrder = 2
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        Viewport.Width = 405.000000000000000000
+        Viewport.Height = 349.000000000000000000
+      end
+      object Text1: TText
+        Align = Top
+        Position.X = 10.000000000000000000
+        Position.Y = 57.000000000000000000
+        Size.Width = 405.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Selecione uma op'#231#227'o:'
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.HorzAlign = Leading
       end
     end
   end

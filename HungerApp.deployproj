@@ -531,7 +531,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HungerApp\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image_def.9.png</RemoteName>
             <DeployClass>Android_SplashImage426</DeployClass>
@@ -540,7 +540,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HungerApp\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image_def.9.png</RemoteName>
             <DeployClass>Android_SplashImage426</DeployClass>
