@@ -154,16 +154,18 @@ end;
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
   if FMesaUUID = EmptyStr then
+  begin
     LerQRCode;
-  {$IFDEF MSWINDOWS}
-  FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
-  FMesaDescricao := 'MESA 01';
-  FURL_API := 'http://localhost:8081/v1/';
-  FUser_API := 'hunger';
-  FPass_API := 'rm045369';
-  lblMesa.Text := FMesaDescricao;
-  Autenticar_API;
-  {$ENDIF MSWINDOWS}
+    {$IFDEF MSWINDOWS}
+    FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
+    FMesaDescricao := 'MESA 01';
+    FURL_API := 'http://localhost:8081/v1/';
+    FUser_API := 'hunger';
+    FPass_API := 'rm045369';
+    lblMesa.Text := FMesaDescricao;
+    Autenticar_API;
+    {$ENDIF MSWINDOWS}
+  end;
 end;
 
 procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

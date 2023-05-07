@@ -45,7 +45,6 @@ object frmPrincipal: TfrmPrincipal
         Text = 'Home'
         TextSettings.Font.Family = 'Inter'
         TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.VertAlign = Trailing
         object pathHome: TPath
@@ -60,7 +59,8 @@ object frmPrincipal: TfrmPrincipal
             6811AB41020000009A9921416666A641010000009A99214133330B4103000000
             9A99214133330B41000000009A9985410000B841010000009A99854100004041
             010000006666BA4100004041010000006666BA410000B841}
-          Fill.Kind = None
+          Fill.Bitmap.WrapMode = Tile
+          Fill.Kind = Bitmap
           HitTest = False
           Margins.Left = 15.000000000000000000
           Size.Width = 55.000000000000000000
@@ -81,7 +81,6 @@ object frmPrincipal: TfrmPrincipal
         Text = 'Pedidos'
         TextSettings.Font.Family = 'Inter'
         TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.VertAlign = Trailing
         object pathPedidos: TPath
@@ -123,7 +122,6 @@ object frmPrincipal: TfrmPrincipal
         Text = 'Carrinho'
         TextSettings.Font.Family = 'Inter'
         TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
         TextSettings.VertAlign = Trailing
         object pathCarrinho: TPath

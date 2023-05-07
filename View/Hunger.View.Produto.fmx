@@ -21,18 +21,21 @@ inherited frmProduto: TfrmProduto
   inherited layRodape: TLayout
     inherited recRodape: TRectangle
       inherited spbHome: TSpeedButton
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-      end
-      inherited spbPedidos: TSpeedButton
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-      end
-      inherited spbCarrinho: TSpeedButton
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        inherited pathHome: TPath
+          object PathLabel1: TPathLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 40.000000000000000000
+          end
+        end
       end
     end
   end
   inherited lytLista: TLayout
+    Padding.Left = 10.000000000000000000
+    Padding.Right = 10.000000000000000000
     inherited lblMesa: TLabel
+      Position.X = 10.000000000000000000
+      Size.Width = 405.000000000000000000
       TextSettings.Font.StyleExt = {00070000000000000004000000}
     end
     object imgProduto: TImage
@@ -40,70 +43,176 @@ inherited frmProduto: TfrmProduto
         item
         end>
       Align = Top
+      Position.X = 10.000000000000000000
       Position.Y = 39.000000000000000000
-      Size.Width = 425.000000000000000000
+      Size.Width = 405.000000000000000000
       Size.Height = 90.000000000000000000
       Size.PlatformDefault = False
     end
-    object vsbProduto: TVertScrollBox
+    object lbProdutoPrecificacao: TListBox
       Align = Client
-      Padding.Left = 10.000000000000000000
-      Padding.Right = 10.000000000000000000
-      Size.Width = 425.000000000000000000
-      Size.Height = 438.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 267.000000000000000000
       Size.PlatformDefault = False
+      StyleLookup = 'transparentlistboxstyle'
       TabOrder = 1
-      Viewport.Width = 425.000000000000000000
-      Viewport.Height = 438.000000000000000000
-      object texDescricao: TText
-        Align = Top
-        Position.X = 10.000000000000000000
-        Size.Width = 405.000000000000000000
-        Size.Height = 35.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Descri'#231#227'o do produto'
-        TextSettings.Font.Family = 'Inter'
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.FontColor = xFFF83923
-        TextSettings.HorzAlign = Leading
-      end
-      object texComplemento: TText
-        Align = Top
-        Position.X = 10.000000000000000000
-        Position.Y = 35.000000000000000000
-        Size.Width = 405.000000000000000000
-        Size.Height = 22.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Complemento do produto'
-        TextSettings.Font.Family = 'Inter'
-        TextSettings.FontColor = claGray
-        TextSettings.HorzAlign = Leading
-      end
-      object lbProdutoPrecificacao: TListBox
+      OnClick = lbProdutoPrecificacaoClick
+      DisableFocusEffect = True
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      Viewport.Width = 405.000000000000000000
+      Viewport.Height = 267.000000000000000000
+    end
+    object texComplemento: TText
+      Align = Top
+      Position.X = 10.000000000000000000
+      Position.Y = 164.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Complemento do produto'
+      TextSettings.Font.Family = 'Inter'
+      TextSettings.FontColor = claGray
+      TextSettings.HorzAlign = Leading
+    end
+    object texDescricao: TText
+      Align = Top
+      Position.X = 10.000000000000000000
+      Position.Y = 129.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Descri'#231#227'o do produto'
+      TextSettings.Font.Family = 'Inter'
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = xFFF83923
+    end
+    object texOpcao: TText
+      Align = Top
+      Position.X = 10.000000000000000000
+      Position.Y = 186.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Selecione uma op'#231#227'o:'
+      TextSettings.Font.Family = 'Inter'
+      TextSettings.HorzAlign = Leading
+    end
+    object Rectangle2: TRectangle
+      Align = Bottom
+      Fill.Color = claForestgreen
+      Position.X = 10.000000000000000000
+      Position.Y = 517.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claWhite
+      Stroke.Thickness = 6.000000000000000000
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      object lblAdicionar: TLabel
         Align = Client
+        StyledSettings = []
         Size.Width = 405.000000000000000000
-        Size.Height = 349.000000000000000000
+        Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
-        StyleLookup = 'transparentlistboxstyle'
-        TabOrder = 2
-        DisableFocusEffect = True
-        DefaultItemStyles.ItemStyle = ''
-        DefaultItemStyles.GroupHeaderStyle = ''
-        DefaultItemStyles.GroupFooterStyle = ''
-        Viewport.Width = 405.000000000000000000
-        Viewport.Height = 349.000000000000000000
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Adicionar ao carrinho '
+        TabOrder = 0
       end
-      object Text1: TText
-        Align = Top
-        Position.X = 10.000000000000000000
-        Position.Y = 57.000000000000000000
-        Size.Width = 405.000000000000000000
+    end
+    object nbxQtde: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Bottom
+      TabOrder = 5
+      Cursor = crIBeam
+      Min = 1.000000000000000000
+      Value = 1.000000000000000000
+      TextSettings.Font.Family = 'Inter'
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.HorzAlign = Center
+      Position.X = 10.000000000000000000
+      Position.Y = 485.000000000000000000
+      VertIncrement = 1.000000000000000000
+      Padding.Left = 130.000000000000000000
+      Padding.Right = 130.000000000000000000
+      Size.Width = 405.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyledSettings = [Style]
+      Caret.Interval = 1
+      OnChange = nbxQtdeChange
+      object recAdd: TRectangle
+        Align = Right
+        Fill.Bitmap.Bitmap.PNG = {
+          89504E470D0A1A0A0000000D494844520000001E0000001E08060000003B30AE
+          A2000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+          026249444154484BED96CB6B135114879319998DA82B17A2824FE82264E5D645
+          2DB4EE24B418F310DCF41F1057822E14DCF9072885124802591495765B6871E3
+          CA4582161F75E18316BAAB5D0899CCF8DD9943E4666E26133BB49B7E30DC734E
+          CF3DBF39734F339339E2A0C8CA3A924AA57286A5E0FBFE2DD6F3D96CF6B48AE3
+          EF607FF73CEF8DE338AF6AB5DAB68A8F62A470B55ABD42F1675CB30858123642
+          8E47CE12D7C37ABDFE55C2466285119DA5931A858E4B28297BECB98BF86BF123
+          D8B246E0D1DE6759A0801346C6C2A1FBDBF97C7EB7D3E9BC93988651B8542ADD
+          41F00566E2191884FD6AEF0CE21B887F08A3FF8814A6D373DCED47F69D90D0BE
+          A0D62EB5261A8DC69684024CC3F234A1E8247953620F859C93883F11B78FD671
+          B158BC60DBF626C9B1D3ABA083602F4FC80F02F1F45CD7BDD86AB57E88AF778C
+          682189E87F4069BB2076802682E88C98A943ED9B620668C29CC565315387DA97
+          C40CD0CEB85C2EAB09340DD62467BA26762CFCE8DC406455DC3E6ABA9BCDE629
+          7123536D3C5F7EBD5C31471293AB35A9394CE86796ABA117CF9853AD3AFE44C7
+          13E2463AFC266BEA70845AEDC1A95E113375388265310334E16EB7BBC223F1C4
+          4D931EC25A53DA192B38B345967BA1371C0A5DE709595CEB121A0ACD2C70BEF3
+          E20698A6F81189BFC51E8A65596F138AAA7FD1C7E2F6890833AD3F499CC3EC85
+          917DE1728373836F2685F17DCCFB7393F7E81EE63457E43892A06685061E20DA
+          9490466CD143F9F451B4DBED8D5C2EF7922234E05F633D267F3242CE1F729E73
+          B34586E9BD848D247E8C4C7BFFF396E2EACBF3AC8A63FF62F982D8589FB7471C
+          1099CC5F0B80EF149503404C0000000049454E44AE426082}
+        Fill.Bitmap.WrapMode = Tile
+        Fill.Kind = Bitmap
+        Position.X = 243.000000000000000000
+        Size.Width = 32.000000000000000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
-        Text = 'Selecione uma op'#231#227'o:'
-        TextSettings.Font.Family = 'Inter'
-        TextSettings.HorzAlign = Leading
+        Stroke.Kind = None
+        OnClick = recAddClick
+      end
+      object recDrop: TRectangle
+        Align = Left
+        Fill.Bitmap.Bitmap.PNG = {
+          89504E470D0A1A0A0000000D494844520000001E0000001E08060000003B30AE
+          A2000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+          023C49444154484BED964B4F135114C7DB0E998D41562C889A80400249D3955F
+          4017E28E34104B1F7C09C3CAA524BAF2034074D1A46DD28551235B1296AC58B4
+          51080F353CA289BBCAC2A4D3A9BF3B7322DCDEB11DEC801B7EC9E43C7AE7FC7B
+          66CEDC99D83557455C6C4FF2F9FC0826DD6EB767B177E2F1F8B0CA13FFC03F74
+          5DF7BD6DDB6F8BC5E27795EF454FE142A13041F1E71C730824241D086B5CD6BC
+          E1785A2A95F6251D48576144E7E8A448A11B920ACB29E72C22FE4E62034BAC01
+          97F609E615056C3F73216CBA7F9C4AA51AF57A7D53721A81C2D96C7601C115DC
+          D033D009E7AB736710DF46FCA39F3DC3284CA7B7F9B79F386F50527D41AD06B5
+          A6CAE5F237497918C3C2C21751892AA87553D594F00F5AC7994C66D4B2AC0316
+          779DDE7FA0E538CE58B55A3D9258EF18D1F425882A286DA5C5F7D044109D1137
+          72A8FD485C0F4D987B312E6EE450FBAEB81EDA3DCEE5726A023B07EB3E13B921
+          7E28D8781E20B42EA10771A352A90C49684CB5717FD9B91C7143F39773B426B5
+          8067781733E94791B3C3959B16DFE8F0B3D8CBE08B588FCEA95E133772B8FC1F
+          C4F5D0849BCDE61A43E04A18252D84B5A634617696AF74FD5AC228593DBF6B29
+          8C29866774FD53FCBE518F1166D98FCE308499BC63BA9EC76DF999BE701289C4
+          7CE79B4911F83EE6FD79C07BF414F72187F1EA0C839A151A5842B422298DAE45
+          FFCBA78FA256AB6D2793C9558AD040FB1E76407E0A8435BF58F3923F9B617BDC
+          927420A12FE3F9CF5B8AAB2FCF5B2A8F7F82D943EC429FB7D75C11B1D86F9728
+          DFFF0A18943F0000000049454E44AE426082}
+        Fill.Bitmap.WrapMode = Tile
+        Fill.Kind = Bitmap
+        Position.X = 130.000000000000000000
+        Size.Width = 32.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        OnClick = recDropClick
       end
     end
   end
