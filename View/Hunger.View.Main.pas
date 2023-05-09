@@ -10,7 +10,7 @@ uses
   Client.Connection, Hunger.Model.Produto, Hunger.Model.Entidade.Produto,
   System.Generics.Collections, FMX.ListView.Types, FMX.ListView.Appearances,
   FMX.ListView.Adapters.Base, FMX.Edit, FMX.ListView, Hunger.Utils,
-  System.NetEncoding, System.Classes
+  System.NetEncoding, System.Classes, Hunger.Model.Entidade.Pedidos
   {$IFDEF ANDROID}
   , Androidapi.Helpers
   {$ENDIF ANDROID}
@@ -35,7 +35,7 @@ type
     lytLista: TLayout;
     lvConsultaProduto: TListView;
     edtPesquisar: TEdit;
-    SpeedButton1: TSpeedButton;
+    sebPesquisar: TSearchEditButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -43,10 +43,10 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure TimerTimer(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
     procedure lvConsultaProdutoItemClickEx(const Sender: TObject;
       ItemIndex: Integer; const LocalClickPos: TPointF;
       const ItemObject: TListItemDrawable);
+    procedure sebPesquisarClick(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -56,16 +56,19 @@ type
 
     FContentImage: String;
     FMesaUUID: String;
+    FMesaID: Integer;
     FMesaDescricao: String;
     FURL_API: String;
     FUser_API: String;
     FPass_API: String;
+    FPedido: TPedido;
 
     procedure LerQRCode;
     procedure Autenticar_API;
-    procedure ConsultarProduto;
+    procedure ConsultarProduto(aDescricao: String);
     function ValidarMesaUUID: Boolean;
     procedure PreencherListView(aProdutos: TObjectList<TProduto>);
+    procedure SetPedido(const Value: TPedido);
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -73,6 +76,7 @@ type
     property User_API: String read FUser_API write FUser_API;
     property Pass_API: String read FPass_API write FPass_API;
     property Authentication: TAuthentication read FAuthentication;
+    property Pedido: TPedido read FPedido write SetPedido;
   end;
 
 var
@@ -107,7 +111,7 @@ begin
       if (FAuthentication.Token <> EmptyStr) then
       begin
         if ValidarMesaUUID then
-          ConsultarProduto
+          ConsultarProduto(EmptyStr)
         else
         begin
           TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
@@ -125,12 +129,12 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.ConsultarProduto;
+procedure TfrmPrincipal.ConsultarProduto(aDescricao: String);
 var
   LJsonResponse: TJSONObject;
 begin
   try
-    LJsonResponse := FModelProduto.ConsultarProduto(FAuthentication.Connection);
+    LJsonResponse := FModelProduto.ConsultarProduto(FAuthentication.Connection, aDescricao);
 
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then
     begin
@@ -189,6 +193,7 @@ begin
   FPermissions := TPermissions.Create;
   FModelProduto := TModelProduto.create;
   FMesaUUID := EmptyStr;
+  FMesaID := 0;
   FMesaDescricao := EmptyStr;
   FURL_API := EmptyStr;
   FUser_API := EmptyStr;
@@ -266,7 +271,24 @@ begin
   end;
   frmProduto.ShowModal(procedure(ModalResult: TModalResult)
     begin
+      if Assigned(frmProduto.PedidoItem) then
+      begin
+        if not Assigned(Pedido) then
+        begin
+          Pedido := TPedido.Create;
+          Pedido.IdPessoa := 0;
+          Pedido.IdMesa := FMesaID;
+          Pedido.DataHoraAbertura := Now;
+          Pedido.PedidoStatus := 'Em Aberto';
+          Pedido.FecharConta := False;
+          Pedido.ValorTotal := 0;
+        end;
+        Pedido.PedidoItem.Add(frmProduto.PedidoItem);
+        Pedido.ValorTotal := Pedido.ValorTotal + frmProduto.PedidoItem.ValorTotal;
+      end;
     end);
+
+  Pedido.ToString;
 end;
 
 procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>);
@@ -311,9 +333,20 @@ begin
   t.Start;
 end;
 
-procedure TfrmPrincipal.SpeedButton1Click(Sender: TObject);
+procedure TfrmPrincipal.sebPesquisarClick(Sender: TObject);
 begin
-  TDialogService.ShowMessage(FMesaUUID);
+  if FMesaUUID = EmptyStr then
+  begin
+    TDialogService.ShowMessage('Selecione uma mesa antes de pesquisar!');
+    Exit;
+  end;
+
+  ConsultarProduto(edtPesquisar.Text);
+end;
+
+procedure TfrmPrincipal.SetPedido(const Value: TPedido);
+begin
+  FPedido := Value;
 end;
 
 procedure TfrmPrincipal.TimerTimer(Sender: TObject);
@@ -324,13 +357,19 @@ end;
 function TfrmPrincipal.ValidarMesaUUID: Boolean;
 var
   LJsonResponse: TJSONObject;
-  Mesa: String;
+  LJsonArray: TJSONArray;
 begin
   Result := False;
   try
     LJsonResponse := FAuthentication.Connection.Execute(
       'mesa?search=mesa_uuid:' + FMesaUUID + '&JSON=<!"TypeSearch":"no incidence"!>', tpGet, nil);
-    Result := (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{}');
+    if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{}') then
+    begin
+      LJsonResponse.TryGetValue('content', LJsonArray);
+      LJsonResponse := LJsonArray[0] as TJSONObject;
+      FMesaID := LJsonResponse.GetValue('id_mesa').Value.ToInteger;
+      Result := True;
+    end;
   except on E:Exception do
     TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
                                E.Message);

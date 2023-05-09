@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   System.Generics.Collections, Hunger.Model.Entidade.Produto, FMX.ListBox,
-  FMX.Edit, FMX.EditBox, FMX.NumberBox;
+  FMX.Edit, FMX.EditBox, FMX.NumberBox, Hunger.Model.Entidade.Pedidos;
 
 type
   TfrmProduto = class(TfrmBase)
@@ -19,7 +19,7 @@ type
     texOpcao: TText;
     nbxQtde: TNumberBox;
     lblAdicionar: TLabel;
-    Rectangle2: TRectangle;
+    recAdicionar: TRectangle;
     PathLabel1: TPathLabel;
     recAdd: TRectangle;
     recDrop: TRectangle;
@@ -29,20 +29,27 @@ type
     procedure nbxQtdeChange(Sender: TObject);
     procedure recDropClick(Sender: TObject);
     procedure recAddClick(Sender: TObject);
+    procedure recAdicionarClick(Sender: TObject);
   private
     FProduto: TProduto;
+    FPedidoItem: TPedidoItem;
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
     procedure CalcularValorTotal;
     procedure AddItemLb(aValor: Double; aTipo: String);
+    procedure SetPedidoItem(const Value: TPedidoItem);
   public
     property Produto: TProduto read FProduto write SetProduto;
+    property PedidoItem: TPedidoItem read FPedidoItem write SetPedidoItem;
   end;
 
 var
   frmProduto: TfrmProduto;
 
 implementation
+
+uses
+  FMX.DialogService;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -90,6 +97,8 @@ begin
   texDescricao.Text := Produto.Descricao;
   texComplemento.Text := Produto.Complemento;
   PreencherLbProdutoPrecificacao;
+  nbxQtde.Value := 1;
+  lblAdicionar.Text := 'Adicionar ao carrinho';
 end;
 
 
@@ -109,6 +118,7 @@ procedure TfrmProduto.PreencherLbProdutoPrecificacao;
 var
   produtoPrecificacao: TProdutoPrecificacao;
 begin
+  lbProdutoPrecificacao.Items.Clear;
   lbProdutoPrecificacao.BeginUpdate;
   try
     if Produto.ProdutoPrecificacao.Count = 0 then
@@ -126,13 +136,42 @@ end;
 procedure TfrmProduto.recAddClick(Sender: TObject);
 begin
   inherited;
- nbxQtde.ValueInc;
+  nbxQtde.ValueInc;
+end;
+
+procedure TfrmProduto.recAdicionarClick(Sender: TObject);
+begin
+  inherited;
+  if lbProdutoPrecificacao.ItemIndex < 0 then
+  begin
+    TDialogService.ShowMessage('Selecione uma opção!');
+    lbProdutoPrecificacao.SetFocus;
+    Exit;
+  end;
+
+  if not Assigned(PedidoItem) then
+    PedidoItem := TPedidoItem.Create;
+
+  PedidoItem.IdProduto := Produto.IdProduto;
+  PedidoItem.Qtde := nbxQtde.Value;
+  PedidoItem.ValorUnitario := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+  PedidoItem.ValorTotal := nbxQtde.Value *
+      Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+  PedidoItem.DataHoraEmissao := Now;
+  PedidoItem.PedidoItemStatus := 'Aguardando';
+
+  Close;
 end;
 
 procedure TfrmProduto.recDropClick(Sender: TObject);
 begin
   inherited;
   nbxQtde.ValueDec;
+end;
+
+procedure TfrmProduto.SetPedidoItem(const Value: TPedidoItem);
+begin
+  FPedidoItem := Value;
 end;
 
 procedure TfrmProduto.SetProduto(const Value: TProduto);

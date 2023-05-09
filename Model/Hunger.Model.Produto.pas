@@ -15,7 +15,7 @@ type
     constructor create;
     destructor destroy;
     function PopularListaProduto(aJsonObject: TJSONObject): TObjectList<TProduto>;
-    function ConsultarProduto(aConnection: TClientConnection): TJSONObject;
+    function ConsultarProduto(aConnection: TClientConnection; aDescricao: String): TJSONObject;
   end;
 
 implementation
@@ -62,14 +62,17 @@ begin
   end;
 end;
 
-function TModelProduto.ConsultarProduto(
-  aConnection: TClientConnection): TJSONObject;
+function TModelProduto.ConsultarProduto(aConnection: TClientConnection; aDescricao: String): TJSONObject;
 var
   LJsonResponse: TJSONObject;
+  search: String;
 begin
   Result := nil;
   try
-    LJsonResponse := aConnection.Execute('produto?method=ListarProdutos', tpGet, nil);
+    search := EmptyStr;
+    if aDescricao <> EmptyStr then
+      search := '&search=produto:descricao:' + LowerCase(aDescricao);
+    LJsonResponse := aConnection.Execute('produto?method=ListarProdutos' + search, tpGet, nil);
 
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then
       Result := LJsonResponse;

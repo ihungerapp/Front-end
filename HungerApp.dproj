@@ -338,6 +338,7 @@
             <Form>frmProduto</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Model\Entidade\Hunger.Model.Entidade.Pedidos.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -449,6 +450,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Configuration="Debug" Class="Android_SplashImage426">
+                    <Platform Name="Android">
+                        <RemoteName>splash_image_def.9.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Configuration="Release" Class="Android_SplashImage426">
                     <Platform Name="Android">
                         <RemoteName>splash_image_def.9.png</RemoteName>
@@ -457,12 +464,6 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Configuration="Release" Class="Android_SplashImage640">
                     <Platform Name="Android64">
-                        <RemoteName>splash_image_def.9.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Configuration="Debug" Class="Android_SplashImage426">
-                    <Platform Name="Android">
                         <RemoteName>splash_image_def.9.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -606,6 +607,12 @@
                 <DeployFile LocalName="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Configuration="Release" Class="AndroidLibnativeArmeabiFile">
                     <Platform Name="Android">
                         <RemoteName>libHungerApp.so</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Debug\HungerApp.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win64">
+                        <RemoteName>HungerApp.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -1796,8 +1803,8 @@
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

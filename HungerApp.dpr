@@ -11,7 +11,8 @@ uses
   Hunger.Model.Produto in 'Model\Hunger.Model.Produto.pas',
   Hunger.Utils in 'Utils\Hunger.Utils.pas',
   Hunger.View.Base in 'View\Hunger.View.Base.pas' {frmBase},
-  Hunger.View.Produto in 'View\Hunger.View.Produto.pas' {frmProduto};
+  Hunger.View.Produto in 'View\Hunger.View.Produto.pas' {frmProduto},
+  Hunger.Model.Entidade.Pedidos in 'Model\Entidade\Hunger.Model.Entidade.Pedidos.pas';
 
 {$R *.res}
 
