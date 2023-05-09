@@ -29,7 +29,6 @@ type
     FValorTotal: Double;
     [JSONName('valor_unitario')]
     FValorUnitario: Double;
-
   published
     property DataHoraEmissao: TDateTime read FDataHoraEmissao write FDataHoraEmissao;
     property DataHoraStatus: TDateTime read FDataHoraStatus write FDataHoraStatus;
@@ -40,8 +39,9 @@ type
     property Qtde: Double read FQtde write FQtde;
     property ValorTotal: Double read FValorTotal write FValorTotal;
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
+    property EMail: string read FEMail write FEMail;
   end;
-  
+
   TPedido = class(TJsonDTO)
   private
     [SuppressZero, JSONName('data_hora_abertura')]

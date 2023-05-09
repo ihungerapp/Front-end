@@ -124,6 +124,7 @@ object frmPrincipal: TfrmPrincipal
         TextSettings.Font.Size = 14.000000000000000000
         TextSettings.FontColor = claWhite
         TextSettings.VertAlign = Trailing
+        OnClick = spbCarrinhoClick
         object pathCarrinho: TPath
           Align = Contents
           Data.Path = {
@@ -154,6 +155,32 @@ object frmPrincipal: TfrmPrincipal
           Stroke.Color = claWhite
           Stroke.Thickness = 2.000000000000000000
           WrapMode = Original
+        end
+        object lblItensCarrinho: TLabel
+          StyledSettings = []
+          Position.X = 48.000000000000000000
+          Size.Width = 22.000000000000000000
+          Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Inter'
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          TextSettings.VertAlign = Leading
+          Text = '1'
+          TabOrder = 6
+          object recItensCarrinho: TRectangle
+            Fill.Color = claYellow
+            Opacity = 0.300000011920929000
+            Position.X = -1.000000000000000000
+            Position.Y = -3.000000000000000000
+            Size.Width = 25.000000000000000000
+            Size.Height = 25.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claWhite
+            XRadius = 12.500000000000000000
+            YRadius = 12.500000000000000000
+          end
         end
       end
     end

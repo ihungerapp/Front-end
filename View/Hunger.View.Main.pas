@@ -10,7 +10,8 @@ uses
   Client.Connection, Hunger.Model.Produto, Hunger.Model.Entidade.Produto,
   System.Generics.Collections, FMX.ListView.Types, FMX.ListView.Appearances,
   FMX.ListView.Adapters.Base, FMX.Edit, FMX.ListView, Hunger.Utils,
-  System.NetEncoding, System.Classes, Hunger.Model.Entidade.Pedidos
+  System.NetEncoding, System.Classes, Hunger.Model.Entidade.Pedidos,
+  Hunger.View.Carrinho
   {$IFDEF ANDROID}
   , Androidapi.Helpers
   {$ENDIF ANDROID}
@@ -36,6 +37,8 @@ type
     lvConsultaProduto: TListView;
     edtPesquisar: TEdit;
     sebPesquisar: TSearchEditButton;
+    lblItensCarrinho: TLabel;
+    recItensCarrinho: TRectangle;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -47,6 +50,7 @@ type
       ItemIndex: Integer; const LocalClickPos: TPointF;
       const ItemObject: TListItemDrawable);
     procedure sebPesquisarClick(Sender: TObject);
+    procedure spbCarrinhoClick(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -199,6 +203,8 @@ begin
   FUser_API := EmptyStr;
   FPass_API := EmptyStr;
   FContentImage := EmptyStr;
+  recItensCarrinho.Visible := False;
+  lblItensCarrinho.Visible := False;
 
   {$IFDEF ANDROID}
   Application.FormFactor.Orientations := [TFormOrientation.Portrait];
@@ -285,6 +291,9 @@ begin
         end;
         Pedido.PedidoItem.Add(frmProduto.PedidoItem);
         Pedido.ValorTotal := Pedido.ValorTotal + frmProduto.PedidoItem.ValorTotal;
+        recItensCarrinho.Visible := True;
+        lblItensCarrinho.Visible := True;
+        lblItensCarrinho.Text := Pedido.PedidoItem.Count.ToString;
       end;
     end);
 
@@ -347,6 +356,41 @@ end;
 procedure TfrmPrincipal.SetPedido(const Value: TPedido);
 begin
   FPedido := Value;
+end;
+
+procedure TfrmPrincipal.spbCarrinhoClick(Sender: TObject);
+begin
+  //Abrir tela de inclusão do item no carrinho
+  if not Assigned(frmCarrinho) then
+    Application.CreateForm(TfrmCarrinho, frmCarrinho);
+
+  with frmCarrinho do
+  begin
+    lblMesa.Text := FMesaDescricao;
+    imgFotoCarrinho := imgFoto;
+    Pedido := FPedido;
+  end;
+  frmCarrinho.ShowModal(procedure(ModalResult: TModalResult)
+    begin
+      if Assigned(frmProduto.PedidoItem) then
+      begin
+        if not Assigned(Pedido) then
+        begin
+          Pedido := TPedido.Create;
+          Pedido.IdPessoa := 0;
+          Pedido.IdMesa := FMesaID;
+          Pedido.DataHoraAbertura := Now;
+          Pedido.PedidoStatus := 'Em Aberto';
+          Pedido.FecharConta := False;
+          Pedido.ValorTotal := 0;
+        end;
+        Pedido.PedidoItem.Add(frmProduto.PedidoItem);
+        Pedido.ValorTotal := Pedido.ValorTotal + frmProduto.PedidoItem.ValorTotal;
+        recItensCarrinho.Visible := True;
+        lblItensCarrinho.Visible := True;
+        lblItensCarrinho.Text := Pedido.PedidoItem.Count.ToString;
+      end;
+    end);
 end;
 
 procedure TfrmPrincipal.TimerTimer(Sender: TObject);

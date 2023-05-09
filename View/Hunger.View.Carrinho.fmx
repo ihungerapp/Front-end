@@ -1,0 +1,57 @@
+inherited frmCarrinho: TfrmCarrinho
+  Caption = 'frmBase1'
+  OnShow = FormShow
+  DesignerMasterStyle = 3
+  inherited layCabecalho: TLayout
+    inherited Rectangle1: TRectangle
+      inherited lblHungerApp: TLabel
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+  end
+  inherited layRodape: TLayout
+    inherited recRodape: TRectangle
+      inherited spbHome: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      inherited spbPedidos: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      inherited spbCarrinho: TSpeedButton
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+  end
+  inherited lytLista: TLayout
+    inherited lblMesa: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+    end
+    object lbProdutos: TListBox
+      Align = Client
+      Size.Width = 425.000000000000000000
+      Size.Height = 528.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'transparentlistboxstyle'
+      TabOrder = 1
+      DisableFocusEffect = True
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      Viewport.Width = 425.000000000000000000
+      Viewport.Height = 528.000000000000000000
+    end
+  end
+  object imgFotoCarrinho: TImage
+    MultiResBitmap.Height = 36
+    MultiResBitmap.Width = 36
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 48.000000000000000000
+    Position.Y = 472.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+  end
+end
