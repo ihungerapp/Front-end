@@ -8,6 +8,15 @@ inherited frmCarrinho: TfrmCarrinho
         TextSettings.Font.StyleExt = {00070000000000000004000000}
       end
     end
+    object spbVoltar: TSpeedButton
+      Align = Left
+      Position.Y = 4.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'priortoolbuttonbordered'
+      OnClick = spbVoltarClick
+    end
   end
   inherited layRodape: TLayout
     inherited recRodape: TRectangle
@@ -29,7 +38,7 @@ inherited frmCarrinho: TfrmCarrinho
     object lbProdutos: TListBox
       Align = Client
       Size.Width = 425.000000000000000000
-      Size.Height = 528.000000000000000000
+      Size.Height = 478.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'transparentlistboxstyle'
       TabOrder = 1
@@ -38,7 +47,80 @@ inherited frmCarrinho: TfrmCarrinho
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       Viewport.Width = 425.000000000000000000
-      Viewport.Height = 528.000000000000000000
+      Viewport.Height = 478.000000000000000000
+      object ListBoxItem1: TListBoxItem
+        StyledSettings = [Family, Size, Style, FontColor]
+        Size.Width = 425.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object Label1: TLabel
+          Align = Client
+          Size.Width = 238.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Label1'
+          TabOrder = 40
+        end
+        object Label2: TLabel
+          Align = Right
+          Position.X = 288.000000000000000000
+          Size.Width = 137.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Label2'
+          TabOrder = 39
+        end
+        object Rectangle2: TRectangle
+          Align = Left
+          Opacity = 0.500000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claWhite
+          Stroke.Thickness = 10.000000000000000000
+          XRadius = 3.000000000000000000
+          YRadius = 3.000000000000000000
+          object Label3: TLabel
+            Align = Client
+            StyledSettings = []
+            Size.Width = 50.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Family = 'Inter'
+            TextSettings.Font.Size = 14.000000000000000000
+            TextSettings.Font.StyleExt = {00070000000000000004000000}
+            TextSettings.HorzAlign = Center
+            Text = '99'
+            TabOrder = 39
+          end
+        end
+      end
+    end
+    object recAdicionar: TRectangle
+      Align = Bottom
+      Fill.Color = claForestgreen
+      Position.Y = 517.000000000000000000
+      Size.Width = 425.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claWhite
+      Stroke.Thickness = 6.000000000000000000
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      object lblAdicionar: TLabel
+        Align = Client
+        StyledSettings = []
+        Size.Width = 425.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Inter'
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Finalizar pedido'
+        TabOrder = 0
+      end
     end
   end
   object imgFotoCarrinho: TImage

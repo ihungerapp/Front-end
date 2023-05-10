@@ -66,6 +66,7 @@ type
     FUser_API: String;
     FPass_API: String;
     FPedido: TPedido;
+    FProdutosCarrinho: TObjectList<TProduto>;
 
     procedure LerQRCode;
     procedure Autenticar_API;
@@ -73,6 +74,7 @@ type
     function ValidarMesaUUID: Boolean;
     procedure PreencherListView(aProdutos: TObjectList<TProduto>);
     procedure SetPedido(const Value: TPedido);
+    procedure SetProdutosCarrinho(const Value: TObjectList<TProduto>);
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -81,6 +83,7 @@ type
     property Pass_API: String read FPass_API write FPass_API;
     property Authentication: TAuthentication read FAuthentication;
     property Pedido: TPedido read FPedido write SetPedido;
+    property ProdutosCarrinho: TObjectList<TProduto> read FProdutosCarrinho write SetProdutosCarrinho;
   end;
 
 var
@@ -294,10 +297,12 @@ begin
         recItensCarrinho.Visible := True;
         lblItensCarrinho.Visible := True;
         lblItensCarrinho.Text := Pedido.PedidoItem.Count.ToString;
+
+        if not Assigned(FProdutosCarrinho) then
+          FProdutosCarrinho := TObjectList<TProduto>.Create;
+        FProdutosCarrinho.Add(frmProduto.Produto);
       end;
     end);
-
-  Pedido.ToString;
 end;
 
 procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>);
@@ -358,6 +363,11 @@ begin
   FPedido := Value;
 end;
 
+procedure TfrmPrincipal.SetProdutosCarrinho(const Value: TObjectList<TProduto>);
+begin
+  FProdutosCarrinho := Value;
+end;
+
 procedure TfrmPrincipal.spbCarrinhoClick(Sender: TObject);
 begin
   //Abrir tela de inclusão do item no carrinho
@@ -369,26 +379,14 @@ begin
     lblMesa.Text := FMesaDescricao;
     imgFotoCarrinho := imgFoto;
     Pedido := FPedido;
+    Produtos := FProdutosCarrinho;
   end;
   frmCarrinho.ShowModal(procedure(ModalResult: TModalResult)
     begin
-      if Assigned(frmProduto.PedidoItem) then
+      if not Assigned(Pedido) then
       begin
-        if not Assigned(Pedido) then
-        begin
-          Pedido := TPedido.Create;
-          Pedido.IdPessoa := 0;
-          Pedido.IdMesa := FMesaID;
-          Pedido.DataHoraAbertura := Now;
-          Pedido.PedidoStatus := 'Em Aberto';
-          Pedido.FecharConta := False;
-          Pedido.ValorTotal := 0;
-        end;
-        Pedido.PedidoItem.Add(frmProduto.PedidoItem);
-        Pedido.ValorTotal := Pedido.ValorTotal + frmProduto.PedidoItem.ValorTotal;
-        recItensCarrinho.Visible := True;
-        lblItensCarrinho.Visible := True;
-        lblItensCarrinho.Text := Pedido.PedidoItem.Count.ToString;
+        recItensCarrinho.Visible := False;
+        lblItensCarrinho.Visible := False;
       end;
     end);
 end;

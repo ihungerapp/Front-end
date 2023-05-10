@@ -92,13 +92,20 @@ begin
 end;
 
 procedure TfrmProduto.FormShow(Sender: TObject);
+var
+  a:integer;
 begin
   inherited;
+  PedidoItem := nil;
+
   texDescricao.Text := Produto.Descricao;
   texComplemento.Text := Produto.Complemento;
   PreencherLbProdutoPrecificacao;
   nbxQtde.Value := 1;
   lblAdicionar.Text := 'Adicionar ao carrinho';
+
+  if Assigned(imgProduto.Bitmap) then
+    imgProduto.Bitmap.Resize(Trunc(imgProduto.Width), Trunc(imgProduto.Height));
 end;
 
 

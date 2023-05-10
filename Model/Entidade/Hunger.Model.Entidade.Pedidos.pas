@@ -39,7 +39,6 @@ type
     property Qtde: Double read FQtde write FQtde;
     property ValorTotal: Double read FValorTotal write FValorTotal;
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
-    property EMail: string read FEMail write FEMail;
   end;
 
   TPedido = class(TJsonDTO)
