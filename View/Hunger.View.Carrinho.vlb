@@ -1,9 +1,6 @@
 ﻿[pathHome]
 Coordinates=472,232,73,58
 
-[Rectangle1]
-Coordinates=112,368,80,36
-
 [lblHungerApp]
 Coordinates=513,10,92,58
 
@@ -43,19 +40,6 @@ Coordinates=10,10,139,212
 [lytLista]
 Coordinates=390,300,55,36
 
-[Label1]
-Coordinates=159,10,53,58
-
-[Rectangle2]
-Coordinates=300,300,80,36
-
-[Label3]
-Coordinates=450,10,53,58
-Visible=True
-
-[Label2]
-Coordinates=291,10,53,58
-
 [recAdicionar]
 Coordinates=204,300,86,36
 
@@ -65,9 +49,10 @@ Coordinates=102,232,69,58
 [lblAdicionar]
 Coordinates=260,232,82,58
 
-[ListBoxItem1]
-Coordinates=105,300,89,36
-
 []
-Coordinates=120,347,91,36
+Coordinates=105,300,89,36
+Visible=True
+
+[recCabecalho]
+Coordinates=112,368,80,36
 

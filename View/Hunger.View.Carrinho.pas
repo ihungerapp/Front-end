@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls, FMX.Graphics,
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   FMX.ListBox, Hunger.Model.Entidade.Pedidos, Hunger.Model.Entidade.Produto,
-  System.Generics.Collections, Hunger.Utils;
+  System.Generics.Collections, Hunger.Utils, System.ImageList, FMX.ImgList;
 
 type
   TfrmCarrinho = class(TfrmBase)
@@ -16,13 +16,10 @@ type
     spbVoltar: TSpeedButton;
     recAdicionar: TRectangle;
     lblAdicionar: TLabel;
-    ListBoxItem1: TListBoxItem;
-    Label1: TLabel;
-    Rectangle2: TRectangle;
-    Label2: TLabel;
-    Label3: TLabel;
+    ImageList1: TImageList;
     procedure FormShow(Sender: TObject);
     procedure spbVoltarClick(Sender: TObject);
+    procedure RecAddDropClick(Sender: TObject);
   private
     FPedido: TPedido;
     FProdutos: TObjectList<TProduto>;
@@ -52,7 +49,8 @@ var
   lblDescricao: TLabel;
   lblValor: TLabel;
   lblQtde: TLabel;
-  recQtde: TRectangle;
+  recAdd: TRectangle;
+  recDrop: TRectangle;
 begin
   item := TListBoxItem.Create(nil);
   item.StyledSettings := [];
@@ -62,61 +60,120 @@ begin
   item.Padding.Right := 10;
   item.Height := 50;
 
-  lblQtde := TLabel.Create(nil);
-  //lblQtde.Parent := recQtde;
-  lblQtde.StyledSettings := [];
-  lblQtde.Align := TAlignLayout.Client;
-  lblQtde.Padding.Left := 10;
-  lblQtde.Padding.Right := 10;
-  lblQtde.TextSettings.HorzAlign := TTextAlign.Leading;
-  lblQtde.TextSettings.Font.Family := 'Inter';
-  lblQtde.TextSettings.Font.Size := 14;
-  lblQtde.TextSettings.Font.Style := [TFontStyle.fsBold];
-  lblQtde.TextSettings.FontColor := TAlphaColors.Black;
-  lblQtde.Text := FloatToStrF(aPedidoItem.Qtde, ffFixed, 15,0);
+//  recQtde := TRectangle.Create(Rectangle2);
+//  recQtde.Align := TAlignLayout.Left;
+//  recQtde.Width := 50;
+//  recQtde.Opacity := 0.5;
+//  recQtde.Fill.Color := TAlphaColors.Antiquewhite;
+//  recQtde.Stroke.Color := TAlphaColors.White;
+//  recQtde.Stroke.Thickness := 10;
+//  recQtde.XRadius := 3;
+//  recQtde.YRadius := 3;
 
-  recQtde := TRectangle.Create(lblQtde);
-  recQtde.Parent := lblQtde;
-  recQtde.Align := TAlignLayout.Left;
-  recQtde.Width := 50;
-  recQtde.Opacity := 0.5;
-  recQtde.Fill.Color := TAlphaColors.Antiquewhite;
-  recQtde.Stroke.Color := TAlphaColors.White;
-  recQtde.Stroke.Thickness := 10;
-  recQtde.XRadius := 3;
-  recQtde.YRadius := 3;
+  recDrop := TRectangle.Create(lbProdutos);
+  with recDrop do
+  begin
+    Align := TAlignLayout.None;
+    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 1);
+    Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+    Fill.Kind := TBrushKind.Bitmap;
+    Position.X := 0;
+    Position.Y := 15;
+    Size.Width := 20.000000000000000000;
+    Size.Height := 20.000000000000000000;
+    Size.PlatformDefault := False;
+    Stroke.Kind := TBrushKind.None;
+    Name := 'recDrop';
+    OnClick := RecAddDropClick;
+  end;
 
-  lblDescricao := TLabel.Create(nil);
-  lblDescricao.StyledSettings := [];
-  lblDescricao.Align := TAlignLayout.Client;
-  lblDescricao.TextSettings.HorzAlign := TTextAlign.Center;
-  lblDescricao.TextSettings.VertAlign := TTextAlign.Center;
-  lblDescricao.TextSettings.Font.Family := 'Inter';
-  lblDescricao.TextSettings.Font.Size := 14;
-  lblDescricao.TextSettings.Font.Style := [TFontStyle.fsBold];
-  lblDescricao.TextSettings.FontColor := $FFF83923;
-  lblDescricao.Text := Produtos[aIndex].Descricao;
+  lblQtde := TLabel.Create(lbProdutos);
+  with lblQtde do
+  begin
+    StyledSettings := [];
+    Align := TAlignLayout.None;
+    Position.X := -25;
+    Position.Y := 15;
+    Padding.Left := 10;
+    Padding.Right := 10;
+    TextSettings.HorzAlign := TTextAlign.Center;
+    TextSettings.VertAlign := TTextAlign.Center;
+    TextSettings.Font.Family := 'Inter';
+    TextSettings.Font.Size := 14;
+    TextSettings.Font.Style := [TFontStyle.fsBold];
+    TextSettings.FontColor := TAlphaColors.Black;
+    Text := FloatToStrF(aPedidoItem.Qtde, ffFixed, 15,0);
+    Name := 'lblQtde';
+    Self.InsertComponent(lblQtde);
+  end;
 
-  lblValor := TLabel.Create(nil);
-  lblValor.StyledSettings := [];
-  lblValor.Align := TAlignLayout.Right;
-  lblValor.Padding.Left := 10;
-  lblValor.Padding.Right := 10;
-  lblValor.TextSettings.HorzAlign := TTextAlign.Trailing;
-  lblValor.TextSettings.Font.Family := 'Inter';
-  lblValor.TextSettings.Font.Size := 14;
-  lblValor.TextSettings.Font.Style := [TFontStyle.fsBold];
-  lblValor.TextSettings.FontColor := TAlphaColors.Darkgreen;
-  lblValor.Text := FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
+  recAdd := TRectangle.Create(lbProdutos);
+  with recAdd do
+  begin
+    Align := TAlignLayout.None;
+    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 0);
+    Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+    Fill.Kind := TBrushKind.Bitmap;
+    Position.X := 50;
+    Position.Y := 15;
+    Size.Width := 20.000000000000000000;
+    Size.Height := 20.000000000000000000;
+    Size.PlatformDefault := False;
+    Stroke.Kind := TBrushKind.None;
+    Name := 'recAdd';
+    OnClick := RecAddDropClick;
+  end;
+
+  lblValor := TLabel.Create(lbProdutos);
+  with lblValor do
+  begin
+    StyledSettings := [];
+    Align := TAlignLayout.Right;
+    Padding.Left := 10;
+    Padding.Right := 10;
+    TextSettings.HorzAlign := TTextAlign.Trailing;
+    TextSettings.Font.Family := 'Inter';
+    TextSettings.Font.Size := 14;
+    TextSettings.Font.Style := [TFontStyle.fsBold];
+    TextSettings.FontColor := TAlphaColors.Darkgreen;
+    Text := FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
+  end;
+
+  item.AddObject(recAdd);
+  item.AddObject(lblQtde);
+  item.AddObject(recDrop);
+  item.AddObject(lblValor);
+  lbProdutos.AddObject(item);
+
+  lblDescricao := TLabel.Create(lbProdutos);
+  with lblDescricao do
+  begin
+    StyledSettings := [];
+    Align := TAlignLayout.None;
+    Position.X := recAdd.Position.X + recAdd.Width + 10;
+    Position.Y := 15;
+    Width := -(lblValor.Position.X) + lblValor.Width - recAdd.Position.X + recAdd.Width + 10;
+    TextSettings.HorzAlign := TTextAlign.Leading;
+    TextSettings.VertAlign := TTextAlign.Center;
+    TextSettings.Font.Family := 'Inter';
+    TextSettings.Font.Size := 14;
+    TextSettings.Font.Style := [TFontStyle.fsBold];
+    TextSettings.FontColor := $FFF83923;
+    Text := Produtos[aIndex].Descricao;
+    WordWrap := True;
+  end;
+
+  item.AddObject(lblDescricao);
 
   if Assigned(FImage) then
     item.AddObject(FImage);
 
-  item.AddObject(lblQtde);
-  item.AddObject(recQtde);
-  item.AddObject(lblDescricao);
-  item.AddObject(lblValor);
-  lbProdutos.AddObject(item);
+//  item.AddObject(recAdd);
+//  item.AddObject(lblQtde);
+//  item.AddObject(recDrop);
+//  item.AddObject(lblDescricao);
+//  item.AddObject(lblValor);
+//  lbProdutos.AddObject(item);
 
 //  if Assigned(imgFotoCarrinho.MultiResBitmap.Items[aIndex]) then
 //  begin
@@ -152,6 +209,32 @@ begin
   finally
     lbProdutos.EndUpdate;
   end;
+end;
+
+procedure TfrmCarrinho.RecAddDropClick(Sender: TObject);
+var
+  I: Integer;
+begin
+  for I := 0 to Pred(ComponentCount) do
+  begin
+    if (Components[I] is TLabel) and (Components[I].Name = 'lblQtde')
+    and ((Sender as TRectangle).Name = 'recAdd') then
+    begin
+      Pedido.PedidoItem[0].Qtde := (Components[I] as TLabel).Text.ToDouble + 1;
+      Pedido.PedidoItem[0].ValorTotal := Pedido.PedidoItem[0].Qtde * Pedido.PedidoItem[0].ValorUnitario;
+      Pedido.ValorTotal := Pedido.ValorTotal + Pedido.PedidoItem[0].ValorUnitario;
+    end
+    else
+    if ((Sender as TRectangle).Name = 'recDrop') and (Components[I].Name = 'lblQtde')
+    and ((Components[I] as TLabel).Text.ToDouble > 1) then
+    begin
+      Pedido.PedidoItem[0].Qtde := (Components[I] as TLabel).Text.ToDouble - 1;
+      Pedido.PedidoItem[0].ValorTotal := Pedido.PedidoItem[0].Qtde * Pedido.PedidoItem[0].ValorUnitario;
+      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[0].ValorUnitario;
+    end
+      //(Components[I] as TLabel).Text := FloatToStr((Components[I] as TLabel).Text.ToDouble + 1);
+  end;
+  PreencherLbProdutos;
 end;
 
 procedure TfrmCarrinho.SetPedido(const Value: TPedido);

@@ -12,7 +12,7 @@ uses
 type
   TfrmBase = class(TForm)
     layCabecalho: TLayout;
-    Rectangle1: TRectangle;
+    recCabecalho: TRectangle;
     lblHungerApp: TLabel;
     layRodape: TLayout;
     recRodape: TRectangle;

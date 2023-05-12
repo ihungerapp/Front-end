@@ -16,7 +16,7 @@ object frmBase: TfrmBase
     Size.Height = 56.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    object Rectangle1: TRectangle
+    object recCabecalho: TRectangle
       Align = Contents
       Fill.Color = xFFF83923
       Size.Width = 425.000000000000000000
