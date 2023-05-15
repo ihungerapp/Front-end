@@ -11,6 +11,8 @@ uses
   FMX.Platform, FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls;
 
 type
+  TTipoQRCode = (qrMesa, qrComanda);
+
   TfrmLeitorCamera = class(TForm)
     CameraComponent: TCameraComponent;
     img_close: TImage;
@@ -26,9 +28,14 @@ type
     FScanManager : TScanManager;
     FScanInProgress : Boolean;
     FFrameTake : Integer;
+    FCodigo: String;
+    FTipoQRCode: TTipoQRCode;
     procedure ProcessImage;
+    procedure SetCodigo(const Value: String);
+    procedure SetTipoQRCode(const Value: TTipoQRCode);
   public
-    codigo: String;
+    property Codigo: String read FCodigo write SetCodigo;
+    property TipoQRCode: TTipoQRCode read FTipoQRCode write SetTipoQRCode;
   end;
 
 var
@@ -110,6 +117,16 @@ begin
     ReadResult.DisposeOf;
     FScanInProgress := false;
   end;
+end;
+
+procedure TfrmLeitorCamera.SetCodigo(const Value: String);
+begin
+  FCodigo := Value;
+end;
+
+procedure TfrmLeitorCamera.SetTipoQRCode(const Value: TTipoQRCode);
+begin
+  FTipoQRCode := Value;
 end;
 
 end.

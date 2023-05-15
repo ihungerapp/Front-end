@@ -67,14 +67,15 @@ type
     FPass_API: String;
     FPedido: TPedido;
     FProdutosCarrinho: TObjectList<TProduto>;
+    FNumeroComanda: String;
 
-    procedure LerQRCode;
     procedure Autenticar_API;
     procedure ConsultarProduto(aDescricao: String);
     function ValidarMesaUUID: Boolean;
     procedure PreencherListView(aProdutos: TObjectList<TProduto>);
     procedure SetPedido(const Value: TPedido);
     procedure SetProdutosCarrinho(const Value: TObjectList<TProduto>);
+    procedure SetNumeroComanda(const Value: String);
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -84,6 +85,8 @@ type
     property Authentication: TAuthentication read FAuthentication;
     property Pedido: TPedido read FPedido write SetPedido;
     property ProdutosCarrinho: TObjectList<TProduto> read FProdutosCarrinho write SetProdutosCarrinho;
+    property NumeroComanda: String read FNumeroComanda write SetNumeroComanda;
+    procedure LerQRCode(aTipoQRCode: TTipoQRCode);
   end;
 
 var
@@ -122,7 +125,7 @@ begin
         else
         begin
           TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
-          LerQRCode;
+          LerQRCode(qrMesa);
         end;
       end;
     except on E:Exception do
@@ -166,7 +169,7 @@ procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
   if FMesaUUID = EmptyStr then
   begin
-    LerQRCode;
+    LerQRCode(qrMesa);
     {$IFDEF MSWINDOWS}
     FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
     FMesaDescricao := 'MESA 01';
@@ -174,6 +177,7 @@ begin
     FUser_API := 'hunger';
     FPass_API := 'rm045369';
     lblMesa.Text := FMesaDescricao;
+    FNumeroComanda := '10';
     Autenticar_API;
     {$ENDIF MSWINDOWS}
   end;
@@ -206,6 +210,7 @@ begin
   FUser_API := EmptyStr;
   FPass_API := EmptyStr;
   FContentImage := EmptyStr;
+  FNumeroComanda := EmptyStr;
   recItensCarrinho.Visible := False;
   lblItensCarrinho.Visible := False;
 
@@ -233,7 +238,7 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.LerQRCode;
+procedure TfrmPrincipal.LerQRCode(aTipoQRCode: TTipoQRCode);
 var
   LParams: TArray<String>;
 begin
@@ -244,21 +249,28 @@ begin
   begin
     FrmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
     begin
-      FContentImage := FrmLeitorCamera.codigo;
+      FContentImage := FrmLeitorCamera.Codigo;
       if FContentImage = EmptyStr then
       begin
         TDialogService.ShowMessage('Não foi possível ler o QRCode. Tente novamente!');
-        LerQRCode;
+        LerQRCode(aTipoQRCode);
         Exit;
       end;
-      LParams := FContentImage.Split(['|']);
-      FMesaUUID := LParams[0];
-      FMesaDescricao := LParams[1];
-      FURL_API := LParams[2];
-      FUser_API := LParams[3];
-      FPass_API := LParams[4];
-      lblMesa.Text := FMesaDescricao;
-      Timer.Enabled := True;
+
+      if aTipoQRCode = qrMesa then
+      begin
+        LParams := FContentImage.Split(['|']);
+        FMesaUUID := LParams[0];
+        FMesaDescricao := LParams[1];
+        FURL_API := LParams[2];
+        FUser_API := LParams[3];
+        FPass_API := LParams[4];
+        lblMesa.Text := FMesaDescricao;
+        Timer.Enabled := True;
+      end;
+
+      if aTipoQRCode = qrComanda then
+        FNumeroComanda := FContentImage;
     end);
   end;
   {$ENDIF ANDROID}
@@ -274,7 +286,7 @@ begin
 
   with frmProduto do
   begin
-    lblMesa.Text := FMesaDescricao;
+    lblMesa.Text := FMesaDescricao + ' > Produto';
     imgProduto.Bitmap := imgFoto.MultiResBitmap.Items[ItemIndex].Bitmap;
     Produto := FProdutos[ItemIndex];
   end;
@@ -359,6 +371,11 @@ begin
   ConsultarProduto(edtPesquisar.Text);
 end;
 
+procedure TfrmPrincipal.SetNumeroComanda(const Value: String);
+begin
+  FNumeroComanda := Value;
+end;
+
 procedure TfrmPrincipal.SetPedido(const Value: TPedido);
 begin
   FPedido := Value;
@@ -372,12 +389,19 @@ end;
 procedure TfrmPrincipal.spbCarrinhoClick(Sender: TObject);
 begin
   //Abrir tela de inclusão do item no carrinho
+  if not Assigned(Pedido) then
+  begin
+    TDialogService.ShowMessage('Nenhum produto adicionado ao carrinho!');
+    Exit;
+  end;
+
   if not Assigned(frmCarrinho) then
     Application.CreateForm(TfrmCarrinho, frmCarrinho);
 
   with frmCarrinho do
   begin
-    lblMesa.Text := FMesaDescricao;
+    lblMesa.Text := FMesaDescricao + ' > Carrinho';
+    lblFinalizar.Text := 'Finalizar pedido';
     imgFotoCarrinho := imgFoto;
     Pedido := FPedido;
     Produtos := FProdutosCarrinho;
@@ -388,6 +412,7 @@ begin
       begin
         recItensCarrinho.Visible := False;
         lblItensCarrinho.Visible := False;
+        FNumeroComanda := EmptyStr;
       end;
     end);
 end;

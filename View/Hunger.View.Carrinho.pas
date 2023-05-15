@@ -45,7 +45,8 @@ var
 implementation
 
 uses
-  Hunger.View.Main, Client.Connection, FMX.DialogService;
+  Hunger.View.Main, Client.Connection, FMX.DialogService,
+  Hunger.View.LeitorCamera;
 
 {$R *.fmx}
 
@@ -249,10 +250,22 @@ var
   LModelPedido: TModelPedido;
 begin
   inherited;
+  frmPrincipal.LerQRCode(qrComanda);
+  if frmPrincipal.NumeroComanda = EmptyStr then
+  begin
+    TDialogService.ShowMessage('Faça a leitura do QRCode da comanda!');
+    Exit;
+  end;
+
   try
     LModelPedido := TModelPedido.Create;
+    Pedido.NumeroComanda := frmPrincipal.NumeroComanda.ToInteger;
     if LModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication) then
-      TDialogService.ShowMessage('Pedido enviado com sucesso!')
+    begin
+      TDialogService.ShowMessage('Pedido enviado com sucesso!');
+      FreeAndNil(frmPrincipal.Pedido);
+      Close;
+    end
     else
       TDialogService.ShowMessage('Erro ao enviar o pedido!');
   finally

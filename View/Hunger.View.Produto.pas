@@ -164,6 +164,7 @@ begin
   PedidoItem.ValorTotal := nbxQtde.Value *
       Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
   PedidoItem.DataHoraEmissao := Now;
+  PedidoItem.DataHoraStatus := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
 
   Close;

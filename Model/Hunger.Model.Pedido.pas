@@ -52,7 +52,8 @@ begin
       LJsonObject := TJSONObject.Create;
       LJsonObject.AddPair('pedido', LJsonArray);
       LJsonResponse := aAuthentication.Connection.Execute('pedido', aMetodo, LJsonObject);
-      Result := LJsonResponse.FindValue('sucesso').ToString = 'True';
+      if LJsonResponse.FindValue('sucesso').ToString = 'true' then
+        Result := True;
     finally
       FreeAndNil(LJsonObject);
       FreeAndNil(LJsonResponse);
