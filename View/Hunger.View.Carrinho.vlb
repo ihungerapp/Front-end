@@ -1,7 +1,4 @@
-﻿[pathHome]
-Coordinates=472,232,73,58
-
-[lblHungerApp]
+﻿[lblHungerApp]
 Coordinates=513,10,92,58
 
 [layCabecalho]
@@ -10,29 +7,8 @@ Coordinates=10,368,92,36
 [lblMesa]
 Coordinates=222,10,59,58
 
-[spbCarrinho]
-Coordinates=10,300,85,58
-
-[spbHome]
-Coordinates=181,232,69,58
-
 [imgFotoCarrinho]
 Coordinates=352,232,110,58
-
-[pathCarrinho]
-Coordinates=555,232,89,58
-
-[recRodape]
-Coordinates=541,300,77,36
-
-[pathPedidos]
-Coordinates=354,10,86,58
-
-[spbPedidos]
-Coordinates=10,232,82,58
-
-[layRodape]
-Coordinates=455,300,76,36
 
 [lbProdutos]
 Coordinates=10,10,139,212
@@ -46,13 +22,13 @@ Coordinates=204,300,86,36
 [spbVoltar]
 Coordinates=102,232,69,58
 
-[lblAdicionar]
-Coordinates=260,232,82,58
-
 []
-Coordinates=105,300,89,36
+Coordinates=455,300,76,36
 Visible=True
 
 [recCabecalho]
 Coordinates=112,368,80,36
+
+[lblFinalizar]
+Coordinates=260,232,82,58
 

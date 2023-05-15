@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls, FMX.Graphics,
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   FMX.ListBox, Hunger.Model.Entidade.Pedidos, Hunger.Model.Entidade.Produto,
-  System.Generics.Collections, Hunger.Utils, System.ImageList, FMX.ImgList;
+  System.Generics.Collections, Hunger.Utils, System.ImageList, FMX.ImgList,
+  System.JSON;
 
 type
   TfrmCarrinho = class(TfrmBase)
@@ -15,16 +16,20 @@ type
     imgFotoCarrinho: TImage;
     spbVoltar: TSpeedButton;
     recAdicionar: TRectangle;
-    lblAdicionar: TLabel;
+    lblFinalizar: TLabel;
     ImageList1: TImageList;
     procedure FormShow(Sender: TObject);
     procedure spbVoltarClick(Sender: TObject);
     procedure RecAddDropClick(Sender: TObject);
+    procedure lbProdutosMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Single);
+    procedure recAdicionarClick(Sender: TObject);
   private
     FPedido: TPedido;
     FProdutos: TObjectList<TProduto>;
     FUtils: TUtils;
     FImage: TImage;
+    FItemLbProdutos: TListBoxItem;
     procedure SetPedido(const Value: TPedido);
     procedure PreencherLbProdutos;
     procedure AddItemLb(aIndex: Integer; aPedidoItem: TPedidoItem);
@@ -38,6 +43,9 @@ var
   frmCarrinho: TfrmCarrinho;
 
 implementation
+
+uses
+  Hunger.View.Main, Client.Connection, FMX.DialogService;
 
 {$R *.fmx}
 
@@ -60,16 +68,6 @@ begin
   item.Padding.Right := 10;
   item.Height := 50;
 
-//  recQtde := TRectangle.Create(Rectangle2);
-//  recQtde.Align := TAlignLayout.Left;
-//  recQtde.Width := 50;
-//  recQtde.Opacity := 0.5;
-//  recQtde.Fill.Color := TAlphaColors.Antiquewhite;
-//  recQtde.Stroke.Color := TAlphaColors.White;
-//  recQtde.Stroke.Thickness := 10;
-//  recQtde.XRadius := 3;
-//  recQtde.YRadius := 3;
-
   recDrop := TRectangle.Create(lbProdutos);
   with recDrop do
   begin
@@ -83,7 +81,6 @@ begin
     Size.Height := 20.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
-    Name := 'recDrop';
     OnClick := RecAddDropClick;
   end;
 
@@ -103,7 +100,6 @@ begin
     TextSettings.Font.Style := [TFontStyle.fsBold];
     TextSettings.FontColor := TAlphaColors.Black;
     Text := FloatToStrF(aPedidoItem.Qtde, ffFixed, 15,0);
-    Name := 'lblQtde';
     Self.InsertComponent(lblQtde);
   end;
 
@@ -120,7 +116,6 @@ begin
     Size.Height := 20.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
-    Name := 'recAdd';
     OnClick := RecAddDropClick;
   end;
 
@@ -144,6 +139,9 @@ begin
   item.AddObject(recDrop);
   item.AddObject(lblValor);
   lbProdutos.AddObject(item);
+  recDrop.Name := 'recDrop' + item.Index.ToString;
+  lblQtde.Name := 'lblQtde' + item.Index.ToString;
+  recAdd.Name := 'recAdd' + item.Index.ToString;
 
   lblDescricao := TLabel.Create(lbProdutos);
   with lblDescricao do
@@ -152,7 +150,6 @@ begin
     Align := TAlignLayout.None;
     Position.X := recAdd.Position.X + recAdd.Width + 10;
     Position.Y := 15;
-    Width := -(lblValor.Position.X) + lblValor.Width - recAdd.Position.X + recAdd.Width + 10;
     TextSettings.HorzAlign := TTextAlign.Leading;
     TextSettings.VertAlign := TTextAlign.Center;
     TextSettings.Font.Family := 'Inter';
@@ -164,6 +161,8 @@ begin
   end;
 
   item.AddObject(lblDescricao);
+//  lblDescricao.Width := -(lblValor.Position.X) + lblValor.Width - recAdd.Position.X + recAdd.Width + 10;
+  lblDescricao.Width := lbProdutos.Width - lblValor.Width - recAdd.Width - recDrop.Width;
 
   if Assigned(FImage) then
     item.AddObject(FImage);
@@ -195,6 +194,13 @@ begin
   PreencherLbProdutos;
 end;
 
+procedure TfrmCarrinho.lbProdutosMouseMove(Sender: TObject; Shift: TShiftState;
+  X, Y: Single);
+begin
+  inherited;
+  FItemLbProdutos := lbProdutos.ItemByPoint(X, Y);
+end;
+
 procedure TfrmCarrinho.PreencherLbProdutos;
 var
   I: Integer;
@@ -206,6 +212,7 @@ begin
     begin
       AddItemLb(I, Pedido.PedidoItem[I]);
     end;
+    lblFinalizar.Text := 'Finalizar pedido ' + FloatToStrF(Pedido.ValorTotal, ffCurrency, 15,2);
   finally
     lbProdutos.EndUpdate;
   end;
@@ -217,24 +224,37 @@ var
 begin
   for I := 0 to Pred(ComponentCount) do
   begin
-    if (Components[I] is TLabel) and (Components[I].Name = 'lblQtde')
-    and ((Sender as TRectangle).Name = 'recAdd') then
+    if (Components[I] is TLabel) and (Components[I].Name = 'lblQtde' + FItemLbProdutos.Index.ToString)
+    and ((Sender as TRectangle).Name = 'recAdd' + FItemLbProdutos.Index.ToString) then
     begin
-      Pedido.PedidoItem[0].Qtde := (Components[I] as TLabel).Text.ToDouble + 1;
-      Pedido.PedidoItem[0].ValorTotal := Pedido.PedidoItem[0].Qtde * Pedido.PedidoItem[0].ValorUnitario;
-      Pedido.ValorTotal := Pedido.ValorTotal + Pedido.PedidoItem[0].ValorUnitario;
+      Pedido.PedidoItem[FItemLbProdutos.Index].Qtde := (Components[I] as TLabel).Text.ToDouble + 1;
+      Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+      Pedido.ValorTotal := Pedido.ValorTotal + Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
     end
     else
-    if ((Sender as TRectangle).Name = 'recDrop') and (Components[I].Name = 'lblQtde')
+    if ((Sender as TRectangle).Name = 'recDrop' + FItemLbProdutos.Index.ToString)
+    and (Components[I].Name = 'lblQtde' + FItemLbProdutos.Index.ToString)
     and ((Components[I] as TLabel).Text.ToDouble > 1) then
     begin
-      Pedido.PedidoItem[0].Qtde := (Components[I] as TLabel).Text.ToDouble - 1;
-      Pedido.PedidoItem[0].ValorTotal := Pedido.PedidoItem[0].Qtde * Pedido.PedidoItem[0].ValorUnitario;
-      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[0].ValorUnitario;
-    end
-      //(Components[I] as TLabel).Text := FloatToStr((Components[I] as TLabel).Text.ToDouble + 1);
+      Pedido.PedidoItem[FItemLbProdutos.Index].Qtde := (Components[I] as TLabel).Text.ToDouble - 1;
+      Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+    end;
   end;
   PreencherLbProdutos;
+end;
+
+procedure TfrmCarrinho.recAdicionarClick(Sender: TObject);
+var
+  LJSONObject: TJSONObject;
+begin
+  inherited;
+  try
+    LJSONObject := TJSONObject.ParseJSONValue(Pedido.AsJson) as TJSONObject;
+    frmPrincipal.Authentication.Connection.Execute('pedido', tpPost, LJSONObject);
+  except on E:Exception do
+     TDialogService.ShowMessage('Erro na requisição para API: ' + E.Message);
+  end;
 end;
 
 procedure TfrmCarrinho.SetPedido(const Value: TPedido);

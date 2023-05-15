@@ -20,7 +20,6 @@ type
     nbxQtde: TNumberBox;
     lblAdicionar: TLabel;
     recAdicionar: TRectangle;
-    PathLabel1: TPathLabel;
     recAdd: TRectangle;
     recDrop: TRectangle;
     procedure spbVoltarClick(Sender: TObject);

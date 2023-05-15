@@ -14,14 +14,6 @@ type
     layCabecalho: TLayout;
     recCabecalho: TRectangle;
     lblHungerApp: TLabel;
-    layRodape: TLayout;
-    recRodape: TRectangle;
-    spbHome: TSpeedButton;
-    pathHome: TPath;
-    spbPedidos: TSpeedButton;
-    pathPedidos: TPath;
-    spbCarrinho: TSpeedButton;
-    pathCarrinho: TPath;
     lytLista: TLayout;
     lblMesa: TLabel;
   private
