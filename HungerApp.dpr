@@ -13,7 +13,8 @@ uses
   Hunger.View.Base in 'View\Hunger.View.Base.pas' {frmBase},
   Hunger.View.Produto in 'View\Hunger.View.Produto.pas' {frmProduto},
   Hunger.Model.Entidade.Pedidos in 'Model\Entidade\Hunger.Model.Entidade.Pedidos.pas',
-  Hunger.View.Carrinho in 'View\Hunger.View.Carrinho.pas' {frmCarrinho};
+  Hunger.View.Carrinho in 'View\Hunger.View.Carrinho.pas' {frmCarrinho},
+  Hunger.Model.Pedido in 'Model\Hunger.Model.Pedido.pas';
 
 {$R *.res}
 

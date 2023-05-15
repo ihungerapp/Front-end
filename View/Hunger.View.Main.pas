@@ -288,7 +288,8 @@ begin
           Pedido.IdPessoa := 0;
           Pedido.IdMesa := FMesaID;
           Pedido.DataHoraAbertura := Now;
-          Pedido.PedidoStatus := 'Em Aberto';
+          Pedido.DataHoraFinalizacao := Pedido.DataHoraAbertura;
+          Pedido.PedidoStatus := 'Em aberto';
           Pedido.FecharConta := False;
           Pedido.ValorTotal := 0;
         end;

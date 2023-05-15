@@ -8,7 +8,7 @@ uses
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   FMX.ListBox, Hunger.Model.Entidade.Pedidos, Hunger.Model.Entidade.Produto,
   System.Generics.Collections, Hunger.Utils, System.ImageList, FMX.ImgList,
-  System.JSON;
+  Hunger.Model.Pedido;
 
 type
   TfrmCarrinho = class(TfrmBase)
@@ -246,14 +246,17 @@ end;
 
 procedure TfrmCarrinho.recAdicionarClick(Sender: TObject);
 var
-  LJSONObject: TJSONObject;
+  LModelPedido: TModelPedido;
 begin
   inherited;
   try
-    LJSONObject := TJSONObject.ParseJSONValue(Pedido.AsJson) as TJSONObject;
-    frmPrincipal.Authentication.Connection.Execute('pedido', tpPost, LJSONObject);
-  except on E:Exception do
-     TDialogService.ShowMessage('Erro na requisição para API: ' + E.Message);
+    LModelPedido := TModelPedido.Create;
+    if LModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication) then
+      TDialogService.ShowMessage('Pedido enviado com sucesso!')
+    else
+      TDialogService.ShowMessage('Erro ao enviar o pedido!');
+  finally
+    FreeAndNil(LModelPedido);
   end;
 end;
 

@@ -168,7 +168,7 @@ object frmPrincipal: TfrmPrincipal
           TextSettings.HorzAlign = Center
           TextSettings.VertAlign = Leading
           Text = '1'
-          TabOrder = 6
+          TabOrder = 5
           object recItensCarrinho: TRectangle
             Fill.Color = claYellow
             Opacity = 0.300000011920929000
