@@ -8,7 +8,8 @@ uses
   ZXing.ScanManager,
   ZXing.ReadResult,
   ZXing.BarcodeFormat,
-  FMX.Platform, FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls;
+  FMX.Platform, FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls,
+  FMX.Layouts;
 
 type
   TTipoQRCode = (qrMesa, qrComanda);
@@ -17,7 +18,8 @@ type
     CameraComponent: TCameraComponent;
     img_close: TImage;
     img_camera: TImage;
-    lbl_erro: TLabel;
+    lblStatus: TLabel;
+    Layout1: TLayout;
     procedure CameraComponentSampleBufferReady(Sender: TObject;
       const ATime: TMediaTime);
     procedure FormCreate(Sender: TObject);
@@ -63,6 +65,10 @@ end;
 
 procedure TfrmLeitorCamera.FormShow(Sender: TObject);
 begin
+  if TipoQRCode = qrMesa then
+    lblStatus.Text := 'Aponte a câmera para o QRCode da mesa!';
+  if TipoQRCode = qrComanda then
+    lblStatus.Text := 'Aponte a câmera para o QRCode da comanda!';
   FFrameTake := 0;
   CameraComponent.Active := false;
   CameraComponent.Kind := TCameraKind.BackCamera;
@@ -110,7 +116,7 @@ begin
       end;
 
     except on ex:exception do
-      lbl_erro.Text := ex.Message;
+      lblStatus.Text := ex.Message;
     end;
   finally
     bmp.DisposeOf;

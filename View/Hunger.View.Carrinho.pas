@@ -37,6 +37,7 @@ type
   public
     property Pedido: TPedido read FPedido write SetPedido;
     property Produtos: TObjectList<TProduto> read FProdutos write SetProdutos;
+    procedure FinalizarPedido;
   end;
 
 var
@@ -90,10 +91,12 @@ begin
   begin
     StyledSettings := [];
     Align := TAlignLayout.None;
-    Position.X := -25;
+    Position.X := 25;
     Position.Y := 15;
-    Padding.Left := 10;
-    Padding.Right := 10;
+    Size.Width := 25.000000000000000000;
+    Size.Height := 20.000000000000000000;
+//    Padding.Left := 10;
+//    Padding.Right := 10;
     TextSettings.HorzAlign := TTextAlign.Center;
     TextSettings.VertAlign := TTextAlign.Center;
     TextSettings.Font.Family := 'Inter';
@@ -189,6 +192,26 @@ begin
 //  end;
 end;
 
+procedure TfrmCarrinho.FinalizarPedido;
+var
+  LModelPedido: TModelPedido;
+begin
+  try
+    LModelPedido := TModelPedido.Create;
+    Pedido.NumeroComanda := frmPrincipal.NumeroComanda.ToInteger;
+    if LModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication) then
+    begin
+      TDialogService.ShowMessage('Pedido enviado com sucesso!');
+      FreeAndNil(frmPrincipal.Pedido);
+      Close;
+    end
+    else
+      TDialogService.ShowMessage('Erro ao enviar o pedido!');
+  finally
+    FreeAndNil(LModelPedido);
+  end;
+end;
+
 procedure TfrmCarrinho.FormShow(Sender: TObject);
 begin
   inherited;
@@ -246,31 +269,10 @@ begin
 end;
 
 procedure TfrmCarrinho.recAdicionarClick(Sender: TObject);
-var
-  LModelPedido: TModelPedido;
 begin
   inherited;
-  frmPrincipal.LerQRCode(qrComanda);
   if frmPrincipal.NumeroComanda = EmptyStr then
-  begin
-    TDialogService.ShowMessage('Faça a leitura do QRCode da comanda!');
-    Exit;
-  end;
-
-  try
-    LModelPedido := TModelPedido.Create;
-    Pedido.NumeroComanda := frmPrincipal.NumeroComanda.ToInteger;
-    if LModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication) then
-    begin
-      TDialogService.ShowMessage('Pedido enviado com sucesso!');
-      FreeAndNil(frmPrincipal.Pedido);
-      Close;
-    end
-    else
-      TDialogService.ShowMessage('Erro ao enviar o pedido!');
-  finally
-    FreeAndNil(LModelPedido);
-  end;
+    frmPrincipal.LerQRCode(qrComanda);
 end;
 
 procedure TfrmCarrinho.SetPedido(const Value: TPedido);

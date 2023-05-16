@@ -22,6 +22,7 @@ type
     recAdicionar: TRectangle;
     recAdd: TRectangle;
     recDrop: TRectangle;
+    recQtde: TRectangle;
     procedure spbVoltarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbProdutoPrecificacaoClick(Sender: TObject);

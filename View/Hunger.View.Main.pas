@@ -171,7 +171,7 @@ begin
   begin
     LerQRCode(qrMesa);
     {$IFDEF MSWINDOWS}
-    FMesaUUID := '6970c819-df81-11ed-8f53-706979a6915f';
+    FMesaUUID := '11614a61-0e6a-435b-bca1-7c88fa43ceb6';
     FMesaDescricao := 'MESA 01';
     FURL_API := 'http://localhost:8081/v1/';
     FUser_API := 'hunger';
@@ -247,7 +247,8 @@ begin
     FPermissions.Camera(nil, nil)
   else
   begin
-    FrmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
+    frmLeitorCamera.TipoQRCode := aTipoQRCode;
+    frmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
     begin
       FContentImage := FrmLeitorCamera.Codigo;
       if FContentImage = EmptyStr then
@@ -270,7 +271,10 @@ begin
       end;
 
       if aTipoQRCode = qrComanda then
+      begin
         FNumeroComanda := FContentImage;
+        frmCarrinho.FinalizarPedido;
+      end;
     end);
   end;
   {$ENDIF ANDROID}
@@ -412,7 +416,9 @@ begin
       begin
         recItensCarrinho.Visible := False;
         lblItensCarrinho.Visible := False;
+        {$IFDEF ANDROID}
         FNumeroComanda := EmptyStr;
+        {$ENDIF ANDROID}
       end;
     end);
 end;
