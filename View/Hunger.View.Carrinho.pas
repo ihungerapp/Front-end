@@ -68,7 +68,7 @@ begin
   item.Padding.Top := 5;
   item.Padding.Bottom := 5;
   item.Padding.Right := 10;
-  item.Height := 50;
+  item.Height := 60;
 
   recDrop := TRectangle.Create(lbProdutos);
   with recDrop do
@@ -79,8 +79,8 @@ begin
     Fill.Kind := TBrushKind.Bitmap;
     Position.X := 0;
     Position.Y := 15;
-    Size.Width := 20.000000000000000000;
-    Size.Height := 20.000000000000000000;
+    Size.Width := 25.000000000000000000;
+    Size.Height := 25.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
     OnClick := RecAddDropClick;
@@ -91,10 +91,10 @@ begin
   begin
     StyledSettings := [];
     Align := TAlignLayout.None;
-    Position.X := 25;
+    Position.X := 30;
     Position.Y := 15;
     Size.Width := 25.000000000000000000;
-    Size.Height := 20.000000000000000000;
+    Size.Height := 25.000000000000000000;
 //    Padding.Left := 10;
 //    Padding.Right := 10;
     TextSettings.HorzAlign := TTextAlign.Center;
@@ -114,10 +114,10 @@ begin
     Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 0);
     Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
     Fill.Kind := TBrushKind.Bitmap;
-    Position.X := 50;
+    Position.X := 55;
     Position.Y := 15;
-    Size.Width := 20.000000000000000000;
-    Size.Height := 20.000000000000000000;
+    Size.Width := 25.000000000000000000;
+    Size.Height := 25.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
     OnClick := RecAddDropClick;

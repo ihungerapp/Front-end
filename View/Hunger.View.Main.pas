@@ -39,6 +39,7 @@ type
     sebPesquisar: TSearchEditButton;
     lblItensCarrinho: TLabel;
     recItensCarrinho: TRectangle;
+    spbLeitorQRCode: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -98,6 +99,7 @@ uses
   FMX.DialogService, Hunger.View.Produto;
 
 {$R *.fmx}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
 procedure TfrmPrincipal.Autenticar_API;
 begin
@@ -120,6 +122,8 @@ begin
       end;
       if (FAuthentication.Token <> EmptyStr) then
       begin
+        if MesaUUID = EmptyStr then
+          lblMesa.Text := 'Selecione uma mesa para iniciar...';
         if ValidarMesaUUID then
           ConsultarProduto(EmptyStr)
         else
@@ -171,7 +175,7 @@ begin
   begin
     LerQRCode(qrMesa);
     {$IFDEF MSWINDOWS}
-    FMesaUUID := '11614a61-0e6a-435b-bca1-7c88fa43ceb6';
+    FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45';
     FMesaDescricao := 'MESA 01';
     FURL_API := 'http://localhost:8081/v1/';
     FUser_API := 'hunger';

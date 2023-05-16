@@ -168,7 +168,7 @@ object frmPrincipal: TfrmPrincipal
           TextSettings.HorzAlign = Center
           TextSettings.VertAlign = Leading
           Text = '1'
-          TabOrder = 5
+          TabOrder = 6
           object recItensCarrinho: TRectangle
             Fill.Color = claYellow
             Opacity = 0.300000011920929000
@@ -214,6 +214,13 @@ object frmPrincipal: TfrmPrincipal
         TextSettings.HorzAlign = Center
         Text = 'HUNGER APP'
         TabOrder = 1
+      end
+      object spbLeitorQRCode: TSpeedButton
+        Align = Left
+        Position.Y = 4.000000000000000000
+        Size.Width = 41.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
       end
     end
   end
