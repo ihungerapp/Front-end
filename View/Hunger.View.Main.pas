@@ -416,6 +416,9 @@ begin
   end;
   frmCarrinho.ShowModal(procedure(ModalResult: TModalResult)
     begin
+      if Assigned(Pedido) and (Pedido.PedidoItem.Count = 0) then
+        FreeAndNil(Pedido);
+
       if not Assigned(Pedido) then
       begin
         recItensCarrinho.Visible := False;

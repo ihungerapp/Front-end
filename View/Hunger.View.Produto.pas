@@ -167,7 +167,7 @@ begin
   PedidoItem.DataHoraEmissao := Now;
   PedidoItem.DataHoraStatus := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
-
+  PedidoItem.IdProdutoPrecificacao := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].IdProdutoPrecificacao;
   Close;
 end;
 

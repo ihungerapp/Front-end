@@ -61,6 +61,7 @@ var
   lblQtde: TLabel;
   recAdd: TRectangle;
   recDrop: TRectangle;
+  recTrash: TRectangle;
 begin
   item := TListBoxItem.Create(nil);
   item.StyledSettings := [];
@@ -75,12 +76,12 @@ begin
   begin
     Align := TAlignLayout.None;
     Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 1);
-    Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+    Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
     Position.X := 0;
     Position.Y := 15;
-    Size.Width := 25.000000000000000000;
-    Size.Height := 25.000000000000000000;
+    Size.Width := 30.000000000000000000;
+    Size.Height := 30.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
     OnClick := RecAddDropClick;
@@ -91,12 +92,10 @@ begin
   begin
     StyledSettings := [];
     Align := TAlignLayout.None;
-    Position.X := 30;
+    Position.X := 35;
     Position.Y := 15;
     Size.Width := 25.000000000000000000;
     Size.Height := 25.000000000000000000;
-//    Padding.Left := 10;
-//    Padding.Right := 10;
     TextSettings.HorzAlign := TTextAlign.Center;
     TextSettings.VertAlign := TTextAlign.Center;
     TextSettings.Font.Family := 'Inter';
@@ -112,12 +111,12 @@ begin
   begin
     Align := TAlignLayout.None;
     Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 0);
-    Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+    Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
-    Position.X := 55;
+    Position.X := 60;
     Position.Y := 15;
-    Size.Width := 25.000000000000000000;
-    Size.Height := 25.000000000000000000;
+    Size.Width := 30.000000000000000000;
+    Size.Height := 30.000000000000000000;
     Size.PlatformDefault := False;
     Stroke.Kind := TBrushKind.None;
     OnClick := RecAddDropClick;
@@ -128,8 +127,6 @@ begin
   begin
     StyledSettings := [];
     Align := TAlignLayout.Right;
-    Padding.Left := 10;
-    Padding.Right := 10;
     TextSettings.HorzAlign := TTextAlign.Trailing;
     TextSettings.Font.Family := 'Inter';
     TextSettings.Font.Size := 14;
@@ -138,14 +135,32 @@ begin
     Text := FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
   end;
 
+  recTrash := TRectangle.Create(lbProdutos);
+  with recTrash do
+  begin
+    Align := TAlignLayout.FitRight;
+    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 2);
+    Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
+    Fill.Kind := TBrushKind.Bitmap;
+    Position.X := 0;
+    Position.Y := 15;
+    Size.Width := 30.000000000000000000;
+    Size.Height := 30.000000000000000000;
+    Size.PlatformDefault := False;
+    Stroke.Kind := TBrushKind.None;
+    OnClick := RecAddDropClick;
+  end;
+
   item.AddObject(recAdd);
   item.AddObject(lblQtde);
   item.AddObject(recDrop);
   item.AddObject(lblValor);
+  item.AddObject(recTrash);
   lbProdutos.AddObject(item);
   recDrop.Name := 'recDrop' + item.Index.ToString;
   lblQtde.Name := 'lblQtde' + item.Index.ToString;
   recAdd.Name := 'recAdd' + item.Index.ToString;
+  recTrash.Name := 'recTrash' + item.Index.ToString;
 
   lblDescricao := TLabel.Create(lbProdutos);
   with lblDescricao do
@@ -203,6 +218,7 @@ begin
     begin
       TDialogService.ShowMessage('Pedido enviado com sucesso!');
       FreeAndNil(frmPrincipal.Pedido);
+      frmPrincipal.NumeroComanda := EmptyStr;
       Close;
     end
     else
@@ -263,6 +279,14 @@ begin
       Pedido.PedidoItem[FItemLbProdutos.Index].Qtde := (Components[I] as TLabel).Text.ToDouble - 1;
       Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
       Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+    end
+    else
+    if ((Sender as TRectangle).Name = 'recTrash' + FItemLbProdutos.Index.ToString)
+    and (Components[I].Name = 'lblQtde' + FItemLbProdutos.Index.ToString) then
+    begin
+      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal;
+      Pedido.PedidoItem.Delete(FItemLbProdutos.Index);
+      frmPrincipal.lblItensCarrinho.Text := FloatToStr(frmPrincipal.lblItensCarrinho.Text.ToDouble - 1);
     end;
   end;
   PreencherLbProdutos;
@@ -271,8 +295,15 @@ end;
 procedure TfrmCarrinho.recAdicionarClick(Sender: TObject);
 begin
   inherited;
+  {$IFDEF MSWINDOWS}
+  frmPrincipal.NumeroComanda := '10';
+  FinalizarPedido;
+  {$ENDIF MSWINDOWS}
+
+  {$IFDEF ANDROID}
   if frmPrincipal.NumeroComanda = EmptyStr then
     frmPrincipal.LerQRCode(qrComanda);
+  {$ENDIF ANDROID}
 end;
 
 procedure TfrmCarrinho.SetPedido(const Value: TPedido);

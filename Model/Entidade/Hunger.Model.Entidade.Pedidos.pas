@@ -29,6 +29,8 @@ type
     FValorTotal: Double;
     [JSONName('valor_unitario')]
     FValorUnitario: Double;
+    [JSONName('id_produto_precificacao')]
+    FIdProdutoPrecificacao: Integer;
   published
     property DataHoraEmissao: TDateTime read FDataHoraEmissao write FDataHoraEmissao;
     property DataHoraStatus: TDateTime read FDataHoraStatus write FDataHoraStatus;
@@ -39,6 +41,7 @@ type
     property Qtde: Double read FQtde write FQtde;
     property ValorTotal: Double read FValorTotal write FValorTotal;
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
+    property IdProdutoPrecificacao: Integer read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
   end;
 
   TPedido = class(TJsonDTO)
