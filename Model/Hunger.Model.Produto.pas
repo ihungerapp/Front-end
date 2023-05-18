@@ -4,13 +4,14 @@ interface
 
 uses
   Hunger.Model.Entidade.Produto, System.Generics.Collections, System.JSON,
-  Client.Connection;
+  Client.Connection, Hunger.Utils;
 
 type
   TModelProduto = class
   private
     FProdutos: TProdutoList;
     FProdutoPrecificacao: TProdutoPrecificacaoList;
+    FUtils: TUtils;
   public
     constructor create;
     destructor destroy;

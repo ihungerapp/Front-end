@@ -1,0 +1,5 @@
+platform select remote-android
+platform connect unix-abstract-connect:///data/local/tmp/debug.sock device=ZF523JBTD8
+settings set plugin.jit-loader.gdb.enable-jit-breakpoint false
+process attach -pid=27318
+target symbols add "E:\HungerApp\Front-end\AppHunger\Android64\Debug\HungerApp\debug\libHungerApp.so"

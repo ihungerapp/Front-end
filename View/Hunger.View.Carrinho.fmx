@@ -64,20 +64,7 @@ inherited frmCarrinho: TfrmCarrinho
       end
     end
   end
-  object imgFotoCarrinho: TImage
-    MultiResBitmap.Height = 36
-    MultiResBitmap.Width = 36
-    MultiResBitmap = <
-      item
-      end>
-    Position.X = 48.000000000000000000
-    Position.Y = 472.000000000000000000
-    Size.Width = 50.000000000000000000
-    Size.Height = 50.000000000000000000
-    Size.PlatformDefault = False
-    Visible = False
-  end
-  object ImageList1: TImageList
+  object imgCarrinho: TImageList
     Source = <
       item
         MultiResBitmap.Height = 30

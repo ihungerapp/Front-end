@@ -10,7 +10,8 @@ type
   private
   public
     class function Base64ToStream(aBase64: String): TMemoryStream; static;
-    class function RetirarQuebraDeLinha(aText : string): string; static;
+    class function RetirarQuebraDeLinha(aText : String): String; static;
+    class function RemoverAcentos(const aText: string): String; static;
   end;
 
 implementation
@@ -43,6 +44,13 @@ begin
   finally
     FreeAndNil(bstBytes);
   end;
+end;
+
+class function TUtils.RemoverAcentos(const aText: string): String;
+type
+  USAscii20127 = type AnsiString(20127);
+begin
+  Result := String(USAscii20127(aText));
 end;
 
 class function TUtils.RetirarQuebraDeLinha(aText: string): string;

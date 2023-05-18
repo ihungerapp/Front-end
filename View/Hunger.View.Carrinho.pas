@@ -13,11 +13,10 @@ uses
 type
   TfrmCarrinho = class(TfrmBase)
     lbProdutos: TListBox;
-    imgFotoCarrinho: TImage;
     spbVoltar: TSpeedButton;
     recAdicionar: TRectangle;
     lblFinalizar: TLabel;
-    ImageList1: TImageList;
+    imgCarrinho: TImageList;
     procedure FormShow(Sender: TObject);
     procedure spbVoltarClick(Sender: TObject);
     procedure RecAddDropClick(Sender: TObject);
@@ -75,7 +74,7 @@ begin
   with recDrop do
   begin
     Align := TAlignLayout.None;
-    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 1);
+    Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 1);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
     Position.X := 0;
@@ -110,7 +109,7 @@ begin
   with recAdd do
   begin
     Align := TAlignLayout.None;
-    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 0);
+    Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 0);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
     Position.X := 60;
@@ -139,7 +138,7 @@ begin
   with recTrash do
   begin
     Align := TAlignLayout.FitRight;
-    Fill.Bitmap.Bitmap := ImageList1.Bitmap(TSizeF.Create(20,20), 2);
+    Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 2);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
     Position.X := 0;
@@ -180,18 +179,7 @@ begin
   end;
 
   item.AddObject(lblDescricao);
-//  lblDescricao.Width := -(lblValor.Position.X) + lblValor.Width - recAdd.Position.X + recAdd.Width + 10;
   lblDescricao.Width := lbProdutos.Width - lblValor.Width - recAdd.Width - recDrop.Width;
-
-  if Assigned(FImage) then
-    item.AddObject(FImage);
-
-//  item.AddObject(recAdd);
-//  item.AddObject(lblQtde);
-//  item.AddObject(recDrop);
-//  item.AddObject(lblDescricao);
-//  item.AddObject(lblValor);
-//  lbProdutos.AddObject(item);
 
 //  if Assigned(imgFotoCarrinho.MultiResBitmap.Items[aIndex]) then
 //  begin
@@ -205,6 +193,8 @@ begin
 //      FImage.Bitmap := imgFotoCarrinho.MultiResBitmap.Items[aIndex].Bitmap;
 //    end;
 //  end;
+//  if Assigned(FImage) then
+//    item.AddObject(FImage);
 end;
 
 procedure TfrmCarrinho.FinalizarPedido;
@@ -218,6 +208,7 @@ begin
     begin
       TDialogService.ShowMessage('Pedido enviado com sucesso!');
       FreeAndNil(frmPrincipal.Pedido);
+      frmPrincipal.ProdutosCarrinho.Clear;
       frmPrincipal.NumeroComanda := EmptyStr;
       Close;
     end

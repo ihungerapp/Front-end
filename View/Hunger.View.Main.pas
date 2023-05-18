@@ -39,7 +39,7 @@ type
     sebPesquisar: TSearchEditButton;
     lblItensCarrinho: TLabel;
     recItensCarrinho: TRectangle;
-    spbLeitorQRCode: TSpeedButton;
+    imgLerQR: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -52,6 +52,7 @@ type
       const ItemObject: TListItemDrawable);
     procedure sebPesquisarClick(Sender: TObject);
     procedure spbCarrinhoClick(Sender: TObject);
+    procedure imgLerQRClick(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -123,7 +124,10 @@ begin
       if (FAuthentication.Token <> EmptyStr) then
       begin
         if MesaUUID = EmptyStr then
+        begin
           lblMesa.Text := 'Selecione uma mesa para iniciar...';
+          FMesaDescricao := 'Selecione uma mesa para iniciar...';
+        end;
         if ValidarMesaUUID then
           ConsultarProduto(EmptyStr)
         else
@@ -155,7 +159,7 @@ begin
       if not Assigned(FProdutos) then
         FProdutos := TObjectList<TProduto>.Create;
 
-      FProdutos.Clear;
+      //FProdutos.Clear;
       FProdutos := FModelProduto.PopularListaProduto(LJsonResponse);
       if FProdutos.Count > 0 then
         PreencherListView(FProdutos);
@@ -242,6 +246,11 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.imgLerQRClick(Sender: TObject);
+begin
+  LerQRCode(qrMesa);
+end;
+
 procedure TfrmPrincipal.LerQRCode(aTipoQRCode: TTipoQRCode);
 var
   LParams: TArray<String>;
@@ -276,7 +285,14 @@ begin
 
       if aTipoQRCode = qrComanda then
       begin
-        FNumeroComanda := FContentImage;
+        LParams := FContentImage.Split(['|']);
+        if LParams[0] <> 'COMANDA' then
+        begin
+          TDialogService.ShowMessage('Comanda inválida! Tente ler o QRCode novamente.');
+          LerQRCode(qrComanda);
+          Exit;
+        end;
+        FNumeroComanda := LParams[1];
         frmCarrinho.FinalizarPedido;
       end;
     end);
@@ -410,19 +426,22 @@ begin
   begin
     lblMesa.Text := FMesaDescricao + ' > Carrinho';
     lblFinalizar.Text := 'Finalizar pedido';
-    imgFotoCarrinho := imgFoto;
     Pedido := FPedido;
     Produtos := FProdutosCarrinho;
   end;
   frmCarrinho.ShowModal(procedure(ModalResult: TModalResult)
     begin
       if Assigned(Pedido) and (Pedido.PedidoItem.Count = 0) then
+      begin
         FreeAndNil(Pedido);
+        FProdutosCarrinho.Clear;
+      end;
 
       if not Assigned(Pedido) then
       begin
         recItensCarrinho.Visible := False;
         lblItensCarrinho.Visible := False;
+        ConsultarProduto(edtPesquisar.Text);
         {$IFDEF ANDROID}
         FNumeroComanda := EmptyStr;
         {$ENDIF ANDROID}
@@ -439,6 +458,7 @@ function TfrmPrincipal.ValidarMesaUUID: Boolean;
 var
   LJsonResponse: TJSONObject;
   LJsonArray: TJSONArray;
+  sucesso: Boolean;
 begin
   Result := False;
   try
@@ -447,9 +467,12 @@ begin
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{}') then
     begin
       LJsonResponse.TryGetValue('content', LJsonArray);
-      LJsonResponse := LJsonArray[0] as TJSONObject;
-      FMesaID := LJsonResponse.GetValue('id_mesa').Value.ToInteger;
-      Result := True;
+      if LJsonArray.Count > 0 then
+      begin
+        LJsonResponse := LJsonArray[0] as TJSONObject;
+        FMesaID := LJsonResponse.GetValue('id_mesa').Value.ToInteger;
+        Result := True;
+      end;
     end;
   except on E:Exception do
     TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +

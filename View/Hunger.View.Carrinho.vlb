@@ -7,9 +7,6 @@ Coordinates=10,368,92,36
 [lblMesa]
 Coordinates=222,10,59,58
 
-[imgFotoCarrinho]
-Coordinates=352,232,110,58
-
 [lbProdutos]
 Coordinates=10,10,139,212
 
@@ -23,7 +20,7 @@ Coordinates=204,300,86,36
 Coordinates=102,232,69,58
 
 []
-Coordinates=455,300,76,36
+Coordinates=352,232,110,58
 Visible=True
 
 [recCabecalho]
