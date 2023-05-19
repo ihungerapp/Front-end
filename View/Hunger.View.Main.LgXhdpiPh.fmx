@@ -8,7 +8,7 @@ inherited frmPrincipal_LgXhdpiPh: TfrmPrincipal_LgXhdpiPh
     inherited recRodape: TRectangle
       Size.Width = 450.000000000000000000
       inherited spbCarrinho: TSpeedButton
-        Position.X = 340.000000000000000000
+        Position.X = 330.000000000000000000
       end
     end
   end

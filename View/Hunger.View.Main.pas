@@ -22,10 +22,8 @@ type
     lblMesa: TLabel;
     layRodape: TLayout;
     recRodape: TRectangle;
-    pathHome: TPath;
     pathPedidos: TPath;
     pathCarrinho: TPath;
-    spbHome: TSpeedButton;
     spbPedidos: TSpeedButton;
     spbCarrinho: TSpeedButton;
     layCabecalho: TLayout;
@@ -158,8 +156,6 @@ begin
     begin
       if not Assigned(FProdutos) then
         FProdutos := TObjectList<TProduto>.Create;
-
-      //FProdutos.Clear;
       FProdutos := FModelProduto.PopularListaProduto(LJsonResponse);
       if FProdutos.Count > 0 then
         PreencherListView(FProdutos);

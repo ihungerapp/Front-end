@@ -24,9 +24,9 @@ object frmPrincipal: TfrmPrincipal
     object recRodape: TRectangle
       Align = Contents
       Fill.Color = xFFF83923
-      Padding.Left = 40.000000000000000000
+      Padding.Left = 50.000000000000000000
       Padding.Top = 5.000000000000000000
-      Padding.Right = 40.000000000000000000
+      Padding.Right = 50.000000000000000000
       Padding.Bottom = 1.000000000000000000
       Size.Width = 425.000000000000000000
       Size.Height = 60.000000000000000000
@@ -34,47 +34,12 @@ object frmPrincipal: TfrmPrincipal
       Stroke.Color = claWhite
       Stroke.Thickness = 0.000000000000000000
       Stroke.Cap = Round
-      object spbHome: TSpeedButton
+      object spbPedidos: TSpeedButton
         Align = Left
         StyledSettings = []
-        Position.X = 40.000000000000000000
-        Position.Y = 8.000000000000000000
-        Size.Width = 70.000000000000000000
-        Size.Height = 48.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Home'
-        TextSettings.Font.Family = 'Inter'
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.FontColor = claWhite
-        TextSettings.VertAlign = Trailing
-        object pathHome: TPath
-          Align = Contents
-          Data.Path = {
-            17000000000000009A99214133330B41010000000000A0410000803F01000000
-            3333EF4133330B41010000003333EF416666A641020000003333EF416811AB41
-            020000007958ED41788BAF4102000000780BEA4145D8B2410200000077BEE641
-            4625B641020000009C44E2410000B841020000009A99DD410000B84101000000
-            CDCC44410000B84102000000C9763B410000B84102000000AA8232414625B641
-            02000000A7E82B4145D8B241020000000E4F2541788BAF41020000009A992141
-            6811AB41020000009A9921416666A641010000009A99214133330B4103000000
-            9A99214133330B41000000009A9985410000B841010000009A99854100004041
-            010000006666BA4100004041010000006666BA410000B841}
-          Fill.Bitmap.WrapMode = Tile
-          Fill.Kind = Bitmap
-          HitTest = False
-          Margins.Left = 15.000000000000000000
-          Size.Width = 55.000000000000000000
-          Size.Height = 48.000000000000000000
-          Size.PlatformDefault = False
-          Stroke.Color = claWhite
-          Stroke.Thickness = 2.000000000000000000
-          WrapMode = Original
-        end
-      end
-      object spbPedidos: TSpeedButton
-        Align = Center
-        StyledSettings = []
         Padding.Left = 12.000000000000000000
+        Position.X = 50.000000000000000000
+        Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
@@ -114,7 +79,7 @@ object frmPrincipal: TfrmPrincipal
       object spbCarrinho: TSpeedButton
         Align = Right
         StyledSettings = []
-        Position.X = 315.000000000000000000
+        Position.X = 305.000000000000000000
         Position.Y = 8.000000000000000000
         Size.Width = 70.000000000000000000
         Size.Height = 48.000000000000000000

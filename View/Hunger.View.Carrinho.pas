@@ -277,6 +277,7 @@ begin
     begin
       Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal;
       Pedido.PedidoItem.Delete(FItemLbProdutos.Index);
+      Produtos.Delete(FItemLbProdutos.Index);
       frmPrincipal.lblItensCarrinho.Text := FloatToStr(frmPrincipal.lblItensCarrinho.Text.ToDouble - 1);
     end;
   end;
