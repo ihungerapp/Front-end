@@ -26,6 +26,7 @@ type
   private
     FPedido: TPedido;
     FProdutos: TObjectList<TProduto>;
+    FModelPedido: TModelPedido;
     FUtils: TUtils;
     FImage: TImage;
     FItemLbProdutos: TListBoxItem;
@@ -33,6 +34,7 @@ type
     procedure PreencherLbProdutos;
     procedure AddItemLb(aIndex: Integer; aPedidoItem: TPedidoItem);
     procedure SetProdutos(const Value: TObjectList<TProduto>);
+    function ValidarMesaComanda: Boolean;
   public
     property Pedido: TPedido read FPedido write SetPedido;
     property Produtos: TObjectList<TProduto> read FProdutos write SetProdutos;
@@ -46,7 +48,7 @@ implementation
 
 uses
   Hunger.View.Main, Client.Connection, FMX.DialogService,
-  Hunger.View.LeitorCamera;
+  Hunger.View.LeitorCamera, System.JSON;
 
 {$R *.fmx}
 
@@ -198,24 +200,25 @@ begin
 end;
 
 procedure TfrmCarrinho.FinalizarPedido;
-var
-  LModelPedido: TModelPedido;
 begin
+  FModelPedido := TModelPedido.Create;
   try
-    LModelPedido := TModelPedido.Create;
     Pedido.NumeroComanda := frmPrincipal.NumeroComanda.ToInteger;
-    if LModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication) then
+    if not (ValidarMesaComanda) then
+      TDialogService.ShowMessage('Comanda vinculada a outra mesa!')
+    else
+    if (FModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication)) then
     begin
       TDialogService.ShowMessage('Pedido enviado com sucesso!');
       FreeAndNil(frmPrincipal.Pedido);
       frmPrincipal.ProdutosCarrinho.Clear;
-      frmPrincipal.NumeroComanda := EmptyStr;
+      //frmPrincipal.NumeroComanda := EmptyStr;
       Close;
     end
     else
       TDialogService.ShowMessage('Erro ao enviar o pedido!');
   finally
-    FreeAndNil(LModelPedido);
+    FreeAndNil(FModelPedido);
   end;
 end;
 
@@ -312,6 +315,39 @@ procedure TfrmCarrinho.spbVoltarClick(Sender: TObject);
 begin
   inherited;
   Close;
+end;
+
+function TfrmCarrinho.ValidarMesaComanda: Boolean;
+var
+  LJsonResponse: TJSONObject;
+  LJsonValue: TJSONValue;
+  LJsonArray: TJSONArray;
+  I: integer;
+begin
+  //Verifica se o número da comanda que acabou de ler o QR,
+  // é igual aos pedidos anteriores em aberto e da mesma mesa, se existente
+  Result := False;
+  LJsonResponse := FModelPedido.ConsultarPedido(frmPrincipal.Authentication.Connection, Pedido.NumeroComanda.ToString);
+  if Assigned(LJsonResponse) then
+    if LJsonResponse.FindValue('totalElements').ToJSON.ToInteger = 0 then
+      Result := True
+    else
+    begin
+      LJsonResponse.TryGetValue('content', LJsonArray);
+      for I := 0 to Pred(LJsonArray.Count) do
+      begin
+        if Pedido.IdMesa = LJsonArray.Items[I].FindValue('id_mesa').ToJSON.ToInteger then
+          Result := True
+        else
+        begin
+          Result := False;
+          frmPrincipal.NumeroComanda := EmptyStr;
+          Exit;
+        end;
+      end;
+    end;
+    if not Result then
+      frmPrincipal.NumeroComanda := EmptyStr;
 end;
 
 end.

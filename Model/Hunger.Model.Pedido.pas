@@ -14,7 +14,7 @@ type
     constructor create;
     destructor destroy;
     function PopularListaPedido(aJsonObject: TJSONObject): TObjectList<TPedido>;
-    function ConsultarPedido(aConnection: TClientConnection; aDescricao: String): TJSONObject;
+    function ConsultarPedido(aConnection: TClientConnection; aNumComanda: String): TJSONObject;
     function ExecutarRequisicao(aPedido: TPedido; aMetodo: TEnumMethod; aAuthentication: TAuthentication): Boolean;
   end;
 
@@ -94,7 +94,7 @@ begin
   end;
 end;
 
-function TModelPedido.ConsultarPedido(aConnection: TClientConnection; aDescricao: String): TJSONObject;
+function TModelPedido.ConsultarPedido(aConnection: TClientConnection; aNumComanda: String): TJSONObject;
 var
   LJsonResponse: TJSONObject;
   search: String;
@@ -102,12 +102,13 @@ begin
   Result := nil;
   try
     search := EmptyStr;
-    if aDescricao <> EmptyStr then
-      search := '&search=produto:descricao:' + LowerCase(aDescricao);
-    LJsonResponse := aConnection.Execute('produto?method=ListarProdutos' + search, tpGet, nil);
+    if aNumComanda <> EmptyStr then
+      search := '?search=pedido:numero_comanda:' + aNumComanda + '@@@'+
+                'pedido:pedido_status:Em aberto' +
+                '&JSON=<!"TypeSearch":"no incidence"!>';
+    LJsonResponse := aConnection.Execute('pedido' + search, tpGet, nil);
 
-    if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then
-      Result := LJsonResponse;
+    Result := LJsonResponse;
   except on E:Exception do
     begin
       TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +

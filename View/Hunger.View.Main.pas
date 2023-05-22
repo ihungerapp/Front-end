@@ -175,8 +175,9 @@ begin
   begin
     LerQRCode(qrMesa);
     {$IFDEF MSWINDOWS}
-    FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45';
-    FMesaDescricao := 'MESA 01';
+    FMesaUUID := '6e8f282c-e768-11ed-a280-57bfeef036a0'; //MESA 02
+    //FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45'; MESA 01
+    FMesaDescricao := 'MESA 02';
     FURL_API := 'http://localhost:8081/v1/';
     FUser_API := 'hunger';
     FPass_API := 'rm045369';
