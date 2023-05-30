@@ -1,0 +1,81 @@
+inherited frmBase1: TfrmBase1
+  Caption = 'frmBase1'
+  OnCreate = FormCreate
+  DesignerMasterStyle = 3
+  inherited layCabecalho: TLayout
+    inherited recCabecalho: TRectangle
+      inherited lblHungerApp: TLabel
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+  end
+  inherited lytLista: TLayout
+    inherited lblMesa: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+    end
+    object lvPedidosItens: TListView
+      ItemAppearanceClassName = 'TDynamicAppearance'
+      ItemEditAppearanceClassName = 'TDynamicAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      Align = Client
+      Size.Width = 425.000000000000000000
+      Size.Height = 588.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearance.ItemHeight = 120
+      ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'descricao'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.Width = 310.000000000000000000
+          Appearance.Height = 23.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'complemento'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.TextVertAlign = Leading
+          Appearance.TextColor = xFF1D78CE
+          Appearance.Width = 310.000000000000000000
+          Appearance.Height = 19.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
+          Appearance.PlaceOffset.Y = 20.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'valor'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.TextAlign = Leading
+          Appearance.TextVertAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.TextColor = xFF8D8D8D
+          Appearance.Width = 310.000000000000000000
+          Appearance.Height = 20.000000000000000000
+          Appearance.PlaceOffset.X = 80.000000000000000000
+          Appearance.PlaceOffset.Y = 40.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'imgProduto'
+          AppearanceClassName = 'TImageObjectAppearance'
+          Appearance.Width = 65.000000000000000000
+          Appearance.Height = 65.000000000000000000
+          Appearance.PlaceOffset.X = 8.000000000000000000
+          Appearance.PlaceOffset.Y = 8.000000000000000000
+        end>
+      ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'Text1'
+          AppearanceClassName = 'TTextObjectAppearance'
+        end>
+      CanSwipeDelete = False
+    end
+  end
+end

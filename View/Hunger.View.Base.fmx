@@ -44,7 +44,7 @@ object frmBase: TfrmBase
   object lytLista: TLayout
     Align = Client
     Size.Width = 425.000000000000000000
-    Size.Height = 567.000000000000000000
+    Size.Height = 627.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object lblMesa: TLabel
