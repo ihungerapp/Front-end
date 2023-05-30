@@ -3,7 +3,8 @@ unit Hunger.Model.Entidade.Pedidos;
 interface
 
 uses
-  Pkg.Json.DTO, System.Generics.Collections, REST.Json.Types;
+  Pkg.Json.DTO, System.Generics.Collections, REST.Json.Types,
+  Hunger.Model.Entidade.Produto;
 
 {$M+}
 
@@ -31,6 +32,8 @@ type
     FValorUnitario: Double;
     [JSONName('id_produto_precificacao')]
     FIdProdutoPrecificacao: Integer;
+    [JSONName('produto'), JSONMarshalled(False)]
+    FProduto: TProduto;
   published
     property DataHoraEmissao: TDateTime read FDataHoraEmissao write FDataHoraEmissao;
     property DataHoraStatus: TDateTime read FDataHoraStatus write FDataHoraStatus;
@@ -42,6 +45,7 @@ type
     property ValorTotal: Double read FValorTotal write FValorTotal;
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
     property IdProdutoPrecificacao: Integer read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
+    property Produto: TProduto read FProduto;
   end;
 
   TPedido = class(TJsonDTO)

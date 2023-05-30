@@ -48,6 +48,7 @@ object frmPrincipal: TfrmPrincipal
         TextSettings.Font.Size = 14.000000000000000000
         TextSettings.FontColor = claWhite
         TextSettings.VertAlign = Trailing
+        OnClick = spbPedidosClick
         object pathPedidos: TPath
           Align = Contents
           Data.Path = {

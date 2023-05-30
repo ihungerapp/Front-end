@@ -51,6 +51,7 @@ type
     procedure sebPesquisarClick(Sender: TObject);
     procedure spbCarrinhoClick(Sender: TObject);
     procedure imgLerQRClick(Sender: TObject);
+    procedure spbPedidosClick(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -95,7 +96,7 @@ var
 implementation
 
 uses
-  FMX.DialogService, Hunger.View.Produto;
+  FMX.DialogService, Hunger.View.Produto, Hunger.View.Pedidos;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -443,6 +444,26 @@ begin
         FNumeroComanda := EmptyStr;
         {$ENDIF ANDROID}
       end;
+    end);
+end;
+
+procedure TfrmPrincipal.spbPedidosClick(Sender: TObject);
+begin
+  //Abrir tela de histórico de pedidos
+  if FMesaUUID = EmptyStr then
+  begin
+    TDialogService.ShowMessage('Selecione uma mesa para consultar os pedidos em aberto!');
+    Exit;
+  end;
+
+  if not Assigned(frmPedidos) then
+    Application.CreateForm(TfrmPedidos, frmPedidos);
+
+  with frmPedidos do
+    lblMesa.Text := FMesaDescricao + ' > Pedidos';
+
+  frmPedidos.ShowModal(procedure(ModalResult: TModalResult)
+    begin
     end);
 end;
 
