@@ -93,7 +93,7 @@ begin
   begin
     StyledSettings := [];
     Align := TAlignLayout.None;
-    Position.X := 35;
+    Position.X := 30;
     Position.Y := 15;
     Size.Width := 25.000000000000000000;
     Size.Height := 25.000000000000000000;

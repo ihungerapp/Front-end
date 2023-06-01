@@ -303,7 +303,7 @@ procedure TfrmPrincipal.lvConsultaProdutoItemClickEx(const Sender: TObject;
   const ItemObject: TListItemDrawable);
 begin
   //Abrir tela de inclusão do item no carrinho
-  if not Assigned(frmProduto) then
+  //if not Assigned(frmProduto) then
     Application.CreateForm(TfrmProduto, frmProduto);
 
   with frmProduto do
@@ -362,13 +362,18 @@ begin
         begin
           Height := 90;
           Tag := I;
+
+          imgFoto.MultiResBitmap.Add;
           if aProdutos[I].Imagem <> EmptyStr then
           begin
-            imgFoto.MultiResBitmap.Add;
+            //imgFoto.MultiResBitmap.Add;
             imgFoto.MultiResBitmap.Items[I].Bitmap.LoadFromStream(FUtils.Base64ToStream(aProdutos[I].Imagem));
             if not imgFoto.Bitmap.IsEmpty then
               TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.MultiResBitmap.Items[I].Bitmap;
-          end;
+          end
+          else
+            imgFoto.MultiResBitmap.Items[I].Bitmap.Create(1,1);
+
           TListItemText(Objects.FindDrawable('descricao')).Text := aProdutos[I].Descricao;
           TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
           TListItemText(Objects.FindDrawable('valor')).Text := 'A partir de ' +
@@ -417,7 +422,7 @@ begin
     Exit;
   end;
 
-  if not Assigned(frmCarrinho) then
+  //if not Assigned(frmCarrinho) then
     Application.CreateForm(TfrmCarrinho, frmCarrinho);
 
   with frmCarrinho do
@@ -456,8 +461,8 @@ begin
     Exit;
   end;
 
-  if not Assigned(frmPedidos) then
-    Application.CreateForm(TfrmPedidos, frmPedidos);
+//  if not Assigned(frmPedidos) then
+  Application.CreateForm(TfrmPedidos, frmPedidos);
 
   with frmPedidos do
     lblMesa.Text := FMesaDescricao + ' > Pedidos';

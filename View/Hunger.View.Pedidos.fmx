@@ -55,7 +55,7 @@ inherited frmPedidos: TfrmPedidos
           Appearance.TextVertAlign = Leading
           Appearance.TextColor = xFF1D78CE
           Appearance.Width = 310.000000000000000000
-          Appearance.Height = 19.000000000000000000
+          Appearance.Height = 23.000000000000000000
           Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 20.000000000000000000
         end
@@ -68,7 +68,7 @@ inherited frmPedidos: TfrmPedidos
           Appearance.WordWrap = True
           Appearance.TextColor = xFF8D8D8D
           Appearance.Width = 310.000000000000000000
-          Appearance.Height = 20.000000000000000000
+          Appearance.Height = 23.000000000000000000
           Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 40.000000000000000000
         end
