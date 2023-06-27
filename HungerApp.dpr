@@ -17,7 +17,8 @@ uses
   Hunger.Model.Pedido in 'Model\Hunger.Model.Pedido.pas',
   Hunger.View.Pedidos in 'View\Hunger.View.Pedidos.pas' {frmPedidos},
   Hunger.View.Mesas in 'View\Hunger.View.Mesas.pas' {frmMesas},
-  Hunger.Model.Entidade.Mesas in 'Model\Entidade\Hunger.Model.Entidade.Mesas.pas';
+  Hunger.Model.Entidade.Mesas in 'Model\Entidade\Hunger.Model.Entidade.Mesas.pas',
+  Hunger.View.Config in 'View\Hunger.View.Config.pas' {frmConfig};
 
 {$R *.res}
 
@@ -26,6 +27,5 @@ begin
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TfrmLeitorCamera, frmLeitorCamera);
   Application.CreateForm(TfrmBase, frmBase);
-  Application.CreateForm(TfrmMesas, frmMesas);
   Application.Run;
 end.

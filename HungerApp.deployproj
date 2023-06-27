@@ -492,6 +492,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Win64\Debug\Config_API.ini" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HungerApp\assets\internal\</RemoteDir>
+            <RemoteName>Config_API.ini</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Win64\Debug\Config_API.ini" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\assets\internal\</RemoteDir>
+            <RemoteName>Config_API.ini</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android'">
         <DeployFile Include="Android\Debug\HungerApp.classes" Condition="'$(Config)'=='Debug'">

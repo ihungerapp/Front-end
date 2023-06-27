@@ -38,6 +38,8 @@ type
     lblItensCarrinho: TLabel;
     recItensCarrinho: TRectangle;
     imgLerQR: TImage;
+    TimerPesquisar: TTimer;
+    imgConfig: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -53,6 +55,9 @@ type
     procedure imgLerQRClick(Sender: TObject);
     procedure spbPedidosClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure TimerPesquisarTimer(Sender: TObject);
+    procedure edtPesquisarChangeTracking(Sender: TObject);
+    procedure imgConfigClick(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -98,7 +103,7 @@ implementation
 
 uses
   FMX.DialogService, Hunger.View.Produto, Hunger.View.Pedidos,
-  Hunger.View.Mesas;
+  Hunger.View.Mesas, Hunger.View.Config;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -129,16 +134,10 @@ begin
           lblMesa.Text := 'Selecione uma mesa';
           FMesaDescricao := 'Selecione uma mesa';
         end;
-        if (MesaUUID <> EmptyStr) and (ValidarMesaUUID) then
-        begin
-          if lvConsultaProduto.Items.Count = 0 then
-            ConsultarProduto(EmptyStr);
-        end;
-//        else
-//        begin
-//          TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
-//          LerQRCode(qrMesa);
-//        end;
+        if MesaUUID <> EmptyStr then
+          ValidarMesaUUID;
+        if lvConsultaProduto.Items.Count = 0 then
+          ConsultarProduto(EmptyStr);
       end;
     except on E:Exception do
       begin
@@ -173,6 +172,12 @@ begin
       Exit;
     end;
   end;
+end;
+
+procedure TfrmPrincipal.edtPesquisarChangeTracking(Sender: TObject);
+begin
+  TimerPesquisar.Enabled := False;
+  TimerPesquisar.Enabled := True;
 end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
@@ -258,8 +263,33 @@ begin
   Timer.Enabled := True;
 end;
 
+procedure TfrmPrincipal.imgConfigClick(Sender: TObject);
+begin
+  Application.CreateForm(TfrmConfig, frmConfig);
+
+  with frmConfig do
+  begin
+    lblMesa.Text := 'Configurações';
+    edtURL.Text := Authentication.URLServer;
+  end;
+  frmConfig.ShowModal(procedure(ModalResult: TModalResult)
+    begin
+      if frmConfig.edtURL.Text <> Authentication.URLServer then
+      begin
+        Authentication.URLServer := frmConfig.edtURL.Text;
+        Authentication.Connection.Ini.WriteString('Config', 'URL_Server', frmConfig.edtURL.Text);
+      end;
+    end);
+end;
+
 procedure TfrmPrincipal.imgLerQRClick(Sender: TObject);
 begin
+  if Assigned(Pedido) and (Pedido.PedidoItem.Count > 0) then
+  begin
+    TDialogService.ShowMessage('Finalize o pedido atual ou exclua todos os itens do carrinho para trocar de mesa!');
+    Exit;
+  end;
+
   LerQRCode(qrMesa);
 end;
 
@@ -272,6 +302,8 @@ begin
     FPermissions.Camera(nil, nil)
   else
   begin
+    FContentImage := EmptyStr;
+    frmLeitorCamera.Codigo := EmptyStr;
     frmLeitorCamera.TipoQRCode := aTipoQRCode;
     frmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
     begin
@@ -294,10 +326,9 @@ begin
                 FMesaID := Mesas.Mesas.Items[MesaSelecionada].IdMesa;
                 FMesaUUID := Mesas.Mesas.Items[MesaSelecionada].MesaUUID;
                 FMesaDescricao := 'MESA ' + Mesas.Mesas.Items[MesaSelecionada].IdMesa.ToString;
-                FURL_API := 'http://192.168.0.230:8081/v1/';
-                FUser_API := 'hunger';
-                FPass_API := 'rm045369';
                 frmPrincipal.lblMesa.Text := FMesaDescricao;
+                if lvConsultaProduto.Items.Count = 0 then
+                  ConsultarProduto(EmptyStr);
               end;
             end);
           end;
@@ -348,9 +379,6 @@ begin
           FMesaID := Mesas.Mesas.Items[MesaSelecionada].IdMesa;
           FMesaUUID := Mesas.Mesas.Items[MesaSelecionada].MesaUUID;
           FMesaDescricao := 'MESA ' + Mesas.Mesas.Items[MesaSelecionada].IdMesa.ToString;
-          FURL_API := 'http://192.168.0.230:8081/v1/';
-          FUser_API := 'hunger';
-          FPass_API := 'rm045369';
           frmPrincipal.lblMesa.Text := FMesaDescricao;
           FNumeroComanda := '10';
           if lvConsultaProduto.Items.Count = 0 then
@@ -366,9 +394,14 @@ procedure TfrmPrincipal.lvConsultaProdutoItemClickEx(const Sender: TObject;
   ItemIndex: Integer; const LocalClickPos: TPointF;
   const ItemObject: TListItemDrawable);
 begin
+  if FMesaUUID = EmptyStr then
+  begin
+    TDialogService.ShowMessage('Selecione uma mesa antes de adicionar itens no carrinho!');
+    Exit;
+  end;
+
   //Abrir tela de inclusão do item no carrinho
-  //if not Assigned(frmProduto) then
-    Application.CreateForm(TfrmProduto, frmProduto);
+  Application.CreateForm(TfrmProduto, frmProduto);
 
   with frmProduto do
   begin
@@ -453,13 +486,16 @@ end;
 
 procedure TfrmPrincipal.sebPesquisarClick(Sender: TObject);
 begin
-  if FMesaUUID = EmptyStr then
+  TimerPesquisar.Enabled := False;
+
+  if not Assigned(FAuthentication) then
   begin
-    TDialogService.ShowMessage('Selecione uma mesa antes de pesquisar!');
+    TDialogService.ShowMessage('Conexão com sevidor não estabelecida!');
     Exit;
   end;
 
-  ConsultarProduto(edtPesquisar.Text);
+  if Assigned(FAuthentication) and (FAuthentication.Token <> EmptyStr) then
+    ConsultarProduto(edtPesquisar.Text);
 end;
 
 procedure TfrmPrincipal.SetNumeroComanda(const Value: String);
@@ -486,8 +522,7 @@ begin
     Exit;
   end;
 
-  //if not Assigned(frmCarrinho) then
-    Application.CreateForm(TfrmCarrinho, frmCarrinho);
+  Application.CreateForm(TfrmCarrinho, frmCarrinho);
 
   with frmCarrinho do
   begin
@@ -534,6 +569,11 @@ begin
   frmPedidos.ShowModal(procedure(ModalResult: TModalResult)
     begin
     end);
+end;
+
+procedure TfrmPrincipal.TimerPesquisarTimer(Sender: TObject);
+begin
+  sebPesquisarClick(Sender);
 end;
 
 procedure TfrmPrincipal.TimerTimer(Sender: TObject);

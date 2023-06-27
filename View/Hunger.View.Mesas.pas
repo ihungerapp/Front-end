@@ -51,6 +51,7 @@ var
   I, J, IndexImage : Integer;
   mesa: TMesa;
   comandas: String;
+  totalComandas: Double;
 begin
   lvMesas.Items.Clear;
   lvMesas.BeginUpdate;
@@ -65,15 +66,19 @@ begin
       Height := 50 + (23 * mesa.Pedido.Count);
       TListItemText(Objects.FindDrawable('mesa')).Text := 'Mesa ' + mesa.IdMesa.ToString;
       comandas := EmptyStr;
+      totalComandas := 0;
       for J := 0 to Pred(mesa.Pedido.Count) do
         if Assigned(mesa.Pedido.Items[J]) then
+        begin
           comandas := comandas + #13 + 'Nº ' + mesa.Pedido.Items[J].NumeroComanda.ToString +
-                       '    Valor Total ' + FloatToStrF(mesa.Pedido.Items[J].ValorTotal, ffCurrency, 15,2);
+                       '    Valor ' + FloatToStrF(mesa.Pedido.Items[J].ValorTotal, ffCurrency, 15,2);
+          totalComandas := totalComandas + mesa.Pedido.Items[J].ValorTotal;
+        end;
       if comandas <> EmptyStr then
       begin
-        //TListItemText(Objects.FindDrawable('comandas')).Height := Height; //23 * mesa.Pedido.Count + 1;
         TListItemText(Objects.FindDrawable('comandas')).Text := 'Comandas' + comandas;
-        //Layout_lvMesas(LItem);
+        TListItemText(Objects.FindDrawable('mesa')).Text := TListItemText(Objects.FindDrawable('mesa')).Text +
+          #13 + 'Total ' + FloatToStrF(totalComandas, ffCurrency, 15,2);
       end
       else
         TListItemText(Objects.FindDrawable('comandas')).Height := 23
@@ -190,6 +195,7 @@ begin
     TListItemText(subItem).TextColor := TAlphaColors.Orange;
     TListItemText(AItem.Objects.FindDrawable('comandas')).Height := 35 *
       FMesas.Mesas.Items[AItem.Index].Pedido.Count;
+    TListItemText(AItem.Objects.FindDrawable('mesa')).Height := 70;
   end
   else
     TListItemText(subItem).TextColor := TAlphaColors.Green;
