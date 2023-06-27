@@ -52,6 +52,7 @@ type
     procedure spbCarrinhoClick(Sender: TObject);
     procedure imgLerQRClick(Sender: TObject);
     procedure spbPedidosClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
@@ -96,7 +97,8 @@ var
 implementation
 
 uses
-  FMX.DialogService, Hunger.View.Produto, Hunger.View.Pedidos;
+  FMX.DialogService, Hunger.View.Produto, Hunger.View.Pedidos,
+  Hunger.View.Mesas;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -109,31 +111,34 @@ begin
       FAuthentication := TAuthentication.GetInstance(Self);
 
     try
-      if (MesaUUID <> EmptyStr) and (FAuthentication.Token = EmptyStr) then
+      if FAuthentication.Token = EmptyStr then
       begin
-        FAuthentication.URLServer := FURL_API;
+        FAuthentication.URLServer := FAuthentication.Connection.URLBase;
         FAuthentication.BodyString :=
           '{'+
-          '  "user":"'+ FUser_API +'",'+
-          '  "password":"'+ FPass_API +'"' +
+          '  "user":"hunger",'+
+          '  "password":"rm045369"' +
           '}';
         FAuthentication.UseURL := True;
         FAuthentication.Authentication;
       end;
-      if (FAuthentication.Token <> EmptyStr) then
+      if FAuthentication.Token <> EmptyStr then
       begin
         if MesaUUID = EmptyStr then
         begin
-          lblMesa.Text := 'Selecione uma mesa para iniciar...';
-          FMesaDescricao := 'Selecione uma mesa para iniciar...';
+          lblMesa.Text := 'Selecione uma mesa';
+          FMesaDescricao := 'Selecione uma mesa';
         end;
-        if ValidarMesaUUID then
-          ConsultarProduto(EmptyStr)
-        else
+        if (MesaUUID <> EmptyStr) and (ValidarMesaUUID) then
         begin
-          TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
-          LerQRCode(qrMesa);
+          if lvConsultaProduto.Items.Count = 0 then
+            ConsultarProduto(EmptyStr);
         end;
+//        else
+//        begin
+//          TDialogService.ShowMessage('Mesa inválida! Tente ler o QRCode novamente.');
+//          LerQRCode(qrMesa);
+//        end;
       end;
     except on E:Exception do
       begin
@@ -172,21 +177,25 @@ end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
-  if FMesaUUID = EmptyStr then
-  begin
-    LerQRCode(qrMesa);
-    {$IFDEF MSWINDOWS}
-    FMesaUUID := '6e8f282c-e768-11ed-a280-57bfeef036a0'; //MESA 02
-    //FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45'; MESA 01
-    FMesaDescricao := 'MESA 02';
-    FURL_API := 'http://localhost:8081/v1/';
-    FUser_API := 'hunger';
-    FPass_API := 'rm045369';
-    lblMesa.Text := FMesaDescricao;
-    FNumeroComanda := '10';
-    Autenticar_API;
-    {$ENDIF MSWINDOWS}
-  end;
+//  if not Assigned(Authentication) then
+//    Autenticar_API;
+
+////  if FMesaUUID = EmptyStr then
+//  if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
+//  begin
+//    {$IFDEF MSWINDOWS}
+//    FMesaUUID := '6e8f282c-e768-11ed-a280-57bfeef036a0'; //MESA 02
+//    //FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45'; MESA 01
+//    FMesaDescricao := 'MESA 02';
+////    FURL_API :=  'http://192.168.0.230:8081/v1/';
+////    FUser_API := 'hunger';
+////    FPass_API := 'rm045369';
+//    lblMesa.Text := FMesaDescricao;
+//    FNumeroComanda := '10';
+////    Autenticar_API;
+//    {$ENDIF MSWINDOWS}
+//    LerQRCode(qrMesa);
+//  end;
 end;
 
 procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -244,6 +253,11 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.FormShow(Sender: TObject);
+begin
+  Timer.Enabled := True;
+end;
+
 procedure TfrmPrincipal.imgLerQRClick(Sender: TObject);
 begin
   LerQRCode(qrMesa);
@@ -264,8 +278,30 @@ begin
       FContentImage := FrmLeitorCamera.Codigo;
       if FContentImage = EmptyStr then
       begin
-        TDialogService.ShowMessage('Não foi possível ler o QRCode. Tente novamente!');
-        LerQRCode(aTipoQRCode);
+        //TDialogService.ShowMessage('Não foi possível ler o QRCode. Tente novamente!');
+        //LerQRCode(aTipoQRCode);
+        if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
+        begin
+          Application.CreateForm(TfrmMesas, frmMesas);
+          with frmMesas do
+          begin
+            lblMesa.Text := 'Selecione uma mesa';
+            MesaSelecionada := 0;
+            frmMesas.ShowModal(procedure(ModalResult: TModalResult)
+            begin
+              if lvMesas.ItemIndex >= 0 then
+              begin
+                FMesaID := Mesas.Mesas.Items[MesaSelecionada].IdMesa;
+                FMesaUUID := Mesas.Mesas.Items[MesaSelecionada].MesaUUID;
+                FMesaDescricao := 'MESA ' + Mesas.Mesas.Items[MesaSelecionada].IdMesa.ToString;
+                FURL_API := 'http://192.168.0.230:8081/v1/';
+                FUser_API := 'hunger';
+                FPass_API := 'rm045369';
+                frmPrincipal.lblMesa.Text := FMesaDescricao;
+              end;
+            end);
+          end;
+        end;
         Exit;
       end;
 
@@ -296,6 +332,34 @@ begin
     end);
   end;
   {$ENDIF ANDROID}
+
+  {$IFDEF MSWINDOWS}
+  if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
+  begin
+    Application.CreateForm(TfrmMesas, frmMesas);
+    with frmMesas do
+    begin
+      lblMesa.Text := 'Selecione uma mesa';
+      MesaSelecionada := 0;
+      frmMesas.ShowModal(procedure(ModalResult: TModalResult)
+      begin
+        if lvMesas.ItemIndex >= 0 then
+        begin
+          FMesaID := Mesas.Mesas.Items[MesaSelecionada].IdMesa;
+          FMesaUUID := Mesas.Mesas.Items[MesaSelecionada].MesaUUID;
+          FMesaDescricao := 'MESA ' + Mesas.Mesas.Items[MesaSelecionada].IdMesa.ToString;
+          FURL_API := 'http://192.168.0.230:8081/v1/';
+          FUser_API := 'hunger';
+          FPass_API := 'rm045369';
+          frmPrincipal.lblMesa.Text := FMesaDescricao;
+          FNumeroComanda := '10';
+          if lvConsultaProduto.Items.Count = 0 then
+            ConsultarProduto(EmptyStr);
+        end;
+      end);
+    end;
+  end;
+  {$ENDIF MSWINDOWS}
 end;
 
 procedure TfrmPrincipal.lvConsultaProdutoItemClickEx(const Sender: TObject;

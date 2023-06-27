@@ -31,6 +31,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_426x320.9.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-small\</RemoteDir>
+            <RemoteName>splash_image_def.9.png</RemoteName>
+            <DeployClass>Android_SplashImage426</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android64\Release\HungerApp.classes" Condition="'$(Config)'=='Release'">
             <RemoteDir>HungerApp\classes\</RemoteDir>
             <RemoteName>HungerApp.classes</RemoteName>
@@ -44,15 +53,6 @@
             <RemoteDir>HungerApp\res\values\</RemoteDir>
             <RemoteName>strings.xml</RemoteName>
             <DeployClass>Android_Strings</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_72x72.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-hdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon72</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -77,28 +77,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-mdpi\</RemoteDir>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_72x72.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon48</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-xxhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon144</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-large\</RemoteDir>
-            <RemoteName>splash_image_def.9.png</RemoteName>
-            <DeployClass>Android_SplashImage640</DeployClass>
+            <DeployClass>Android_LauncherIcon72</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -185,19 +167,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon36</DeployClass>
+        <DeployFile Include="Android64\Debug\styles.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HungerApp\res\values\</RemoteDir>
+            <RemoteName>styles.xml</RemoteName>
+            <DeployClass>AndroidSplashStyles</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android64\Debug\styles.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HungerApp\res\values\</RemoteDir>
-            <RemoteName>styles.xml</RemoteName>
-            <DeployClass>AndroidSplashStyles</DeployClass>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-ldpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon36</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -221,6 +203,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-xhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon96</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon144</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HungerApp\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
@@ -239,19 +239,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android64\Debug\AndroidManifest.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HungerApp\</RemoteDir>
-            <RemoteName>AndroidManifest.xml</RemoteName>
-            <DeployClass>ProjectAndroidManifest</DeployClass>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_470x320.9.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-normal\</RemoteDir>
+            <RemoteName>splash_image_def.9.png</RemoteName>
+            <DeployClass>Android_SplashImage470</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-xxxhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon192</DeployClass>
+        <DeployFile Include="Android64\Debug\AndroidManifest.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HungerApp\</RemoteDir>
+            <RemoteName>AndroidManifest.xml</RemoteName>
+            <DeployClass>ProjectAndroidManifest</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -338,15 +338,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-xhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon96</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HungerApp\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
@@ -365,10 +356,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-xlarge\</RemoteDir>
-            <RemoteName>splash_image_def.9.png</RemoteName>
-            <DeployClass>Android_SplashImage960</DeployClass>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -383,10 +374,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-small\</RemoteDir>
-            <RemoteName>splash_image_def.9.png</RemoteName>
-            <DeployClass>Android_SplashImage426</DeployClass>
+        <DeployFile Include="Android64\Release\provider_paths.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\xml\</RemoteDir>
+            <RemoteName>provider_paths.xml</RemoteName>
+            <DeployClass>AndroidFileProvider</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -419,10 +410,28 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon192</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HungerApp\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon192</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_960x720.9.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HungerApp\res\drawable-xlarge\</RemoteDir>
+            <RemoteName>splash_image_def.9.png</RemoteName>
+            <DeployClass>Android_SplashImage960</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -465,7 +474,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_640x480.9.png" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_640x480.9.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HungerApp\res\drawable-large\</RemoteDir>
             <RemoteName>splash_image_def.9.png</RemoteName>
             <DeployClass>Android_SplashImage640</DeployClass>
@@ -474,10 +483,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HungerApp\res\drawable-normal\</RemoteDir>
+        <DeployFile Include="E:\HungerApp\Front-end\AppHunger\Imagens\FM_SplashImage_640x480.9.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HungerApp\res\drawable-large\</RemoteDir>
             <RemoteName>splash_image_def.9.png</RemoteName>
-            <DeployClass>Android_SplashImage470</DeployClass>
+            <DeployClass>Android_SplashImage640</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -922,6 +931,16 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win64'">
         <DeployFile Include="Win64\Debug\HungerApp.exe" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HungerApp\</RemoteDir>
+            <RemoteName>HungerApp.exe</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="Win64\Release\HungerApp.exe" Condition="'$(Config)'=='Release'">
             <RemoteDir>HungerApp\</RemoteDir>
             <RemoteName>HungerApp.exe</RemoteName>
             <DeployClass>ProjectOutput</DeployClass>

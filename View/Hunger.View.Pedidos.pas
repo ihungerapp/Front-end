@@ -24,7 +24,6 @@ type
     FPedidos: TPedidosList;
     function ConsultarPedidos: TJSONOBject;
     procedure Carregar_LvPedidosItens(aPedidos: TObjectList<TPedido>);
-    { Public declarations }
   end;
 
 var

@@ -1,0 +1,72 @@
+inherited frmMesas: TfrmMesas
+  Caption = 'frmBase1'
+  OnShow = FormShow
+  DesignerMasterStyle = 3
+  inherited layCabecalho: TLayout
+    inherited recCabecalho: TRectangle
+      inherited lblHungerApp: TLabel
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+    object spbVoltar: TSpeedButton
+      Align = Left
+      Position.Y = 4.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'priortoolbuttonbordered'
+      OnClick = spbVoltarClick
+    end
+  end
+  inherited lytLista: TLayout
+    inherited lblMesa: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+    end
+    object lvMesas: TListView
+      ItemAppearanceClassName = 'TDynamicAppearance'
+      ItemEditAppearanceClassName = 'TDynamicAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      OnUpdateObjects = lvMesasUpdateObjects
+      Align = Client
+      Size.Width = 425.000000000000000000
+      Size.Height = 588.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearance.ItemHeight = 50
+      ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'mesa'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 16.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.Width = 150.000000000000000000
+          Appearance.Height = 23.000000000000000000
+          Appearance.VertAlign = Center
+          Appearance.PlaceOffset.X = 10.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'comandas'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Size = 14.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.TextColor = xFF1D78CE
+          Appearance.Width = 232.000000000000000000
+          Appearance.Height = 23.000000000000000000
+          Appearance.VertAlign = Center
+          Appearance.PlaceOffset.X = 162.000000000000000000
+        end>
+      ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'Text1'
+          AppearanceClassName = 'TTextObjectAppearance'
+        end>
+      CanSwipeDelete = False
+      OnItemClickEx = lvMesasItemClickEx
+    end
+  end
+end
