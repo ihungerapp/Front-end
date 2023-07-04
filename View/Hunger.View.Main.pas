@@ -310,8 +310,6 @@ begin
       FContentImage := FrmLeitorCamera.Codigo;
       if FContentImage = EmptyStr then
       begin
-        //TDialogService.ShowMessage('Não foi possível ler o QRCode. Tente novamente!');
-        //LerQRCode(aTipoQRCode);
         if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
         begin
           Application.CreateForm(TfrmMesas, frmMesas);
@@ -407,6 +405,8 @@ begin
   begin
     lblMesa.Text := FMesaDescricao + ' > Produto';
     imgProduto.Bitmap := imgFoto.MultiResBitmap.Items[ItemIndex].Bitmap;
+    if not Assigned(imgProduto.Bitmap) then
+      imgProduto.Destroy;
     Produto := FProdutos[ItemIndex];
   end;
   frmProduto.ShowModal(procedure(ModalResult: TModalResult)

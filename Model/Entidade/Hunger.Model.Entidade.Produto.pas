@@ -13,9 +13,14 @@ type
     FTipo: string;
     [JSONName('id_precificacao')]
     FIdPrecificacao: Integer;
+    FGrupo: string;
+    [JSONName('qtde_max_selecao')]
+    FQtdeMaxSelecao: Integer;
   published
     property Tipo: string read FTipo write FTipo;
     property IdPrecificacao: Integer read FIdPrecificacao write FIdPrecificacao;
+    property Grupo: string read FGrupo write FGrupo;
+    property QtdeMaxSelecao: Integer read FQtdeMaxSelecao write FQtdeMaxSelecao;
   end;
 
   TProdutoPrecificacao = class(TJsonDTO)

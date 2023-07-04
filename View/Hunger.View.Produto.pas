@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   System.Generics.Collections, Hunger.Model.Entidade.Produto, FMX.ListBox,
-  FMX.Edit, FMX.EditBox, FMX.NumberBox, Hunger.Model.Entidade.Pedidos;
+  FMX.Edit, FMX.EditBox, FMX.NumberBox, Hunger.Model.Entidade.Pedidos,
+  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo;
 
 type
   TfrmProduto = class(TfrmBase)
@@ -23,20 +24,25 @@ type
     recAdd: TRectangle;
     recDrop: TRectangle;
     recQtde: TRectangle;
+    lblObs: TLabel;
+    recObs: TRectangle;
+    memObs: TMemo;
     procedure spbVoltarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure lbProdutoPrecificacaoClick(Sender: TObject);
     procedure nbxQtdeChange(Sender: TObject);
     procedure recDropClick(Sender: TObject);
     procedure recAddClick(Sender: TObject);
     procedure recAdicionarClick(Sender: TObject);
+    procedure ItemSelectedClick(Sender: TObject);
+    procedure lbProdutoPrecificacaoClick(Sender: TObject);
   private
     FProduto: TProduto;
     FPedidoItem: TPedidoItem;
+    FGrupo: String;
+    FValor: Double;
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
-    procedure CalcularValorTotal;
-    procedure AddItemLb(aValor: Double; aTipo: String);
+    procedure AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
     procedure SetPedidoItem(const Value: TPedidoItem);
   public
     property Produto: TProduto read FProduto write SetProduto;
@@ -54,41 +60,95 @@ uses
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
 
-procedure TfrmProduto.AddItemLb(aValor: Double; aTipo: String);
+procedure TfrmProduto.AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
 var
   item: TListBoxItem;
   rdbDescPrec: TRadioButton;
+  ckbDescPrec: TCheckBox;
+  lbGrupo: TLabel;
 begin
   item := TListBoxItem.Create(nil);
-
   item.StyledSettings := [];
-  item.Height := 30;
+
+  if (FGrupo = EmptyStr)
+  or ((FGrupo <> EmptyStr) and (FGrupo <> aGrupo)) then
+  begin
+    lbGrupo := TLabel.Create(lbProdutoPrecificacao);
+    with lbGrupo do
+    begin
+      StyledSettings := [];
+      Height := 20;
+      Align := TAlignLayout.Top;
+      TextSettings.HorzAlign := TTextAlign.Center;
+      TextSettings.Font.Family := 'Inter';
+      TextSettings.Font.Size := 14;
+      TextSettings.Font.Style := [TFontStyle.fsBold];
+      TextSettings.FontColor := TAlphaColors.Black;
+      Text := aGrupo;
+    end;
+
+    item.Height := 50;
+    item.AddObject(lbGrupo);
+  end
+  else
+    item.Height := 30;
+
+  item.TextSettings.VertAlign := TTextAlign.Trailing;
   item.TextSettings.HorzAlign := TTextAlign.Trailing;
   item.TextSettings.Font.Family := 'Inter';
   item.TextSettings.Font.Size := 14;
   item.TextSettings.FontColor := TAlphaColors.Darkgreen;
-  item.ItemData.Text := FloatToStrF(aValor, ffCurrency, 15,2);
+  if aValor > 0 then
+    item.ItemData.Text := FloatToStrF(aValor, ffCurrency, 15,2);
 
-  rdbDescPrec := TRadioButton.Create(nil);
-  rdbDescPrec.StyledSettings := [];
-  rdbDescPrec.Align := TAlignLayout.Client;
-  rdbDescPrec.TextSettings.FontColor := TAlphaColors.Darkgreen;
-  rdbDescPrec.TextSettings.Font.Family := 'Inter';
-  rdbDescPrec.TextSettings.Font.Size := 14;
-  rdbDescPrec.Text := aTipo;
+  if aQtdeMaxSelecao = 1 then
+  begin
+    rdbDescPrec := TRadioButton.Create(lbProdutoPrecificacao);
+    with rdbDescPrec do
+    begin
+      StyledSettings := [];
+      Align := TAlignLayout.Client;
+      TextSettings.FontColor := TAlphaColors.Darkgreen;
+      TextSettings.Font.Family := 'Inter';
+      TextSettings.Font.Size := 14;
+      Text := aTipo;
+      if aValor > 0 then
+        OnClick := lbProdutoPrecificacaoClick;
+      //  OnClick := ItemSelectedClick;
+    end;
+    item.AddObject(rdbDescPrec);
+  end
+  else
+  begin
+    ckbDescPrec := TCheckBox.Create(lbProdutoPrecificacao);
+    with ckbDescPrec do
+    begin
+      StyledSettings := [];
+      Align := TAlignLayout.Client;
+      TextSettings.FontColor := TAlphaColors.Darkgreen;
+      TextSettings.Font.Family := 'Inter';
+      TextSettings.Font.Size := 14;
+      Text := aTipo;
+      if aValor > 0 then
+        OnClick := lbProdutoPrecificacaoClick;
+      //  OnClick := ItemSelectedClick;
+    end;
+    item.AddObject(ckbDescPrec);
+  end;
 
-  item.AddObject(rdbDescPrec);
   lbProdutoPrecificacao.AddObject(item);
-  rdbDescPrec.OnClick := lbProdutoPrecificacao.OnClick;
-end;
 
-procedure TfrmProduto.CalcularValorTotal;
-begin
-  if lbProdutoPrecificacao.ItemIndex >= 0 then
-    lblAdicionar.Text := 'Adicionar ao carrinho   ' +
-      FloatToStrF(nbxQtde.Value *
-      Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor
-      , ffCurrency, 15,2);
+  if aQtdeMaxSelecao = 1 then
+  begin
+    rdbDescPrec.Name := 'rdbDescPrec' + item.Index.ToString;
+    rdbDescPrec.GroupName := aGrupo;
+    Self.InsertComponent(rdbDescPrec);
+  end
+  else
+  begin
+    ckbDescPrec.Name := 'ckbDescPrec' + item.Index.ToString;
+    Self.InsertComponent(ckbDescPrec);
+  end;
 end;
 
 procedure TfrmProduto.FormShow(Sender: TObject);
@@ -103,22 +163,107 @@ begin
   PreencherLbProdutoPrecificacao;
   nbxQtde.Value := 1;
   lblAdicionar.Text := 'Adicionar ao carrinho';
+  FValor := 0;
 
   if Assigned(imgProduto.Bitmap) then
-    imgProduto.Bitmap.Resize(Trunc(imgProduto.Width), Trunc(imgProduto.Height));
+    imgProduto.Bitmap.Resize(Trunc(imgProduto.Width), Trunc(imgProduto.Height))
 end;
 
 
-procedure TfrmProduto.lbProdutoPrecificacaoClick(Sender: TObject);
+procedure TfrmProduto.ItemSelectedClick(Sender: TObject);
+var
+  I, J: Integer;
+  checked: Boolean;
 begin
-  inherited;
-  CalcularValorTotal;
+  FValor := 0;
+  J := -1;
+  for I := 0 to Pred(ComponentCount) do
+  begin
+//    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked
+//    and not (Components[I] as TRadioButton).IsPressed then
+//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+//    if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked
+//    and not (Components[I] as TCheckBox).IsPressed then
+//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+
+    if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
+      Inc(J);
+
+    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked then
+      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
+      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+
+//    if (Components[I] is TRadioButton) and not (Components[I] as TRadioButton).IsChecked then
+//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+//    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
+//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+  end;
+
+//  if (Sender is TRadioButton) and (Sender as TRadioButton).IsPressed then
+//    checked := not (Sender as TRadioButton).IsChecked;
+//  if (Sender is TCheckBox) and (Sender as TCheckBox).IsPressed then
+//    checked := not (Sender as TCheckBox).IsChecked;
+//
+//  if checked then
+//    FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor
+//  else
+//    FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+
+  lblAdicionar.Text := 'Adicionar ao carrinho   ' +
+    FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
+end;
+
+procedure TfrmProduto.lbProdutoPrecificacaoClick(Sender: TObject);
+var
+  I, J: Integer;
+  checked: Boolean;
+begin
+  FValor := 0;
+  J := -1;
+  for I := 0 to Pred(ComponentCount) do
+  begin
+//    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked
+//    and not (Components[I] as TRadioButton).IsPressed then
+//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+//    if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked
+//    and not (Components[I] as TCheckBox).IsPressed then
+//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+
+    if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
+      Inc(J);
+
+    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked then
+      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+    if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked then
+      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+
+//    if (Components[I] is TRadioButton) and not (Components[I] as TRadioButton).IsChecked then
+//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+//    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
+//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+  end;
+
+//  if (Sender is TRadioButton) and (Sender as TRadioButton).IsPressed then
+//    checked := not (Sender as TRadioButton).IsChecked;
+//  if (Sender is TCheckBox) and (Sender as TCheckBox).IsPressed then
+//    checked := not (Sender as TCheckBox).IsChecked;
+//
+//  if checked then
+//    FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor
+//  else
+//    FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+
+  lblAdicionar.Text := 'Adicionar ao carrinho   ' +
+    FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
+
 end;
 
 procedure TfrmProduto.nbxQtdeChange(Sender: TObject);
 begin
   inherited;
-  CalcularValorTotal;
+  lblAdicionar.Text := 'Adicionar ao carrinho   ' +
+    FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
 end;
 
 procedure TfrmProduto.PreencherLbProdutoPrecificacao;
@@ -128,12 +273,17 @@ begin
   lbProdutoPrecificacao.Items.Clear;
   lbProdutoPrecificacao.BeginUpdate;
   try
+    FGrupo := EmptyStr;
     if Produto.ProdutoPrecificacao.Count = 0 then
-      AddItemLb(Produto.ValorInicial, 'Único')
+      AddItemLb(Produto.ValorInicial, 'Único', '', 1)
     else
     for produtoPrecificacao in Produto.ProdutoPrecificacao do
     begin
-      AddItemLb(produtoPrecificacao.Valor, produtoPrecificacao.Precificacao.Tipo);
+      AddItemLb(produtoPrecificacao.Valor,
+                produtoPrecificacao.Precificacao.Tipo,
+                produtoPrecificacao.Precificacao.Grupo,
+                produtoPrecificacao.Precificacao.QtdeMaxSelecao);
+      FGrupo := produtoPrecificacao.Precificacao.Grupo;
     end;
   finally
     lbProdutoPrecificacao.EndUpdate;
@@ -161,13 +311,13 @@ begin
 
   PedidoItem.IdProduto := Produto.IdProduto;
   PedidoItem.Qtde := nbxQtde.Value;
-  PedidoItem.ValorUnitario := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-  PedidoItem.ValorTotal := nbxQtde.Value *
-      Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
+  PedidoItem.ValorUnitario := FValor;
+  PedidoItem.ValorTotal := nbxQtde.Value * FValor;
   PedidoItem.DataHoraEmissao := Now;
   PedidoItem.DataHoraStatus := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
   PedidoItem.IdProdutoPrecificacao := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].IdProdutoPrecificacao;
+  PedidoItem.Obs := memObs.Text;
   Close;
 end;
 

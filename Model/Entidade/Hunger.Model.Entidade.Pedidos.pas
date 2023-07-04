@@ -34,6 +34,7 @@ type
     FIdProdutoPrecificacao: Integer;
     [JSONName('produto'), JSONMarshalled(False)]
     FProduto: TProduto;
+    FObs: String;
   published
     property DataHoraEmissao: TDateTime read FDataHoraEmissao write FDataHoraEmissao;
     property DataHoraStatus: TDateTime read FDataHoraStatus write FDataHoraStatus;
@@ -46,6 +47,7 @@ type
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
     property IdProdutoPrecificacao: Integer read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
     property Produto: TProduto read FProduto;
+    property Obs: string read FObs write FObs;
   end;
 
   TPedido = class(TJsonDTO)
