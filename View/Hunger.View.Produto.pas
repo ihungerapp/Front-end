@@ -33,7 +33,6 @@ type
     procedure recDropClick(Sender: TObject);
     procedure recAddClick(Sender: TObject);
     procedure recAdicionarClick(Sender: TObject);
-    procedure ItemSelectedClick(Sender: TObject);
     procedure lbProdutoPrecificacaoClick(Sender: TObject);
   private
     FProduto: TProduto;
@@ -113,8 +112,7 @@ begin
       TextSettings.Font.Size := 14;
       Text := aTipo;
       if aValor > 0 then
-        OnClick := lbProdutoPrecificacaoClick;
-      //  OnClick := ItemSelectedClick;
+        OnChange := lbProdutoPrecificacaoClick;
     end;
     item.AddObject(rdbDescPrec);
   end
@@ -130,8 +128,7 @@ begin
       TextSettings.Font.Size := 14;
       Text := aTipo;
       if aValor > 0 then
-        OnClick := lbProdutoPrecificacaoClick;
-      //  OnClick := ItemSelectedClick;
+        OnChange := lbProdutoPrecificacaoClick;
     end;
     item.AddObject(ckbDescPrec);
   end;
@@ -170,93 +167,26 @@ begin
 end;
 
 
-procedure TfrmProduto.ItemSelectedClick(Sender: TObject);
-var
-  I, J: Integer;
-  checked: Boolean;
-begin
-  FValor := 0;
-  J := -1;
-  for I := 0 to Pred(ComponentCount) do
-  begin
-//    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked
-//    and not (Components[I] as TRadioButton).IsPressed then
-//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-//    if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked
-//    and not (Components[I] as TCheckBox).IsPressed then
-//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-
-    if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
-      Inc(J);
-
-    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked then
-      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
-    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
-      FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
-
-//    if (Components[I] is TRadioButton) and not (Components[I] as TRadioButton).IsChecked then
-//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-//    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
-//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-  end;
-
-//  if (Sender is TRadioButton) and (Sender as TRadioButton).IsPressed then
-//    checked := not (Sender as TRadioButton).IsChecked;
-//  if (Sender is TCheckBox) and (Sender as TCheckBox).IsPressed then
-//    checked := not (Sender as TCheckBox).IsChecked;
-//
-//  if checked then
-//    FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor
-//  else
-//    FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-
-  lblAdicionar.Text := 'Adicionar ao carrinho   ' +
-    FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
-end;
-
 procedure TfrmProduto.lbProdutoPrecificacaoClick(Sender: TObject);
 var
   I, J: Integer;
   checked: Boolean;
 begin
+  inherited;
   FValor := 0;
   J := -1;
   for I := 0 to Pred(ComponentCount) do
   begin
-//    if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked
-//    and not (Components[I] as TRadioButton).IsPressed then
-//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-//    if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked
-//    and not (Components[I] as TCheckBox).IsPressed then
-//      FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-
     if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
       Inc(J);
-
     if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked then
       FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
     if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked then
       FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
-
-//    if (Components[I] is TRadioButton) and not (Components[I] as TRadioButton).IsChecked then
-//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-//    if (Components[I] is TCheckBox) and not (Components[I] as TCheckBox).IsChecked then
-//      FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
   end;
-
-//  if (Sender is TRadioButton) and (Sender as TRadioButton).IsPressed then
-//    checked := not (Sender as TRadioButton).IsChecked;
-//  if (Sender is TCheckBox) and (Sender as TCheckBox).IsPressed then
-//    checked := not (Sender as TCheckBox).IsChecked;
-//
-//  if checked then
-//    FValor := FValor + Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor
-//  else
-//    FValor := FValor - Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].Valor;
-
   lblAdicionar.Text := 'Adicionar ao carrinho   ' +
     FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
-
+  recAdicionar.SetFocus;
 end;
 
 procedure TfrmProduto.nbxQtdeChange(Sender: TObject);
@@ -317,7 +247,7 @@ begin
   PedidoItem.DataHoraStatus := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
   PedidoItem.IdProdutoPrecificacao := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].IdProdutoPrecificacao;
-  PedidoItem.Obs := memObs.Text;
+  PedidoItem.Obs := memObs.Lines.Text;
   Close;
 end;
 

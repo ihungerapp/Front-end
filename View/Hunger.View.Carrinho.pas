@@ -200,6 +200,8 @@ begin
 end;
 
 procedure TfrmCarrinho.FinalizarPedido;
+var
+  pedidoItem: TPedidoItem;
 begin
   FModelPedido := TModelPedido.Create;
   try
@@ -207,16 +209,22 @@ begin
     if not (ValidarMesaComanda) then
       TDialogService.ShowMessage('Comanda vinculada a outra mesa!')
     else
-    if (FModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication)) then
     begin
-      TDialogService.ShowMessage('Pedido enviado com sucesso!');
-      FreeAndNil(frmPrincipal.Pedido);
-      frmPrincipal.ProdutosCarrinho.Clear;
-      //frmPrincipal.NumeroComanda := EmptyStr;
-      Close;
-    end
-    else
-      TDialogService.ShowMessage('Erro ao enviar o pedido!');
+      if Pedido.IdPedido > 0  then
+      begin
+        for pedidoItem in Pedido.PedidoItem do
+          pedidoItem.IdPedido := Pedido.IdPedido;
+      end;
+      if (FModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication)) then
+      begin
+        TDialogService.ShowMessage('Pedido enviado com sucesso!');
+        FreeAndNil(frmPrincipal.Pedido);
+        frmPrincipal.ProdutosCarrinho.Clear;
+        Close;
+      end
+      else
+        TDialogService.ShowMessage('Erro ao enviar o pedido!');
+    end;
   finally
     FreeAndNil(FModelPedido);
   end;
@@ -337,7 +345,10 @@ begin
       for I := 0 to Pred(LJsonArray.Count) do
       begin
         if Pedido.IdMesa = LJsonArray.Items[I].FindValue('id_mesa').ToJSON.ToInteger then
-          Result := True
+        begin
+          Pedido.IdPedido := LJsonArray.Items[I].FindValue('id_pedido').ToJSON.ToInteger;
+          Result := True;
+        end
         else
         begin
           Result := False;

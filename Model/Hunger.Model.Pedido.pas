@@ -47,11 +47,19 @@ begin
     Result := False;
     try
       LJsonObject :=  TJSONObject(TJSONObject.ParseJSONValue(aPedido.AsJson)) as TJSONObject;
-      LJsonArray.AddElement(LJsonObject);
-      LJsonObject := nil;
-      LJsonObject := TJSONObject.Create;
-      LJsonObject.AddPair('pedido', LJsonArray);
-      LJsonResponse := aAuthentication.Connection.Execute('pedido', aMetodo, LJsonObject);
+      if aPedido.IdPedido > 0 then
+      begin
+        LJsonObject.TryGetValue<TJSonArray>('pedidoItem', LJsonArray);
+        LJsonResponse := aAuthentication.Connection.Execute('pedidoItem', aMetodo, LJsonObject);
+      end
+      else
+      begin
+        LJsonArray.AddElement(LJsonObject);
+        LJsonObject := nil;
+        LJsonObject := TJSONObject.Create;
+        LJsonObject.AddPair('pedido', LJsonArray);
+        LJsonResponse := aAuthentication.Connection.Execute('pedido', aMetodo, LJsonObject);
+      end;
       if LJsonResponse.FindValue('sucesso').ToString = 'true' then
         Result := True;
     finally
