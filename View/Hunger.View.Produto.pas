@@ -26,7 +26,7 @@ type
     recQtde: TRectangle;
     lblObs: TLabel;
     recObs: TRectangle;
-    memObs: TMemo;
+    edtObs: TEdit;
     procedure spbVoltarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure nbxQtdeChange(Sender: TObject);
@@ -39,6 +39,7 @@ type
     FPedidoItem: TPedidoItem;
     FGrupo: String;
     FValor: Double;
+    FIdsProdPrec: String; //Armazena os códigos das precificações dos produtos
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
     procedure AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
@@ -171,18 +172,35 @@ procedure TfrmProduto.lbProdutoPrecificacaoClick(Sender: TObject);
 var
   I, J: Integer;
   checked: Boolean;
+
+  procedure AddIDProdPrec;
+  begin
+    if FIdsProdPrec = EmptyStr then
+      FIdsProdPrec := Produto.ProdutoPrecificacao[J].IdProdutoPrecificacao.ToString
+    else
+      FIdsProdPrec := FIdsProdPrec + ',' + Produto.ProdutoPrecificacao[J].IdProdutoPrecificacao.ToString;
+  end;
+
 begin
   inherited;
   FValor := 0;
   J := -1;
+  FIdsProdPrec := EmptyStr;
   for I := 0 to Pred(ComponentCount) do
   begin
     if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
       Inc(J);
+
     if (Components[I] is TRadioButton) and (Components[I] as TRadioButton).IsChecked then
+    begin
       FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+      AddIDProdPrec;
+    end;
     if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked then
+    begin
       FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
+      AddIDProdPrec;
+    end;
   end;
   lblAdicionar.Text := 'Adicionar ao carrinho   ' +
     FloatToStrF(FValor * nbxQtde.Value, ffCurrency, 15,2);
@@ -227,6 +245,9 @@ begin
 end;
 
 procedure TfrmProduto.recAdicionarClick(Sender: TObject);
+var
+  I: Integer;
+  idsProdPrec: String;
 begin
   inherited;
   if lbProdutoPrecificacao.ItemIndex < 0 then
@@ -246,8 +267,8 @@ begin
   PedidoItem.DataHoraEmissao := Now;
   PedidoItem.DataHoraStatus := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
-  PedidoItem.IdProdutoPrecificacao := Produto.ProdutoPrecificacao[lbProdutoPrecificacao.Selected.Index].IdProdutoPrecificacao;
-  PedidoItem.Obs := memObs.Lines.Text;
+  PedidoItem.Obs := edtObs.Text;
+  PedidoItem.IdProdutoPrecificacao := FIdsProdPrec;
   Close;
 end;
 

@@ -31,7 +31,7 @@ type
     [JSONName('valor_unitario')]
     FValorUnitario: Double;
     [JSONName('id_produto_precificacao')]
-    FIdProdutoPrecificacao: Integer;
+    FIdProdutoPrecificacao: String;
     [JSONName('produto'), JSONMarshalled(False)]
     FProduto: TProduto;
     FObs: String;
@@ -45,7 +45,7 @@ type
     property Qtde: Double read FQtde write FQtde;
     property ValorTotal: Double read FValorTotal write FValorTotal;
     property ValorUnitario: Double read FValorUnitario write FValorUnitario;
-    property IdProdutoPrecificacao: Integer read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
+    property IdProdutoPrecificacao: String read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
     property Produto: TProduto read FProduto;
     property Obs: string read FObs write FObs;
   end;

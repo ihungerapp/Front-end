@@ -42,7 +42,6 @@ type
     imgConfig: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
@@ -83,6 +82,8 @@ type
     procedure SetPedido(const Value: TPedido);
     procedure SetProdutosCarrinho(const Value: TObjectList<TProduto>);
     procedure SetNumeroComanda(const Value: String);
+    procedure Layout_lvConsulta(AItem: TListViewItem);
+    function GetTextHeight(const D: TListItemText; const Width: single; const Text: string): Integer;
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -103,7 +104,7 @@ implementation
 
 uses
   FMX.DialogService, Hunger.View.Produto, Hunger.View.Pedidos,
-  Hunger.View.Mesas, Hunger.View.Config;
+  Hunger.View.Mesas, Hunger.View.Config, FMX.TextLayout;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -180,29 +181,6 @@ begin
   TimerPesquisar.Enabled := True;
 end;
 
-procedure TfrmPrincipal.FormActivate(Sender: TObject);
-begin
-//  if not Assigned(Authentication) then
-//    Autenticar_API;
-
-////  if FMesaUUID = EmptyStr then
-//  if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
-//  begin
-//    {$IFDEF MSWINDOWS}
-//    FMesaUUID := '6e8f282c-e768-11ed-a280-57bfeef036a0'; //MESA 02
-//    //FMesaUUID := '6e8febb8-e768-11ed-a28a-9fbdff546e45'; MESA 01
-//    FMesaDescricao := 'MESA 02';
-////    FURL_API :=  'http://192.168.0.230:8081/v1/';
-////    FUser_API := 'hunger';
-////    FPass_API := 'rm045369';
-//    lblMesa.Text := FMesaDescricao;
-//    FNumeroComanda := '10';
-////    Autenticar_API;
-//    {$ENDIF MSWINDOWS}
-//    LerQRCode(qrMesa);
-//  end;
-end;
-
 procedure TfrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   MessageDlg('Tem certeza que deseja sair do HungerApp?',
@@ -263,6 +241,33 @@ begin
   Timer.Enabled := True;
 end;
 
+function TfrmPrincipal.GetTextHeight(const D: TListItemText;
+  const Width: single; const Text: string): Integer;
+var
+  Layout: TTextLayout;
+begin
+  Layout := TTextLayoutManager.DefaultTextLayout.Create;
+  try
+    Layout.BeginUpdate;
+    try
+      Layout.Font.Assign(D.Font);
+      Layout.VerticalAlign := D.TextVertAlign;
+      Layout.HorizontalAlign := D.TextAlign;
+      Layout.WordWrap := D.WordWrap;
+      Layout.Trimming := D.Trimming;
+      Layout.MaxSize := TPointF.Create(Width, TTextLayout.MaxLayoutSize.Y);
+      Layout.Text := Text;
+    finally
+      Layout.EndUpdate;
+    end;
+    Result := Round(Layout.Height);
+    Layout.Text := 'm';
+    Result := Result + Round(Layout.Height);
+  finally
+    Layout.Free;
+  end;
+end;
+
 procedure TfrmPrincipal.imgConfigClick(Sender: TObject);
 begin
   Application.CreateForm(TfrmConfig, frmConfig);
@@ -291,6 +296,16 @@ begin
   end;
 
   LerQRCode(qrMesa);
+end;
+
+procedure TfrmPrincipal.Layout_lvConsulta(AItem: TListViewItem);
+var
+  txt: TListItemText;
+begin
+  txt := AItem.Objects.FindDrawable('complemento') as TListItemText;
+  txt.Width := lvConsultaProduto.Width - 65;
+  txt.Height := GetTextHeight(txt, txt.Width, txt.Text) + 5;
+  AItem.Height := Trunc(txt.PlaceOffset.Y + txt.Height);
 end;
 
 procedure TfrmPrincipal.LerQRCode(aTipoQRCode: TTipoQRCode);
@@ -475,7 +490,7 @@ begin
           TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
           TListItemText(Objects.FindDrawable('valor')).Text := 'A partir de ' +
             FloatToStrF(aProdutos[I].ValorInicial, ffCurrency, 15,2);
-          //Layout_lvConsulta(LItem);
+          Layout_lvConsulta(LItem);
         end;
       end);
     end;

@@ -8,7 +8,6 @@ object frmPrincipal: TfrmPrincipal
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnActivate = FormActivate
   OnCreate = FormCreate
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
@@ -487,28 +486,27 @@ object frmPrincipal: TfrmPrincipal
         item
           AppearanceObjectName = 'complemento'
           AppearanceClassName = 'TTextObjectAppearance'
-          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.Size = 11.000000000000000000
           Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
-          Appearance.TextVertAlign = Leading
+          Appearance.WordWrap = True
           Appearance.TextColor = xFF1D78CE
           Appearance.Width = 310.000000000000000000
           Appearance.Height = 23.000000000000000000
           Appearance.PlaceOffset.X = 80.000000000000000000
-          Appearance.PlaceOffset.Y = 20.000000000000000000
+          Appearance.PlaceOffset.Y = 52.000000000000000000
         end
         item
           AppearanceObjectName = 'valor'
           AppearanceClassName = 'TTextObjectAppearance'
           Appearance.Font.Size = 13.000000000000000000
           Appearance.TextAlign = Leading
-          Appearance.TextVertAlign = Leading
           Appearance.WordWrap = True
-          Appearance.TextColor = xFF8D8D8D
+          Appearance.TextColor = claSlategray
           Appearance.Width = 310.000000000000000000
           Appearance.Height = 23.000000000000000000
           Appearance.PlaceOffset.X = 80.000000000000000000
-          Appearance.PlaceOffset.Y = 40.000000000000000000
+          Appearance.PlaceOffset.Y = 27.000000000000000000
         end
         item
           AppearanceObjectName = 'imgProduto'

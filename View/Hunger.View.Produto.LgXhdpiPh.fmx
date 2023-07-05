@@ -24,9 +24,9 @@ inherited frmProduto_LgXhdpiPh: TfrmProduto_LgXhdpiPh
     end
     inherited lbProdutoPrecificacao: TListBox
       Size.Width = 430.000000000000000000
-      Size.Height = 269.000000000000000000
+      Size.Height = 261.000000000000000000
       Viewport.Width = 430.000000000000000000
-      Viewport.Height = 269.000000000000000000
+      Viewport.Height = 261.000000000000000000
     end
     inherited texComplemento: TText
       Size.Width = 430.000000000000000000
@@ -46,7 +46,7 @@ inherited frmProduto_LgXhdpiPh: TfrmProduto_LgXhdpiPh
       end
     end
     inherited recQtde: TRectangle
-      Position.Y = 487.000000000000000000
+      Position.Y = 547.000000000000000000
       Size.Width = 430.000000000000000000
       inherited nbxQtde: TNumberBox
         Size.Width = 430.000000000000000000
@@ -105,20 +105,16 @@ inherited frmProduto_LgXhdpiPh: TfrmProduto_LgXhdpiPh
       end
     end
     inherited recObs: TRectangle
-      Position.Y = 519.000000000000000000
       Size.Width = 430.000000000000000000
       Stroke.Thickness = 2.000000000000000000
       inherited lblObs: TLabel
         Size.Width = 430.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
       end
-      inherited memObs: TMemo
+      inherited edtObs: TEdit
         TextSettings.Font.StyleExt = {00070000000000000004000000}
-        Padding.Left = 5.000000000000000000
-        Padding.Bottom = 5.000000000000000000
         Size.Width = 430.000000000000000000
-        Viewport.Width = 430.000000000000000000
-        Viewport.Height = 37.000000000000000000
+        OnChangeTracking = nil
       end
     end
   end
