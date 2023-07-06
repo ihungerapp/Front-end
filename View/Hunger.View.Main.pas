@@ -147,7 +147,7 @@ begin
       end;
     end;
   finally
-    Timer.Enabled := FAuthentication.Token = EmptyStr;
+    //Timer.Enabled := FAuthentication.Token = EmptyStr;
   end;
 end;
 
@@ -510,7 +510,10 @@ begin
   end;
 
   if Assigned(FAuthentication) and (FAuthentication.Token <> EmptyStr) then
-    ConsultarProduto(edtPesquisar.Text);
+    ConsultarProduto(edtPesquisar.Text)
+  else
+  if Assigned(FAuthentication) and (FAuthentication.Token = EmptyStr) then
+    Autenticar_API;
 end;
 
 procedure TfrmPrincipal.SetNumeroComanda(const Value: String);
