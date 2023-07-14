@@ -479,9 +479,8 @@ object frmPrincipal: TfrmPrincipal
           Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
-          Appearance.Width = 310.000000000000000000
+          Appearance.Width = 325.000000000000000000
           Appearance.Height = 23.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
         end
         item
           AppearanceObjectName = 'complemento'
@@ -491,9 +490,8 @@ object frmPrincipal: TfrmPrincipal
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
           Appearance.TextColor = xFF1D78CE
-          Appearance.Width = 310.000000000000000000
+          Appearance.Width = 325.000000000000000000
           Appearance.Height = 23.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 52.000000000000000000
         end
         item
@@ -503,9 +501,8 @@ object frmPrincipal: TfrmPrincipal
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
           Appearance.TextColor = claSlategray
-          Appearance.Width = 310.000000000000000000
+          Appearance.Width = 325.000000000000000000
           Appearance.Height = 23.000000000000000000
-          Appearance.PlaceOffset.X = 80.000000000000000000
           Appearance.PlaceOffset.Y = 27.000000000000000000
         end
         item
@@ -513,7 +510,7 @@ object frmPrincipal: TfrmPrincipal
           AppearanceClassName = 'TImageObjectAppearance'
           Appearance.Width = 65.000000000000000000
           Appearance.Height = 65.000000000000000000
-          Appearance.PlaceOffset.X = 8.000000000000000000
+          Appearance.Align = Trailing
           Appearance.PlaceOffset.Y = 8.000000000000000000
         end>
       ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <

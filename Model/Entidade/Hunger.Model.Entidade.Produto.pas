@@ -73,6 +73,8 @@ type
     FProdutoPrecificacaoArray: TArray<TProdutoPrecificacao>;
     [GenericListReflect]
     FProdutoPrecificacao: TObjectList<TProdutoPrecificacao>;
+    [JSONName('exibir_app')]
+    FExibirApp: Boolean;
     function GetProdutoPrecificacao: TObjectList<TProdutoPrecificacao>;
   published
     property Grupo: TGrupo read FGrupo;
@@ -85,6 +87,7 @@ type
     property ValorInicial: Double read FValorInicial write FValorInicial;
     property ValorPromocao: Double read FValorPromocao write FValorPromocao;
     property ProdutoPrecificacao: TObjectList<TProdutoPrecificacao> read GetProdutoPrecificacao;
+    property ExibirApp: Boolean read FExibirApp write FExibirApp;
   end;
 
   TProdutoList = class(TJsonDTO)

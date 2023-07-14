@@ -301,10 +301,25 @@ end;
 procedure TfrmPrincipal.Layout_lvConsulta(AItem: TListViewItem);
 var
   txt: TListItemText;
+  heights: TArray<Single>;
 begin
-  txt := AItem.Objects.FindDrawable('complemento') as TListItemText;
-  txt.Width := lvConsultaProduto.Width - 65;
+  SetLength(heights, 2);
+
+  txt := AItem.Objects.FindDrawable('descricao') as TListItemText;
+  txt.Width := lvConsultaProduto.Width - 100;
   txt.Height := GetTextHeight(txt, txt.Width, txt.Text) + 5;
+  heights[0] := Trunc(txt.Height);
+
+  txt := AItem.Objects.FindDrawable('valor') as TListItemText;
+  txt.Width := lvConsultaProduto.Width - 100;
+  txt.Height := GetTextHeight(txt, txt.Width, txt.Text) + 5;
+  txt.PlaceOffset.Y := Trunc(heights[0]);
+  heights[1] := Trunc(txt.Height);
+
+  txt := AItem.Objects.FindDrawable('complemento') as TListItemText;
+  txt.Width := lvConsultaProduto.Width - 100;
+  txt.Height := GetTextHeight(txt, txt.Width, txt.Text) + 5;
+  txt.PlaceOffset.Y := Trunc(heights[0] + heights[1]);
   AItem.Height := Trunc(txt.PlaceOffset.Y + txt.Height);
 end;
 
