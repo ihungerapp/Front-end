@@ -58,11 +58,14 @@ procedure TfrmCarrinho.AddItemLb(aIndex: Integer; aPedidoItem: TPedidoItem);
 var
   item: TListBoxItem;
   lblDescricao: TLabel;
+  lblPrecificacao: TLabel;
   lblValor: TLabel;
   lblQtde: TLabel;
   recAdd: TRectangle;
   recDrop: TRectangle;
   recTrash: TRectangle;
+  I, J: Integer;
+  LParamsProdPrec: TArray<String>;
 begin
   item := TListBoxItem.Create(nil);
   item.StyledSettings := [];
@@ -70,17 +73,15 @@ begin
   item.Padding.Top := 5;
   item.Padding.Bottom := 5;
   item.Padding.Right := 10;
-  item.Height := 60;
 
   recDrop := TRectangle.Create(lbProdutos);
   with recDrop do
   begin
-    Align := TAlignLayout.None;
+    Align := TAlignLayout.Right;
     Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 1);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
-    Position.X := 0;
-    Position.Y := 15;
+    Margins.Bottom := -5;
     Size.Width := 30.000000000000000000;
     Size.Height := 30.000000000000000000;
     Size.PlatformDefault := False;
@@ -92,13 +93,12 @@ begin
   with lblQtde do
   begin
     StyledSettings := [];
-    Align := TAlignLayout.None;
-    Position.X := 30;
-    Position.Y := 15;
-    Size.Width := 25.000000000000000000;
-    Size.Height := 25.000000000000000000;
+    Align := TAlignLayout.Right;
+    Margins.Bottom := -5;
+    Size.Width := 30.000000000000000000;
+    Size.Height := 30.000000000000000000;
     TextSettings.HorzAlign := TTextAlign.Center;
-    TextSettings.VertAlign := TTextAlign.Center;
+    TextSettings.VertAlign := TTextAlign.Leading;
     TextSettings.Font.Family := 'Inter';
     TextSettings.Font.Size := 14;
     TextSettings.Font.Style := [TFontStyle.fsBold];
@@ -110,12 +110,11 @@ begin
   recAdd := TRectangle.Create(lbProdutos);
   with recAdd do
   begin
-    Align := TAlignLayout.None;
+    Align := TAlignLayout.Right;
     Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 0);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
-    Position.X := 60;
-    Position.Y := 15;
+    Margins.Bottom := -5;
     Size.Width := 30.000000000000000000;
     Size.Height := 30.000000000000000000;
     Size.PlatformDefault := False;
@@ -127,24 +126,28 @@ begin
   with lblValor do
   begin
     StyledSettings := [];
-    Align := TAlignLayout.Right;
-    TextSettings.HorzAlign := TTextAlign.Trailing;
+    Align := TAlignLayout.FitRight;
+    Size.Width := 100;
+    Size.Height := 40;
+    Margins.Top := 10;
+    TextSettings.HorzAlign := TTextAlign.Center;
+    TextSettings.VertAlign := TTextAlign.Center;
     TextSettings.Font.Family := 'Inter';
     TextSettings.Font.Size := 14;
     TextSettings.Font.Style := [TFontStyle.fsBold];
     TextSettings.FontColor := TAlphaColors.Darkgreen;
-    Text := FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
+    Text := 'Total ' + FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
   end;
 
   recTrash := TRectangle.Create(lbProdutos);
   with recTrash do
   begin
-    Align := TAlignLayout.FitRight;
+    Align := TAlignLayout.MostRight;
     Fill.Bitmap.Bitmap := imgCarrinho.Bitmap(TSizeF.Create(20,20), 2);
     Fill.Bitmap.WrapMode := TWrapMode.TileOriginal;
     Fill.Kind := TBrushKind.Bitmap;
-    Position.X := 0;
-    Position.Y := 15;
+    Margins.Left := 20;
+    Margins.Bottom := -5;
     Size.Width := 30.000000000000000000;
     Size.Height := 30.000000000000000000;
     Size.PlatformDefault := False;
@@ -167,11 +170,9 @@ begin
   with lblDescricao do
   begin
     StyledSettings := [];
-    Align := TAlignLayout.None;
-    Position.X := recAdd.Position.X + recAdd.Width + 10;
-    Position.Y := 15;
+    Align := TAlignLayout.MostLeft;
     TextSettings.HorzAlign := TTextAlign.Leading;
-    TextSettings.VertAlign := TTextAlign.Center;
+    TextSettings.VertAlign := TTextAlign.Leading;
     TextSettings.Font.Family := 'Inter';
     TextSettings.Font.Size := 14;
     TextSettings.Font.Style := [TFontStyle.fsBold];
@@ -180,8 +181,41 @@ begin
     WordWrap := True;
   end;
 
+  lblPrecificacao := TLabel.Create(lbProdutos);
+  with lblPrecificacao do
+  begin
+    StyledSettings := [];
+    Align := TAlignLayout.MostBottom;
+    TextSettings.HorzAlign := TTextAlign.Leading;
+    TextSettings.VertAlign := TTextAlign.Leading;
+    TextSettings.Font.Family := 'Inter';
+    TextSettings.Font.Size := 14;
+    TextSettings.Font.Style := [TFontStyle.fsBold];
+    TextSettings.FontColor := $FF1D78CE;
+    Text := EmptyStr;
+    LParamsProdPrec := aPedidoItem.IdProdutoPrecificacao.Split([',']);
+    for I := 0 to Pred(Produtos[aIndex].ProdutoPrecificacao.Count) do
+      for J := 0 to High(LParamsProdPrec) do
+        if Produtos[aIndex].ProdutoPrecificacao[I].IdProdutoPrecificacao.ToString = LParamsProdPrec[J] then
+        begin
+          Text := Text + #13 + Produtos[aIndex].ProdutoPrecificacao[I].Precificacao.Tipo;
+          if Produtos[aIndex].ProdutoPrecificacao[I].Valor > 0 then
+            Text := Text + '  ' + FloatToStrF(Produtos[aIndex].ProdutoPrecificacao[I].Valor, ffFixed, 15,2);
+          lblPrecificacao.Height := lblPrecificacao.Height + 20;
+        end;
+
+    WordWrap := True;
+  end;
+
   item.AddObject(lblDescricao);
-  lblDescricao.Width := lbProdutos.Width - lblValor.Width - recAdd.Width - recDrop.Width;
+  item.AddObject(lblPrecificacao);
+  lblDescricao.Width := lbProdutos.Width - lblQtde.Width - recAdd.Width - recDrop.Width;
+  lblPrecificacao.Width := lbProdutos.Width - lblQtde.Width - recAdd.Width - recDrop.Width;
+
+  item.Height := lblDescricao.Height + lblPrecificacao.Height + 10;
+
+  lblQtde.Position.X := recDrop.Position.X + recDrop.Width;
+  recAdd.Position.X := lblQtde.Position.X + lblQtde.Width;
 
 //  if Assigned(imgFotoCarrinho.MultiResBitmap.Items[aIndex]) then
 //  begin

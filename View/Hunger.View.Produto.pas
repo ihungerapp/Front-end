@@ -8,7 +8,8 @@ uses
   Hunger.View.Base, FMX.Objects, FMX.Controls.Presentation, FMX.Layouts,
   System.Generics.Collections, Hunger.Model.Entidade.Produto, FMX.ListBox,
   FMX.Edit, FMX.EditBox, FMX.NumberBox, Hunger.Model.Entidade.Pedidos,
-  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo;
+  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.DialogService,
+  System.Generics.Defaults;
 
 type
   TfrmProduto = class(TfrmBase)
@@ -40,6 +41,7 @@ type
     FGrupo: String;
     FValor: Double;
     FIdsProdPrec: String; //Armazena os códigos das precificações dos produtos
+    FCheckedTamanho: Boolean; //Valida se foi selecionado um tamanho (obrigatório)
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
     procedure AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
@@ -53,9 +55,6 @@ var
   frmProduto: TfrmProduto;
 
 implementation
-
-uses
-  FMX.DialogService;
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
@@ -186,6 +185,7 @@ begin
   FValor := 0;
   J := -1;
   FIdsProdPrec := EmptyStr;
+  FCheckedTamanho := False;
   for I := 0 to Pred(ComponentCount) do
   begin
     if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
@@ -195,6 +195,7 @@ begin
     begin
       FValor := FValor + Produto.ProdutoPrecificacao[J].Valor;
       AddIDProdPrec;
+      FCheckedTamanho := True;
     end;
     if (Components[I] is TCheckBox) and (Components[I] as TCheckBox).IsChecked then
     begin
@@ -216,7 +217,7 @@ end;
 
 procedure TfrmProduto.PreencherLbProdutoPrecificacao;
 var
-  produtoPrecificacao: TProdutoPrecificacao;
+  I: Integer;
 begin
   lbProdutoPrecificacao.Items.Clear;
   lbProdutoPrecificacao.BeginUpdate;
@@ -225,13 +226,40 @@ begin
     if Produto.ProdutoPrecificacao.Count = 0 then
       AddItemLb(Produto.ValorInicial, 'Único', '', 1)
     else
-    for produtoPrecificacao in Produto.ProdutoPrecificacao do
+
+    Produto.ProdutoPrecificacao.Sort(TComparer<TProdutoPrecificacao>.Construct(
+          function (const L, R: TProdutoPrecificacao): integer
+          begin
+             if L.Precificacao.Grupo = R.Precificacao.Grupo then
+                Result := 0
+             else
+             if L.Precificacao.Grupo < R.Precificacao.Grupo then
+                Result := -1
+             else
+                Result := 1;
+          end
+    ));
+
+    Produto.ProdutoPrecificacao.Sort(TComparer<TProdutoPrecificacao>.Construct(
+          function (const L, R: TProdutoPrecificacao): integer
+          begin
+             if L.Precificacao.Tipo = R.Precificacao.Tipo then
+                Result := 0
+             else
+             if L.Precificacao.Tipo < R.Precificacao.Tipo then
+                Result := -1
+             else
+                Result := 1;
+          end
+    ));
+
+    for I := 0 to Pred(Produto.ProdutoPrecificacao.Count) do
     begin
-      AddItemLb(produtoPrecificacao.Valor,
-                produtoPrecificacao.Precificacao.Tipo,
-                produtoPrecificacao.Precificacao.Grupo,
-                produtoPrecificacao.Precificacao.QtdeMaxSelecao);
-      FGrupo := produtoPrecificacao.Precificacao.Grupo;
+      AddItemLb(Produto.ProdutoPrecificacao[I].Valor,
+                Produto.ProdutoPrecificacao[I].Precificacao.Tipo,
+                Produto.ProdutoPrecificacao[I].Precificacao.Grupo,
+                Produto.ProdutoPrecificacao[I].Precificacao.QtdeMaxSelecao);
+      FGrupo := Produto.ProdutoPrecificacao[I].Precificacao.Grupo;
     end;
   finally
     lbProdutoPrecificacao.EndUpdate;
@@ -253,6 +281,18 @@ begin
   if lbProdutoPrecificacao.ItemIndex < 0 then
   begin
     TDialogService.ShowMessage('Selecione uma opção!');
+    lbProdutoPrecificacao.SetFocus;
+    Exit;
+  end;
+  if FValor = 0 then
+  begin
+    TDialogService.ShowMessage('Valor deve ser maior que zero!');
+    lbProdutoPrecificacao.SetFocus;
+    Exit;
+  end;
+  if not FCheckedTamanho then
+  begin
+    TDialogService.ShowMessage('Selecione o tamanho!');
     lbProdutoPrecificacao.SetFocus;
     Exit;
   end;

@@ -338,7 +338,7 @@ begin
     frmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)
     begin
       FContentImage := FrmLeitorCamera.Codigo;
-      if FContentImage = EmptyStr then
+      if (aTipoQRCode = qrMesa) and (FContentImage = EmptyStr) then
       begin
         if Assigned(Authentication) and (Authentication.Token <> EmptyStr) then
         begin
@@ -376,7 +376,7 @@ begin
         Timer.Enabled := True;
       end;
 
-      if aTipoQRCode = qrComanda then
+      if (FContentImage <> EmptyStr) and (aTipoQRCode = qrComanda) then
       begin
         LParams := FContentImage.Split(['|']);
         if LParams[0] <> 'COMANDA' then
