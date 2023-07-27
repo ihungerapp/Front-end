@@ -369,9 +369,9 @@ begin
         LParams := FContentImage.Split(['|']);
         FMesaUUID := LParams[0];
         FMesaDescricao := LParams[1];
-        FURL_API := LParams[2];
-        FUser_API := LParams[3];
-        FPass_API := LParams[4];
+        FURL_API := Authentication.URLServer;
+        FUser_API := 'hunger';
+        FPass_API := 'rm045369';
         lblMesa.Text := FMesaDescricao;
         Timer.Enabled := True;
       end;

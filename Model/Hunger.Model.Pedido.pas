@@ -120,7 +120,7 @@ begin
   except on E:Exception do
     begin
       TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
-                  E.Message);
+                  E.Message + #13 + LJsonResponse.ToString);
       Exit;
     end;
   end;
