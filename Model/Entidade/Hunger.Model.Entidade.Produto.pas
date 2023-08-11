@@ -52,6 +52,30 @@ type
     property IdGrupo: Integer read FIdGrupo write FIdGrupo;
   end;
 
+  TGrupoList = class(TJsonDTO)
+  private
+    [JSONName('grupos'), JSONMarshalled(False)]
+    FGruposArray: TArray<TGrupo>;
+    [GenericListReflect]
+    FGrupos: TObjectList<TGrupo>;
+    FPageNumber: Integer;
+    FPageSize: Integer;
+    FTotalElements: Integer;
+    FTotalPages: Integer;
+    function GetGrupos: TObjectList<TGrupo>;
+    procedure SetGrupoList(const Value: TObjectList<TGrupo>);
+  protected
+    function GetAsJson: string; override;
+  published
+    property Grupos: TObjectList<TGrupo> read GetGrupos write SetGrupoList;
+    property PageNumber: Integer read FPageNumber write FPageNumber;
+    property PageSize: Integer read FPageSize write FPageSize;
+    property TotalElements: Integer read FTotalElements write FTotalElements;
+    property TotalPages: Integer read FTotalPages write FTotalPages;
+  public
+    destructor Destroy; override;
+  end;
+
   TProduto = class(TJsonDTO)
   private
     FComplemento: string;
@@ -185,6 +209,30 @@ end;
 procedure TProdutoPrecificacaoList.SetProdutoPrecificacaoList(const Value: TObjectList<TProdutoPrecificacao>);
 begin
   FProdutoPrecificacao := Value;
+end;
+
+{ TGrupoList }
+
+destructor TGrupoList.Destroy;
+begin
+  GetGrupos.Free;
+  inherited;
+end;
+
+function TGrupoList.GetAsJson: string;
+begin
+  RefreshArray<TGrupo>(FGrupos, FGruposArray);
+  Result := inherited;
+end;
+
+function TGrupoList.GetGrupos: TObjectList<TGrupo>;
+begin
+  Result := ObjectList<TGrupo>(FGrupos, FGruposArray);
+end;
+
+procedure TGrupoList.SetGrupoList(const Value: TObjectList<TGrupo>);
+begin
+  FGrupos := Value;
 end;
 
 end.

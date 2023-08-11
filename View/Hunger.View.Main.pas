@@ -11,7 +11,7 @@ uses
   System.Generics.Collections, FMX.ListView.Types, FMX.ListView.Appearances,
   FMX.ListView.Adapters.Base, FMX.Edit, FMX.ListView, Hunger.Utils,
   System.NetEncoding, System.Classes, Hunger.Model.Entidade.Pedidos,
-  Hunger.View.Carrinho
+  Hunger.View.Carrinho, FMX.ListBox
   {$IFDEF ANDROID}
   , Androidapi.Helpers
   {$ENDIF ANDROID}
@@ -40,6 +40,8 @@ type
     imgLerQR: TImage;
     TimerPesquisar: TTimer;
     imgConfig: TImage;
+    lbGrupos: TListBox;
+    ListBoxItem1: TListBoxItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -57,12 +59,15 @@ type
     procedure TimerPesquisarTimer(Sender: TObject);
     procedure edtPesquisarChangeTracking(Sender: TObject);
     procedure imgConfigClick(Sender: TObject);
+    procedure lbGruposItemClick(const Sender: TCustomListBox;
+      const Item: TListBoxItem);
   private
     FPermissions: TPermissions;
     FUtils: TUtils;
     FAuthentication: TAuthentication;
     FModelProduto: TModelProduto;
     FProdutos: TObjectList<TProduto>;
+    FGrupos: TObjectList<TGrupo>;
 
     FContentImage: String;
     FMesaUUID: String;
@@ -77,12 +82,15 @@ type
 
     procedure Autenticar_API;
     procedure ConsultarProduto(aDescricao: String);
-    function ValidarMesaUUID: Boolean;
-    procedure PreencherListView(aProdutos: TObjectList<TProduto>);
+    procedure ConsultarGrupo;
+    procedure PreencherListView(aProdutos: TObjectList<TProduto>; idGrupo: Integer = 0);
     procedure SetPedido(const Value: TPedido);
     procedure SetProdutosCarrinho(const Value: TObjectList<TProduto>);
     procedure SetNumeroComanda(const Value: String);
     procedure Layout_lvConsulta(AItem: TListViewItem);
+    procedure PreencherLbGrupos(aGrupos: TObjectList<TGrupo>);
+    procedure AddItemLb(aIndex: Integer; aGrupo: TGrupo);
+    function ValidarMesaUUID: Boolean;
     function GetTextHeight(const D: TListItemText; const Width: single; const Text: string): Integer;
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
@@ -108,6 +116,41 @@ uses
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
+
+procedure TfrmPrincipal.AddItemLb(aIndex: Integer; aGrupo: TGrupo);
+var
+  item: TListBoxItem;
+
+  procedure FormatarItem(aItem: TListBoxItem);
+  begin
+    item.StyledSettings := [];
+    item.StyleLookup := 'listboxitemstyle';
+    item.Padding.Left := 10;
+    item.Padding.Top := 5;
+    item.Padding.Bottom := 5;
+    item.Padding.Right := 10;
+    item.TextSettings.Font.Family := 'Inter';
+    item.TextSettings.Font.Size := 14;
+    item.TextSettings.HorzAlign := TTextAlign.Center;
+    item.Size.Width := 120;
+  end;
+
+begin
+  if aIndex = 0 then
+  begin
+    item := TListBoxItem.Create(nil);
+    FormatarItem(item);
+    item.Text := 'Todos';
+    item.TextSettings.FontColor := $FFF83923;
+    lbGrupos.AddObject(item);
+  end;
+
+  item := TListBoxItem.Create(nil);
+  FormatarItem(item);
+  item.Text := Trim(aGrupo.Descricao);
+  item.TextSettings.FontColor := TAlphaColors.Black;
+  lbGrupos.AddObject(item);
+end;
 
 procedure TfrmPrincipal.Autenticar_API;
 begin
@@ -139,6 +182,8 @@ begin
           ValidarMesaUUID;
         if lvConsultaProduto.Items.Count = 0 then
           ConsultarProduto(EmptyStr);
+        if lbGrupos.Items.Count = 1 then
+          ConsultarGrupo;
       end;
     except on E:Exception do
       begin
@@ -148,6 +193,30 @@ begin
     end;
   finally
     //Timer.Enabled := FAuthentication.Token = EmptyStr;
+  end;
+end;
+
+procedure TfrmPrincipal.ConsultarGrupo;
+var
+  LJsonResponse: TJSONObject;
+begin
+  try
+    LJsonResponse := FModelProduto.ConsultarGrupo(FAuthentication.Connection);
+
+    if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"grupos":[]}') then
+    begin
+      if not Assigned(FGrupos) then
+        FGrupos := TObjectList<TGrupo>.Create;
+      FGrupos := FModelProduto.PopularListaGrupo(LJsonResponse);
+      if FGrupos.Count > 0 then
+        PreencherLbGrupos(FGrupos);
+    end;
+  except on E:Exception do
+    begin
+       TDialogService.ShowMessage('Erro na requisição para a API. Operação cancelada! ' +
+                  E.Message);
+      Exit;
+    end;
   end;
 end;
 
@@ -323,6 +392,22 @@ begin
   AItem.Height := Trunc(txt.PlaceOffset.Y + txt.Height);
 end;
 
+procedure TfrmPrincipal.lbGruposItemClick(const Sender: TCustomListBox;
+  const Item: TListBoxItem);
+var
+  I: Integer;
+begin
+  for I := 0 to Pred(lbGrupos.Count) do
+    lbGrupos.ListItems[I].TextSettings.FontColor := TAlphaColors.Black;
+
+  Item.TextSettings.FontColor := $FFF83923;
+
+  if Item.Index = 0 then
+    PreencherListView(FProdutos)
+  else
+    PreencherListView(FProdutos, FGrupos.Items[Pred(Item.Index)].IdGrupo);
+end;
+
 procedure TfrmPrincipal.LerQRCode(aTipoQRCode: TTipoQRCode);
 var
   LParams: TArray<String>;
@@ -437,7 +522,7 @@ begin
     imgProduto.Bitmap := imgFoto.MultiResBitmap.Items[ItemIndex].Bitmap;
     if not Assigned(imgProduto.Bitmap) then
       imgProduto.Destroy;
-    Produto := FProdutos[ItemIndex];
+    Produto := FProdutos[lvConsultaProduto.Items[ItemIndex].Tag];
   end;
   frmProduto.ShowModal(procedure(ModalResult: TModalResult)
     begin
@@ -467,14 +552,28 @@ begin
     end);
 end;
 
-procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>);
+procedure TfrmPrincipal.PreencherLbGrupos(aGrupos: TObjectList<TGrupo>);
+var
+  I: Integer;
+begin
+  lbGrupos.Items.Clear;
+  lbGrupos.BeginUpdate;
+  try
+    for I := 0 to Pred(aGrupos.Count) do
+      AddItemLb(I, aGrupos[I]);
+  finally
+    lbGrupos.EndUpdate;
+  end;
+end;
+
+procedure TfrmPrincipal.PreencherListView(aProdutos: TObjectList<TProduto>; idGrupo: Integer = 0);
 var
   t: TThread;
 begin
   lvConsultaProduto.Items.Clear;
   lvConsultaProduto.BeginUpdate;
   imgFoto.MultiResBitmap.Clear;
-
+  lbGrupos.Enabled := False;
   t := TThread.CreateAnonymousThread(procedure
   var
     LItem: TListViewItem;
@@ -484,34 +583,45 @@ begin
     begin
       TThread.Synchronize(TThread.CurrentThread, procedure
       begin
-        LItem := lvConsultaProduto.Items.Add;
-        with LItem do
+        if ((idGrupo > 0) and (aProdutos[I].IdGrupo = idGrupo))
+        or (idGrupo = 0) then
         begin
-          Height := 90;
-          Tag := I;
-
-          imgFoto.MultiResBitmap.Add;
-          if aProdutos[I].Imagem <> EmptyStr then
+          LItem := lvConsultaProduto.Items.Add;
+          with LItem do
           begin
-            //imgFoto.MultiResBitmap.Add;
-            imgFoto.MultiResBitmap.Items[I].Bitmap.LoadFromStream(FUtils.Base64ToStream(aProdutos[I].Imagem));
-            if not imgFoto.Bitmap.IsEmpty then
-              TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.MultiResBitmap.Items[I].Bitmap;
-          end
-          else
-            imgFoto.MultiResBitmap.Items[I].Bitmap.Create(1,1);
+            Height := 90;
+            Tag := I;
 
-          TListItemText(Objects.FindDrawable('descricao')).Text := aProdutos[I].Descricao;
-          TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
-          TListItemText(Objects.FindDrawable('valor')).Text := 'A partir de ' +
-            FloatToStrF(aProdutos[I].ValorInicial, ffCurrency, 15,2);
-          Layout_lvConsulta(LItem);
+            imgFoto.MultiResBitmap.Add;
+            if aProdutos[I].Imagem <> EmptyStr then
+            begin
+              //imgFoto.MultiResBitmap.Add;
+              imgFoto.MultiResBitmap.Items[I].Bitmap.LoadFromStream(FUtils.Base64ToStream(aProdutos[I].Imagem));
+              if not imgFoto.Bitmap.IsEmpty then
+                TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.MultiResBitmap.Items[I].Bitmap;
+            end
+            else
+              imgFoto.MultiResBitmap.Items[I].Bitmap.Create(1,1);
+
+            TListItemText(Objects.FindDrawable('descricao')).Text := aProdutos[I].Descricao;
+            TListItemText(Objects.FindDrawable('complemento')).Text := aProdutos[I].Complemento;
+            TListItemText(Objects.FindDrawable('valor')).Text := 'A partir de ' +
+              FloatToStrF(aProdutos[I].ValorInicial, ffCurrency, 15,2);
+            Layout_lvConsulta(LItem);
+          end;
+        end
+        else
+        begin
+          imgFoto.MultiResBitmap.Add;
+          imgFoto.MultiResBitmap.Items[I].Bitmap.Create(1,1);
         end;
       end);
     end;
+    lbGrupos.Enabled := True;
   end);
   lvConsultaProduto.EndUpdate;
   t.Start;
+
 end;
 
 procedure TfrmPrincipal.sebPesquisarClick(Sender: TObject);
@@ -525,7 +635,11 @@ begin
   end;
 
   if Assigned(FAuthentication) and (FAuthentication.Token <> EmptyStr) then
-    ConsultarProduto(edtPesquisar.Text)
+  begin
+    ConsultarProduto(edtPesquisar.Text);
+    if lbGrupos.Items.Count = 1 then
+      ConsultarGrupo;
+  end
   else
   if Assigned(FAuthentication) and (FAuthentication.Token = EmptyStr) then
     Autenticar_API;
