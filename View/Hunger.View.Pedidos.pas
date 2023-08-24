@@ -55,7 +55,7 @@ begin
       with LItem do
       begin
         Height := 90;
-        Tag := pedido.PedidoItem.Items[J].IdPedidoItem;
+        Tag := pedido.PedidoItem.Items[J].IdConsumoAp;
         if pedido.PedidoItem.Items[J].Produto.Imagem <> EmptyStr then
         begin
           imgFoto.MultiResBitmap.Add;
@@ -69,7 +69,7 @@ begin
         TListItemText(Objects.FindDrawable('pedido_item_status')).Text := pedido.PedidoItem.Items[J].PedidoItemStatus;
         TListItemText(Objects.FindDrawable('valor')).Text :=
         'Qtde ' + FloatToStrF(pedido.PedidoItem.Items[J].Qtde, ffFixed, 15,0) +
-        '  Valor Total ' + FloatToStrF(pedido.PedidoItem.Items[J].ValorTotal, ffCurrency, 15,2);
+        '  Valor Total ' + FloatToStrF(pedido.PedidoItem.Items[J].Vlrtotalitem, ffCurrency, 15,2);
       end;
     end;
   end;
@@ -85,8 +85,8 @@ begin
     LJsonResponse := nil;
     LJsonResponse := frmPrincipal.Authentication.Connection.Execute(
       'pedido?method=ListarPedidosComProduto&'+
-      'search=pedido:pedido_status:Em aberto@@@'+
-      '@@@mesa:mesa_uuid:' + frmPrincipal.MesaUUID, tpGet, nil);
+      'search=pedido:"SITUACAO":Em aberto@@@'+
+      'mesa:"CADAP_UUID":' + frmPrincipal.MesaUUID, tpGet, nil);
 
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"pedidos":[]}') then
       Result := LJsonResponse;

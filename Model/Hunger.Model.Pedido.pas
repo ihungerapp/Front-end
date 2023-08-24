@@ -47,7 +47,7 @@ begin
     Result := False;
     try
       LJsonObject :=  TJSONObject(TJSONObject.ParseJSONValue(aPedido.AsJson)) as TJSONObject;
-      if aPedido.IdPedido > 0 then
+      if aPedido.Codrecepcao > 0 then
       begin
         LJsonObject.TryGetValue<TJSonArray>('pedidoItem', LJsonArray);
         LJsonResponse := aAuthentication.Connection.Execute('pedidoItem', aMetodo, LJsonObject);
@@ -111,8 +111,8 @@ begin
   try
     search := EmptyStr;
     if aNumComanda <> EmptyStr then
-      search := '?search=pedido:numero_comanda:' + aNumComanda + '@@@'+
-                'pedido:pedido_status:Em aberto' +
+      search := '?search=n_comanda:' + aNumComanda + '@@@'+
+                'situacao:Em aberto' +
                 '&JSON=<!"TypeSearch":"no incidence"!>';
     LJsonResponse := aConnection.Execute('pedido' + search, tpGet, nil);
 

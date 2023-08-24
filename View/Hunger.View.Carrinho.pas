@@ -136,7 +136,7 @@ begin
     TextSettings.Font.Size := 14;
     TextSettings.Font.Style := [TFontStyle.fsBold];
     TextSettings.FontColor := TAlphaColors.Darkgreen;
-    Text := 'Total ' + FloatToStrF(aPedidoItem.ValorTotal, ffCurrency, 15,2);
+    Text := 'Total ' + FloatToStrF(aPedidoItem.Vlrtotalitem, ffCurrency, 15,2);
   end;
 
   recTrash := TRectangle.Create(lbProdutos);
@@ -239,16 +239,18 @@ var
 begin
   FModelPedido := TModelPedido.Create;
   try
-    Pedido.NumeroComanda := frmPrincipal.NumeroComanda.ToInteger;
+    Pedido.NComanda := frmPrincipal.NumeroComanda.ToInteger;
     if not (ValidarMesaComanda) then
       TDialogService.ShowMessage('Comanda vinculada a outra mesa!')
     else
     begin
-      if Pedido.IdPedido > 0  then
+      for pedidoItem in Pedido.PedidoItem do
       begin
-        for pedidoItem in Pedido.PedidoItem do
-          pedidoItem.IdPedido := Pedido.IdPedido;
+        if Pedido.Codrecepcao > 0  then
+          pedidoItem.Codrecepcao := Pedido.Codrecepcao;
+        pedidoItem.NComandaRecepcao := Pedido.NComanda;
       end;
+
       if (FModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication)) then
       begin
         TDialogService.ShowMessage('Pedido enviado com sucesso!');
@@ -288,7 +290,7 @@ begin
     begin
       AddItemLb(I, Pedido.PedidoItem[I]);
     end;
-    lblFinalizar.Text := 'Finalizar pedido ' + FloatToStrF(Pedido.ValorTotal, ffCurrency, 15,2);
+    lblFinalizar.Text := 'Finalizar pedido ' + FloatToStrF(Pedido.Vlrtotal, ffCurrency, 15,2);
   finally
     lbProdutos.EndUpdate;
   end;
@@ -304,8 +306,8 @@ begin
     and ((Sender as TRectangle).Name = 'recAdd' + FItemLbProdutos.Index.ToString) then
     begin
       Pedido.PedidoItem[FItemLbProdutos.Index].Qtde := (Components[I] as TLabel).Text.ToDouble + 1;
-      Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
-      Pedido.ValorTotal := Pedido.ValorTotal + Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+      Pedido.PedidoItem[FItemLbProdutos.Index].Vlrtotalitem := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].Vlrunitario;
+      Pedido.Vlrtotal := Pedido.Vlrtotal + Pedido.PedidoItem[FItemLbProdutos.Index].Vlrunitario;
     end
     else
     if ((Sender as TRectangle).Name = 'recDrop' + FItemLbProdutos.Index.ToString)
@@ -313,14 +315,14 @@ begin
     and ((Components[I] as TLabel).Text.ToDouble > 1) then
     begin
       Pedido.PedidoItem[FItemLbProdutos.Index].Qtde := (Components[I] as TLabel).Text.ToDouble - 1;
-      Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
-      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorUnitario;
+      Pedido.PedidoItem[FItemLbProdutos.Index].Vlrtotalitem := Pedido.PedidoItem[FItemLbProdutos.Index].Qtde * Pedido.PedidoItem[FItemLbProdutos.Index].Vlrunitario;
+      Pedido.Vlrtotal := Pedido.Vlrtotal - Pedido.PedidoItem[FItemLbProdutos.Index].Vlrunitario;
     end
     else
     if ((Sender as TRectangle).Name = 'recTrash' + FItemLbProdutos.Index.ToString)
     and (Components[I].Name = 'lblQtde' + FItemLbProdutos.Index.ToString) then
     begin
-      Pedido.ValorTotal := Pedido.ValorTotal - Pedido.PedidoItem[FItemLbProdutos.Index].ValorTotal;
+      Pedido.Vlrtotal := Pedido.Vlrtotal - Pedido.PedidoItem[FItemLbProdutos.Index].Vlrtotalitem;
       Pedido.PedidoItem.Delete(FItemLbProdutos.Index);
       Produtos.Delete(FItemLbProdutos.Index);
       frmPrincipal.lblItensCarrinho.Text := FloatToStr(frmPrincipal.lblItensCarrinho.Text.ToDouble - 1);
@@ -369,7 +371,7 @@ begin
   //Verifica se o número da comanda que acabou de ler o QR,
   // é igual aos pedidos anteriores em aberto e da mesma mesa, se existente
   Result := False;
-  LJsonResponse := FModelPedido.ConsultarPedido(frmPrincipal.Authentication.Connection, Pedido.NumeroComanda.ToString);
+  LJsonResponse := FModelPedido.ConsultarPedido(frmPrincipal.Authentication.Connection, Pedido.NComanda.ToString);
   if Assigned(LJsonResponse) then
     if LJsonResponse.FindValue('totalElements').ToJSON.ToInteger = 0 then
       Result := True
@@ -378,9 +380,9 @@ begin
       LJsonResponse.TryGetValue('content', LJsonArray);
       for I := 0 to Pred(LJsonArray.Count) do
       begin
-        if Pedido.IdMesa = LJsonArray.Items[I].FindValue('id_mesa').ToJSON.ToInteger then
+        if Pedido.Codap = LJsonArray.Items[I].FindValue('codap').ToJSON.ToInteger then
         begin
-          Pedido.IdPedido := LJsonArray.Items[I].FindValue('id_pedido').ToJSON.ToInteger;
+          Pedido.Codrecepcao := LJsonArray.Items[I].FindValue('codrecepcao').ToJSON.ToInteger;
           Result := True;
         end
         else

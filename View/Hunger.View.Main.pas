@@ -523,6 +523,8 @@ begin
     if not Assigned(imgProduto.Bitmap) then
       imgProduto.Destroy;
     Produto := FProdutos[lvConsultaProduto.Items[ItemIndex].Tag];
+    if NumeroComanda <> EmptyStr then
+      NComanda := NumeroComanda.ToInteger;
   end;
   frmProduto.ShowModal(procedure(ModalResult: TModalResult)
     begin
@@ -531,16 +533,16 @@ begin
         if not Assigned(Pedido) then
         begin
           Pedido := TPedido.Create;
-          Pedido.IdPessoa := 0;
-          Pedido.IdMesa := FMesaID;
-          Pedido.DataHoraAbertura := Now;
-          Pedido.DataHoraFinalizacao := Pedido.DataHoraAbertura;
-          Pedido.PedidoStatus := 'Em aberto';
+          Pedido.Codcli := 0;
+          Pedido.Codap := FMesaID;
+          Pedido.DataEntrada := Now;
+          Pedido.DataSaida := Pedido.DataEntrada;
+          Pedido.Situacao := 'Em aberto';
           Pedido.FecharConta := False;
-          Pedido.ValorTotal := 0;
+          Pedido.Vlrtotal := 0;
         end;
         Pedido.PedidoItem.Add(frmProduto.PedidoItem);
-        Pedido.ValorTotal := Pedido.ValorTotal + frmProduto.PedidoItem.ValorTotal;
+        Pedido.Vlrtotal := Pedido.Vlrtotal + frmProduto.PedidoItem.Vlrtotalitem;
         recItensCarrinho.Visible := True;
         lblItensCarrinho.Visible := True;
         lblItensCarrinho.Text := Pedido.PedidoItem.Count.ToString;

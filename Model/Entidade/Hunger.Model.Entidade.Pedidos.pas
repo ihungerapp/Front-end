@@ -13,89 +13,92 @@ type
 
   TPedidoItem = class
   private
-    [SuppressZero, JSONName('data_hora_emissao')]
-    FDataHoraEmissao: TDateTime;
-    [SuppressZero, JSONName('data_hora_status')]
-    FDataHoraStatus: TDateTime;
-    [JSONName('id_pedido')]
-    FIdPedido: Integer;
-    [JSONName('id_pedido_item')]
-    FIdPedidoItem: Integer;
-    [JSONName('id_produto')]
-    FIdProduto: Integer;
-    [JSONName('pedido_item_status')]
+    [SuppressZero, JSONName('DATA_CONSUMO')]
+    FDataConsumo: TDateTime;
+    [JSONName('CODRECEPCAO')]
+    FCodrecepcao: Integer;
+    [JSONName('ID_CONSUMO_AP')]
+    FIdConsumoAp: Integer;
+    [JSONName('CODPROD')]
+    FCodprod: Integer;
+    [JSONName('N_COMANDA_RECEPCAO')]
+    FNComandaRecepcao: Integer;
+    [JSONName('PEDIDO_ITEM_STATUS')]
     FPedidoItemStatus: string;
     FQtde: Double;
-    [JSONName('valor_total')]
-    FValorTotal: Double;
-    [JSONName('valor_unitario')]
-    FValorUnitario: Double;
+    [JSONName('VLRTOTALITEM')]
+    FVlrtotalitem: Double;
+    [JSONName('VLRUNITARIO')]
+    FVlrunitario: Double;
     [JSONName('id_produto_precificacao')]
     FIdProdutoPrecificacao: String;
     [JSONName('produto'), JSONMarshalled(False)]
     FProduto: TProduto;
-    FObs: String;
+    FComplemento: String;
   published
-    property DataHoraEmissao: TDateTime read FDataHoraEmissao write FDataHoraEmissao;
-    property DataHoraStatus: TDateTime read FDataHoraStatus write FDataHoraStatus;
-    property IdPedido: Integer read FIdPedido write FIdPedido;
-    property IdPedidoItem: Integer read FIdPedidoItem write FIdPedidoItem;
-    property IdProduto: Integer read FIdProduto write FIdProduto;
+    property DataConsumo: TDateTime read FDataConsumo write FDataConsumo;
+    property Codrecepcao: Integer read FCodrecepcao write FCodrecepcao;
+    property IdConsumoAp: Integer read FIdConsumoAp write FIdConsumoAp;
+    property Codprod: Integer read FCodprod write FCodprod;
+    property NComandaRecepcao: Integer read FNComandaRecepcao write FNComandaRecepcao;
     property PedidoItemStatus: string read FPedidoItemStatus write FPedidoItemStatus;
     property Qtde: Double read FQtde write FQtde;
-    property ValorTotal: Double read FValorTotal write FValorTotal;
-    property ValorUnitario: Double read FValorUnitario write FValorUnitario;
+    property Vlrtotalitem: Double read FVlrtotalitem write FVlrtotalitem;
+    property Vlrunitario: Double read FVlrunitario write FVlrunitario;
     property IdProdutoPrecificacao: String read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
     property Produto: TProduto read FProduto;
-    property Obs: string read FObs write FObs;
+    property Complemento: string read FComplemento write FComplemento;
   end;
 
   TPedido = class(TJsonDTO)
   private
-    [SuppressZero, JSONName('data_hora_abertura')]
-    FDataHoraAbertura: TDateTime;
-    [SuppressZero, JSONName('data_hora_finalizacao')]
-    FDataHoraFinalizacao: TDateTime;
+    [SuppressZero, JSONName('DATA_ENTRADA')]
+    FDataEntrada: TDateTime;
+    [SuppressZero, JSONName('DATA_SAIDA')]
+    FDataSaida: TDateTime;
     [JSONName('e_mail')]
     FEMail: string;
-    [JSONName('id_mesa')]
-    FIdMesa: Integer;
-    [JSONName('id_pedido')]
-    FIdPedido: Integer;
-    [JSONName('id_pessoa')]
-    FIdPessoa: Integer;
+    [JSONName('CODAP')]
+    FCodap: Integer;
+    [JSONName('CODREPCAO')]
+    FCodrecepcao: Integer;
+    [JSONName('CODCLI')]
+    FCodcli: Integer;
     [JSONName('nome_cliente')]
     FNomeCliente: string;
     [JSONName('numero_celular')]
     FNumeroCelular: string;
-    [JSONName('numero_comanda')]
-    FNumeroComanda: Integer;
+    [JSONName('N_COMANDA')]
+    FNComanda: Integer;
+    [JSONName('QTDEPAGANTE')]
+    FQtdepagante: Integer;
     [JSONName('pedido_item'), JSONMarshalled(False)]
     FPedidoItemArray: TArray<TPedidoItem>;
     [GenericListReflect]
     FPedidoItem: TObjectList<TPedidoItem>;
-    [JSONName('pedido_status')]
-    FPedidoStatus: string;
-    [JSONName('valor_total')]
-    FValorTotal: Double;
+    [JSONName('SITUACAO')]
+    FSituacao: string;
+    [JSONName('VLRTOTAL')]
+    FVlrtotal: Double;
     [JSONName('fechar_conta')]
     FFecharConta: Boolean;
     function GetPedidoItem: TObjectList<TPedidoItem>;
   protected
     function GetAsJson: string; override;
   published
-    property DataHoraAbertura: TDateTime read FDataHoraAbertura write FDataHoraAbertura;
-    property DataHoraFinalizacao: TDateTime read FDataHoraFinalizacao write FDataHoraFinalizacao;
+    property DataEntrada: TDateTime read FDataEntrada write FDataEntrada;
+    property DataSaida: TDateTime read FDataSaida write FDataSaida;
     property EMail: string read FEMail write FEMail;
-    property IdMesa: Integer read FIdMesa write FIdMesa;
-    property IdPedido: Integer read FIdPedido write FIdPedido;
-    property IdPessoa: Integer read FIdPessoa write FIdPessoa;
+    property Codap: Integer read FCodap write FCodap;
+    property Codrecepcao: Integer read FCodrecepcao write FCodrecepcao;
+    property Codcli: Integer read FCodcli write FCodcli;
     property NomeCliente: string read FNomeCliente write FNomeCliente;
     property NumeroCelular: string read FNumeroCelular write FNumeroCelular;
-    property NumeroComanda: Integer read FNumeroComanda write FNumeroComanda;
+    property NComanda: Integer read FNComanda write FNComanda;
+    property Qtdepagante: Integer read FQtdepagante write FQtdepagante;
     property PedidoItem: TObjectList<TPedidoItem> read GetPedidoItem;
-    property PedidoStatus: string read FPedidoStatus write FPedidoStatus;
-    property ValorTotal: Double read FValorTotal write FValorTotal;
+    property Situacao: string read FSituacao write FSituacao;
+    property Vlrtotal: Double read FVlrtotal write FVlrtotal;
     property FecharConta: Boolean read FFecharConta write FFecharConta;
   public
     destructor Destroy; override;

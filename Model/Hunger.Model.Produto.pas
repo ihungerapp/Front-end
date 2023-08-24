@@ -121,8 +121,8 @@ begin
   try
     search := EmptyStr;
     if aDescricao <> EmptyStr then
-      search := '&search=produto:descricao:' + LowerCase(aDescricao) +
-                '@@@produto:exibir_app:true';
+      search := '&search=produto:"DESCRICAO":' + LowerCase(aDescricao) +
+                '@@@produto:"EXIBIR_HUNGER_APP":true::boolean';
     LJsonResponse := aConnection.Execute('produto?method=ListarProdutos' + search, tpGet, nil);
 
     if (Assigned(LJsonResponse)) and (LJsonResponse.ToJSON <> '{"produtos":[]}') then

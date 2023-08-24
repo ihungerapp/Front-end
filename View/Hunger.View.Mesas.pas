@@ -70,9 +70,9 @@ begin
       for J := 0 to Pred(mesa.Pedido.Count) do
         if Assigned(mesa.Pedido.Items[J]) then
         begin
-          comandas := comandas + #13 + 'Nº ' + mesa.Pedido.Items[J].NumeroComanda.ToString +
-                       '    Valor ' + FloatToStrF(mesa.Pedido.Items[J].ValorTotal, ffCurrency, 15,2);
-          totalComandas := totalComandas + mesa.Pedido.Items[J].ValorTotal;
+          comandas := comandas + #13 + 'Nº ' + mesa.Pedido.Items[J].NComanda.ToString +
+                       '    Valor ' + FloatToStrF(mesa.Pedido.Items[J].Vlrtotal, ffCurrency, 15,2);
+          totalComandas := totalComandas + mesa.Pedido.Items[J].Vlrtotal;
         end;
       if comandas <> EmptyStr then
       begin

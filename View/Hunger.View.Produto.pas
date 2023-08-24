@@ -41,14 +41,17 @@ type
     FGrupo: String;
     FValor: Double;
     FIdsProdPrec: String; //Armazena os códigos das precificações dos produtos
-    FCheckedTamanho: Boolean; //Valida se foi selecionado um tamanho (obrigatório)
+    FCheckedTamanho: Boolean;
+    FNComanda: Integer; //Valida se foi selecionado um tamanho (obrigatório)
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
     procedure AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
     procedure SetPedidoItem(const Value: TPedidoItem);
+    procedure SetNComanda(const Value: Integer);
   public
     property Produto: TProduto read FProduto write SetProduto;
     property PedidoItem: TPedidoItem read FPedidoItem write SetPedidoItem;
+    property NComanda: Integer read FNComanda write SetNComanda;
   end;
 
 var
@@ -300,14 +303,15 @@ begin
   if not Assigned(PedidoItem) then
     PedidoItem := TPedidoItem.Create;
 
-  PedidoItem.IdProduto := Produto.IdProduto;
+  PedidoItem.Codprod := Produto.IdProduto;
+  if NComanda > 0 then
+    PedidoItem.NComandaRecepcao := NComanda;
   PedidoItem.Qtde := nbxQtde.Value;
-  PedidoItem.ValorUnitario := FValor;
-  PedidoItem.ValorTotal := nbxQtde.Value * FValor;
-  PedidoItem.DataHoraEmissao := Now;
-  PedidoItem.DataHoraStatus := Now;
+  PedidoItem.Vlrunitario := FValor;
+  PedidoItem.Vlrtotalitem := nbxQtde.Value * FValor;
+  PedidoItem.DataConsumo := Now;
   PedidoItem.PedidoItemStatus := 'Aguardando';
-  PedidoItem.Obs := edtObs.Text;
+  PedidoItem.Complemento := edtObs.Text;
   PedidoItem.IdProdutoPrecificacao := FIdsProdPrec;
   Close;
 end;
@@ -316,6 +320,11 @@ procedure TfrmProduto.recDropClick(Sender: TObject);
 begin
   inherited;
   nbxQtde.ValueDec;
+end;
+
+procedure TfrmProduto.SetNComanda(const Value: Integer);
+begin
+  FNComanda := Value;
 end;
 
 procedure TfrmProduto.SetPedidoItem(const Value: TPedidoItem);
