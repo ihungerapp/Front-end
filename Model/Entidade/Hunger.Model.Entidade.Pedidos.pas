@@ -11,7 +11,7 @@ uses
 type
   TPedidoItem = class;
 
-  TPedidoItem = class
+  TPedidoItem = class(TJsonDTO)
   private
     [SuppressZero, JSONName('DATA_CONSUMO')]
     FDataConsumo: TDateTime;
@@ -30,11 +30,16 @@ type
     FVlrtotalitem: Double;
     [JSONName('VLRUNITARIO')]
     FVlrunitario: Double;
-    [JSONName('id_produto_precificacao')]
+    [JSONName('ID_PRODUTO_PRECIFICACAO')]
     FIdProdutoPrecificacao: String;
     [JSONName('produto'), JSONMarshalled(False)]
     FProduto: TProduto;
     FComplemento: String;
+    [JSONName('produto_precificacao'), JSONMarshalled(False)]
+    FProdutoPrecificacaoArray: TArray<TProdutoPrecificacao>;
+    [GenericListReflect]
+    FProdutoPrecificacao: TObjectList<TProdutoPrecificacao>;
+    function GetProdutoPrecificacao: TObjectList<TProdutoPrecificacao>;
   published
     property DataConsumo: TDateTime read FDataConsumo write FDataConsumo;
     property Codrecepcao: Integer read FCodrecepcao write FCodrecepcao;
@@ -48,6 +53,7 @@ type
     property IdProdutoPrecificacao: String read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
     property Produto: TProduto read FProduto;
     property Complemento: string read FComplemento write FComplemento;
+    property ProdutoPrecificacao: TObjectList<TProdutoPrecificacao> read GetProdutoPrecificacao;
   end;
 
   TPedido = class(TJsonDTO)
@@ -163,6 +169,13 @@ function TPedidosList.GetAsJson: string;
 begin
   RefreshArray<TPedido>(FPedidos, FPedidosArray);
   Result := inherited;
+end;
+
+{ TPedidoItem }
+
+function TPedidoItem.GetProdutoPrecificacao: TObjectList<TProdutoPrecificacao>;
+begin
+  Result := ObjectList<TProdutoPrecificacao>(FProdutoPrecificacao, FProdutoPrecificacaoArray);
 end;
 
 end.

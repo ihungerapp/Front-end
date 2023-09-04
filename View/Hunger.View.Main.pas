@@ -91,7 +91,6 @@ type
     procedure PreencherLbGrupos(aGrupos: TObjectList<TGrupo>);
     procedure AddItemLb(aIndex: Integer; aGrupo: TGrupo);
     function ValidarMesaUUID: Boolean;
-    function GetTextHeight(const D: TListItemText; const Width: single; const Text: string): Integer;
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -103,6 +102,8 @@ type
     property ProdutosCarrinho: TObjectList<TProduto> read FProdutosCarrinho write SetProdutosCarrinho;
     property NumeroComanda: String read FNumeroComanda write SetNumeroComanda;
     procedure LerQRCode(aTipoQRCode: TTipoQRCode);
+    function GetTextHeight(const D: TListItemText;
+  const Width: single; const Text: string; LineBreak: Integer = 0): Integer;
   end;
 
 var
@@ -311,7 +312,7 @@ begin
 end;
 
 function TfrmPrincipal.GetTextHeight(const D: TListItemText;
-  const Width: single; const Text: string): Integer;
+  const Width: single; const Text: string; LineBreak: Integer = 0): Integer;
 var
   Layout: TTextLayout;
 begin
@@ -329,7 +330,7 @@ begin
     finally
       Layout.EndUpdate;
     end;
-    Result := Round(Layout.Height);
+    Result := Round(Layout.Height + LineBreak);
     Layout.Text := 'm';
     Result := Result + Round(Layout.Height);
   finally

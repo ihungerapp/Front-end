@@ -33,12 +33,13 @@ inherited frmPedidos: TfrmPedidos
       Size.Height = 588.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      ItemAppearance.ItemHeight = 100
+      ItemAppearance.ItemHeight = 350
       ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
         item
           AppearanceObjectName = 'descricao'
           AppearanceClassName = 'TTextObjectAppearance'
-          Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.Family = 'Inter'
+          Appearance.Font.Size = 14.000000000000000000
           Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
@@ -52,6 +53,7 @@ inherited frmPedidos: TfrmPedidos
           Appearance.Font.Size = 13.000000000000000000
           Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
+          Appearance.WordWrap = True
           Appearance.TextColor = xFF1D78CE
           Appearance.Width = 330.000000000000000000
           Appearance.Height = 25.000000000000000000
@@ -61,6 +63,7 @@ inherited frmPedidos: TfrmPedidos
           AppearanceObjectName = 'valor'
           AppearanceClassName = 'TTextObjectAppearance'
           Appearance.Font.Size = 13.000000000000000000
+          Appearance.Font.StyleExt = {00070000000000000004000000}
           Appearance.TextAlign = Leading
           Appearance.WordWrap = True
           Appearance.TextColor = xFF8D8D8D
@@ -75,6 +78,19 @@ inherited frmPedidos: TfrmPedidos
           Appearance.Height = 65.000000000000000000
           Appearance.Align = Trailing
           Appearance.PlaceOffset.Y = 10.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'precificacao'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Inter'
+          Appearance.Font.Size = 13.000000000000000000
+          Appearance.TextAlign = Leading
+          Appearance.TextVertAlign = Leading
+          Appearance.WordWrap = True
+          Appearance.TextColor = xFF8D8D8D
+          Appearance.Width = 330.000000000000000000
+          Appearance.Height = 250.000000000000000000
+          Appearance.PlaceOffset.Y = 80.000000000000000000
         end>
       ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
         item

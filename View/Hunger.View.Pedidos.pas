@@ -24,6 +24,7 @@ type
     FPedidos: TPedidosList;
     function ConsultarPedidos: TJSONOBject;
     procedure Carregar_LvPedidosItens(aPedidos: TObjectList<TPedido>);
+    procedure Layout_LvPedidosItens(AItem: TListViewItem);
   end;
 
 var
@@ -32,15 +33,20 @@ var
 implementation
 
 uses
-  Hunger.View.Main, Client.Connection, REST.Json, FMX.DialogService;
+  Hunger.View.Main, Client.Connection, REST.Json, FMX.DialogService,
+  Hunger.Model.Entidade.Produto;
 
 {$R *.fmx}
 
 procedure TfrmPedidos.Carregar_LvPedidosItens(aPedidos: TObjectList<TPedido>);
 var
   LItem: TListViewItem;
-  I, J, IndexImage : Integer;
+  I, J, L, IndexImage : Integer;
   pedido: TPedido;
+  txt: TListItemText;
+  precificacao: TPrecificacao;
+  produtoPrecificacao: TProdutoPrecificacao;
+  sTexto: String;
 begin
   lvPedidosItens.Items.Clear;
   lvPedidosItens.BeginUpdate;
@@ -65,11 +71,28 @@ begin
           if not imgFoto.Bitmap.IsEmpty then
             TListItemImage(Objects.FindDrawable('imgProduto')).Bitmap := imgFoto.MultiResBitmap.Items[IndexImage].Bitmap;
         end;
-        TListItemText(Objects.FindDrawable('descricao')).Text := pedido.PedidoItem.Items[J].Produto.Descricao;
+        TListItemText(Objects.FindDrawable('descricao')).Text := Trim(pedido.PedidoItem.Items[J].Produto.Descricao);
         TListItemText(Objects.FindDrawable('pedido_item_status')).Text := pedido.PedidoItem.Items[J].PedidoItemStatus;
-        TListItemText(Objects.FindDrawable('valor')).Text :=
+
+        txt := TListItemText(Objects.FindDrawable('valor')) as TListItemText;
+        txt.Text :=
         'Qtde ' + FloatToStrF(pedido.PedidoItem.Items[J].Qtde, ffFixed, 15,0) +
         '  Valor Total ' + FloatToStrF(pedido.PedidoItem.Items[J].Vlrtotalitem, ffCurrency, 15,2);
+
+        txt := TListItemText(Objects.FindDrawable('precificacao')) as TListItemText;
+        sTexto := EmptyStr;
+        for L := 0 to Pred(pedido.PedidoItem.Items[J].ProdutoPrecificacao.Count) do
+        begin
+          precificacao := pedido.PedidoItem.Items[J].ProdutoPrecificacao[L].Precificacao;
+          produtoPrecificacao := pedido.PedidoItem.Items[J].ProdutoPrecificacao[L];
+          if L > 0 then
+            sTexto := sTexto + #13 + ' - ';
+          sTexto := sTexto + precificacao.Grupo + ': ' + precificacao.Tipo;
+          if produtoPrecificacao.Valor > 0 then
+            sTexto := sTexto + '  ' + FloatToStrF(produtoPrecificacao.Valor, ffFixed, 15,2);
+        end;
+        txt.Text := sTexto;
+        Layout_LvPedidosItens(LItem);
       end;
     end;
   end;
@@ -132,6 +155,39 @@ begin
       FreeAndNil(lstPedido);
     end;
   end;
+end;
+
+procedure TfrmPedidos.Layout_LvPedidosItens(AItem: TListViewItem);
+var
+  txt: TListItemText;
+  heights: TArray<Single>;
+begin
+  SetLength(heights, 3);
+
+  txt := AItem.Objects.FindDrawable('descricao') as TListItemText;
+  txt.Width := lvPedidosItens.Width - 100;
+  txt.Height := frmPrincipal.GetTextHeight(txt, txt.Width, txt.Text);
+  heights[0] := Trunc(txt.Height);
+
+  txt := AItem.Objects.FindDrawable('pedido_item_status') as TListItemText;
+  txt.Width := lvPedidosItens.Width - 100;
+  txt.Height := frmPrincipal.GetTextHeight(txt, txt.Width, txt.Text);
+  txt.PlaceOffset.Y := Trunc(heights[0]);
+  heights[1] := Trunc(txt.Height);
+
+  txt := AItem.Objects.FindDrawable('valor') as TListItemText;
+  txt.Width := lvPedidosItens.Width - 100;
+  txt.Height := frmPrincipal.GetTextHeight(txt, txt.Width, txt.Text);
+  txt.PlaceOffset.Y := Trunc(heights[0] + heights[1]);
+  heights[2] := Trunc(txt.Height);
+
+
+  txt := AItem.Objects.FindDrawable('precificacao') as TListItemText;
+  txt.Width := lvPedidosItens.Width - 100;
+  txt.Height := frmPrincipal.GetTextHeight(txt, txt.Width, txt.Text);
+  txt.PlaceOffset.Y := Trunc(heights[0] + heights[1] + heights[2]);
+
+  AItem.Height := Trunc(txt.PlaceOffset.Y + txt.Height);
 end;
 
 procedure TfrmPedidos.lvPedidosItensUpdateObjects(const Sender: TObject;
