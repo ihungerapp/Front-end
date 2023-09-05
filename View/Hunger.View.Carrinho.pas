@@ -25,7 +25,6 @@ type
     procedure recAdicionarClick(Sender: TObject);
   private
     FPedido: TPedido;
-    FProdutos: TObjectList<TProduto>;
     FModelPedido: TModelPedido;
     FUtils: TUtils;
     FImage: TImage;
@@ -33,11 +32,9 @@ type
     procedure SetPedido(const Value: TPedido);
     procedure PreencherLbProdutos;
     procedure AddItemLb(aIndex: Integer; aPedidoItem: TPedidoItem);
-    procedure SetProdutos(const Value: TObjectList<TProduto>);
     function ValidarMesaComanda: Boolean;
   public
     property Pedido: TPedido read FPedido write SetPedido;
-    property Produtos: TObjectList<TProduto> read FProdutos write SetProdutos;
     procedure FinalizarPedido;
   end;
 
@@ -65,7 +62,6 @@ var
   recDrop: TRectangle;
   recTrash: TRectangle;
   I, J: Integer;
-  LParamsProdPrec: TArray<String>;
 begin
   item := TListBoxItem.Create(nil);
   item.StyledSettings := [];
@@ -177,7 +173,7 @@ begin
     TextSettings.Font.Size := 14;
     TextSettings.Font.Style := [TFontStyle.fsBold];
     TextSettings.FontColor := $FFF83923;
-    Text := Produtos[aIndex].Descricao;
+    Text := aPedidoItem.Produto.Descricao;
     WordWrap := True;
   end;
 
@@ -193,17 +189,13 @@ begin
     TextSettings.Font.Style := [TFontStyle.fsBold];
     TextSettings.FontColor := $FF1D78CE;
     Text := EmptyStr;
-    LParamsProdPrec := aPedidoItem.IdProdutoPrecificacao.Split([',']);
-    for I := 0 to Pred(Produtos[aIndex].ProdutoPrecificacao.Count) do
-      for J := 0 to High(LParamsProdPrec) do
-        if Produtos[aIndex].ProdutoPrecificacao[I].IdProdutoPrecificacao.ToString = LParamsProdPrec[J] then
-        begin
-          Text := Text + #13 + Produtos[aIndex].ProdutoPrecificacao[I].Precificacao.Tipo;
-          if Produtos[aIndex].ProdutoPrecificacao[I].Valor > 0 then
-            Text := Text + '  ' + FloatToStrF(Produtos[aIndex].ProdutoPrecificacao[I].Valor, ffFixed, 15,2);
-          lblPrecificacao.Height := lblPrecificacao.Height + 20;
-        end;
-
+    for I := 0 to Pred(aPedidoItem.ProdutoPrecificacao.Count) do
+    begin
+      Text := Text + #13 + aPedidoItem.ProdutoPrecificacao[I].Precificacao.Tipo;
+      if aPedidoItem.ProdutoPrecificacao[I].Valor > 0 then
+        Text := Text + '  ' + FloatToStrF(aPedidoItem.ProdutoPrecificacao[I].Valor, ffFixed, 15,2);
+      lblPrecificacao.Height := lblPrecificacao.Height + 20;
+    end;
     WordWrap := True;
   end;
 
@@ -254,7 +246,8 @@ begin
       if (FModelPedido.ExecutarRequisicao(Pedido, tpPost, frmPrincipal.Authentication)) then
       begin
         TDialogService.ShowMessage('Pedido enviado com sucesso!');
-        FreeAndNil(frmPrincipal.Pedido);
+        if Assigned(frmPrincipal.Pedido) then
+          FreeAndNil(frmPrincipal.Pedido);
         frmPrincipal.ProdutosCarrinho.Clear;
         Close;
       end
@@ -324,7 +317,7 @@ begin
     begin
       Pedido.Vlrtotal := Pedido.Vlrtotal - Pedido.PedidoItem[FItemLbProdutos.Index].Vlrtotalitem;
       Pedido.PedidoItem.Delete(FItemLbProdutos.Index);
-      Produtos.Delete(FItemLbProdutos.Index);
+      frmPrincipal.ProdutosCarrinho.Delete(FItemLbProdutos.Index);
       frmPrincipal.lblItensCarrinho.Text := FloatToStr(frmPrincipal.lblItensCarrinho.Text.ToDouble - 1);
     end;
   end;
@@ -348,11 +341,6 @@ end;
 procedure TfrmCarrinho.SetPedido(const Value: TPedido);
 begin
   FPedido := Value;
-end;
-
-procedure TfrmCarrinho.SetProdutos(const Value: TObjectList<TProduto>);
-begin
-  FProdutos := Value;
 end;
 
 procedure TfrmCarrinho.spbVoltarClick(Sender: TObject);

@@ -9,6 +9,9 @@ inherited frmPrincipal_LgXhdpiPh: TfrmPrincipal_LgXhdpiPh
       Size.Width = 450.000000000000000000
       inherited spbCarrinho: TSpeedButton
         Position.X = 330.000000000000000000
+        inherited lblItensCarrinho: TLabel
+          TabOrder = 5
+        end
       end
     end
   end

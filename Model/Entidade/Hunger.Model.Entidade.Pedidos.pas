@@ -51,7 +51,7 @@ type
     property Vlrtotalitem: Double read FVlrtotalitem write FVlrtotalitem;
     property Vlrunitario: Double read FVlrunitario write FVlrunitario;
     property IdProdutoPrecificacao: String read FIdProdutoPrecificacao write FIdProdutoPrecificacao;
-    property Produto: TProduto read FProduto;
+    property Produto: TProduto read FProduto write FProduto;
     property Complemento: string read FComplemento write FComplemento;
     property ProdutoPrecificacao: TObjectList<TProdutoPrecificacao> read GetProdutoPrecificacao;
   end;

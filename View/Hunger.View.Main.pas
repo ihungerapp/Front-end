@@ -91,6 +91,7 @@ type
     procedure PreencherLbGrupos(aGrupos: TObjectList<TGrupo>);
     procedure AddItemLb(aIndex: Integer; aGrupo: TGrupo);
     function ValidarMesaUUID: Boolean;
+    procedure SetProdutos(const Value: TObjectList<TProduto>);
   public
     property MesaUUID: String read FMesaUUID write FMesaUUID;
     property MesaDescricao: String read FMesaDescricao write FMesaDescricao;
@@ -99,6 +100,7 @@ type
     property Pass_API: String read FPass_API write FPass_API;
     property Authentication: TAuthentication read FAuthentication;
     property Pedido: TPedido read FPedido write SetPedido;
+    property Produtos: TObjectList<TProduto> read FProdutos write SetProdutos;
     property ProdutosCarrinho: TObjectList<TProduto> read FProdutosCarrinho write SetProdutosCarrinho;
     property NumeroComanda: String read FNumeroComanda write SetNumeroComanda;
     procedure LerQRCode(aTipoQRCode: TTipoQRCode);
@@ -234,7 +236,10 @@ begin
         FProdutos := TObjectList<TProduto>.Create;
       FProdutos := FModelProduto.PopularListaProduto(LJsonResponse);
       if FProdutos.Count > 0 then
-        PreencherListView(FProdutos);
+        if Assigned(FGrupos) and (lbGrupos.ItemIndex <> -1) then
+          PreencherListView(FProdutos, FGrupos.Items[Pred(lbGrupos.ItemIndex)].IdGrupo)
+        else
+          PreencherListView(FProdutos);
     end;
   except on E:Exception do
     begin
@@ -658,6 +663,11 @@ begin
   FPedido := Value;
 end;
 
+procedure TfrmPrincipal.SetProdutos(const Value: TObjectList<TProduto>);
+begin
+  FProdutos := Value;
+end;
+
 procedure TfrmPrincipal.SetProdutosCarrinho(const Value: TObjectList<TProduto>);
 begin
   FProdutosCarrinho := Value;
@@ -673,13 +683,11 @@ begin
   end;
 
   Application.CreateForm(TfrmCarrinho, frmCarrinho);
-
   with frmCarrinho do
   begin
     lblMesa.Text := FMesaDescricao + ' > Carrinho';
     lblFinalizar.Text := 'Finalizar pedido';
     Pedido := FPedido;
-    Produtos := FProdutosCarrinho;
   end;
   frmCarrinho.ShowModal(procedure(ModalResult: TModalResult)
     begin
@@ -697,7 +705,9 @@ begin
         {$IFDEF ANDROID}
         FNumeroComanda := EmptyStr;
         {$ENDIF ANDROID}
-      end;
+      end
+      else
+        ConsultarProduto(edtPesquisar.Text);
     end);
 end;
 

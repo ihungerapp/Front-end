@@ -41,8 +41,8 @@ type
     FGrupo: String;
     FValor: Double;
     FIdsProdPrec: String; //Armazena os códigos das precificações dos produtos
-    FCheckedTamanho: Boolean;
-    FNComanda: Integer; //Valida se foi selecionado um tamanho (obrigatório)
+    FCheckedTamanho: Boolean; //Valida se foi selecionado um tamanho (obrigatório)
+    FNComanda: Integer;
     procedure SetProduto(const Value: TProduto);
     procedure PreencherLbProdutoPrecificacao;
     procedure AddItemLb(aValor: Double; aTipo, aGrupo: String; aQtdeMaxSelecao: Integer);
@@ -114,8 +114,7 @@ begin
       TextSettings.Font.Family := 'Inter';
       TextSettings.Font.Size := 14;
       Text := aTipo;
-      if aValor > 0 then
-        OnChange := lbProdutoPrecificacaoClick;
+      OnChange := lbProdutoPrecificacaoClick;
     end;
     item.AddObject(rdbDescPrec);
   end
@@ -130,8 +129,7 @@ begin
       TextSettings.Font.Family := 'Inter';
       TextSettings.Font.Size := 14;
       Text := aTipo;
-      if aValor > 0 then
-        OnChange := lbProdutoPrecificacaoClick;
+      OnChange := lbProdutoPrecificacaoClick;
     end;
     item.AddObject(ckbDescPrec);
   end;
@@ -157,6 +155,7 @@ var
 begin
   inherited;
   PedidoItem := nil;
+  PedidoItem := TPedidoItem.Create;
 
   texDescricao.Text := Produto.Descricao;
   texComplemento.Text := Produto.Complemento;
@@ -174,6 +173,7 @@ procedure TfrmProduto.lbProdutoPrecificacaoClick(Sender: TObject);
 var
   I, J: Integer;
   checked: Boolean;
+  produtoPrecificacao: TProdutoPrecificacao;
 
   procedure AddIDProdPrec;
   begin
@@ -277,7 +277,7 @@ end;
 
 procedure TfrmProduto.recAdicionarClick(Sender: TObject);
 var
-  I: Integer;
+  I, J: Integer;
   idsProdPrec: String;
 begin
   inherited;
@@ -313,6 +313,22 @@ begin
   PedidoItem.PedidoItemStatus := 'Aguardando';
   PedidoItem.Complemento := edtObs.Text;
   PedidoItem.IdProdutoPrecificacao := FIdsProdPrec;
+  PedidoItem.Produto := Produto;
+
+  J := -1;
+  for I := 0 to Pred(ComponentCount) do
+  begin
+    if (Components[I] is TRadioButton) or (Components[I] is TCheckBox) then
+    begin
+      Inc(J);
+      if Components[I] is TRadioButton then
+        if (Components[I] as TRadioButton).IsChecked then
+          PedidoItem.ProdutoPrecificacao.Add(Produto.ProdutoPrecificacao[J]);
+      if Components[I] is TCheckBox then
+        if (Components[I] as TCheckBox).IsChecked then
+          PedidoItem.ProdutoPrecificacao.Add(Produto.ProdutoPrecificacao[J]);
+    end;
+  end;
   Close;
 end;
 
