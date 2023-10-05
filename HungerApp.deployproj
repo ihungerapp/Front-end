@@ -5,7 +5,7 @@
     </ProjectExtensions>
     <PropertyGroup>
         <DeviceId Condition="'$(Platform)'=='Android'">Pulsoft</DeviceId>
-        <DeviceId Condition="'$(Platform)'=='Android64'">ZF523JBTD8</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">Pulsoft</DeviceId>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'"/>

@@ -18,7 +18,9 @@ uses
   Hunger.View.Pedidos in 'View\Hunger.View.Pedidos.pas' {frmPedidos},
   Hunger.View.Mesas in 'View\Hunger.View.Mesas.pas' {frmMesas},
   Hunger.Model.Entidade.Mesas in 'Model\Entidade\Hunger.Model.Entidade.Mesas.pas',
-  Hunger.View.Config in 'View\Hunger.View.Config.pas' {frmConfig};
+  Hunger.View.Config in 'View\Hunger.View.Config.pas' {frmConfig},
+  Hunger.View.Login in 'View\Hunger.View.Login.pas' {frmLogin},
+  Hunger.Model.Login in 'Model\Hunger.Model.Login.pas';
 
 {$R *.res}
 
@@ -27,5 +29,6 @@ begin
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TfrmLeitorCamera, frmLeitorCamera);
   Application.CreateForm(TfrmBase, frmBase);
+  Application.CreateForm(TfrmLogin, frmLogin);
   Application.Run;
 end.
