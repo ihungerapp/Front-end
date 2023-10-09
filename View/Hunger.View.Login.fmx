@@ -9,6 +9,7 @@ object frmLogin: TfrmLogin
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 3
   object Layout1: TLayout
     Align = Contents
@@ -20,7 +21,7 @@ object frmLogin: TfrmLogin
     Size.Height = 683.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 13
-    object imgVision: TImage
+    object imgHunger: TImage
       MultiResBitmap.Height = 58
       MultiResBitmap.Width = 142
       MultiResBitmap.LoadSize = 1
@@ -344,7 +345,7 @@ object frmLogin: TfrmLogin
       Size.Height = 153.000000000000000000
       Size.PlatformDefault = False
     end
-    object imgPulsoft: TImage
+    object imgRMTi: TImage
       MultiResBitmap.Height = 240
       MultiResBitmap.Width = 591
       MultiResBitmap.LoadSize = 1
@@ -444,7 +445,7 @@ object frmLogin: TfrmLogin
       Size.Width = 415.000000000000000000
       Size.Height = 59.000000000000000000
       Size.PlatformDefault = False
-      OnClick = imgPulsoftClick
+      OnClick = imgRMTiClick
     end
     object Layout5: TLayout
       Align = Client
@@ -480,6 +481,7 @@ object frmLogin: TfrmLogin
           TextSettings.HorzAlign = Center
           Text = 'Acessar'
           TabOrder = 2
+          OnClick = lblAcessarClick
         end
       end
       object ShadowEffect1: TShadowEffect
@@ -532,7 +534,7 @@ object frmLogin: TfrmLogin
         Stroke.Kind = None
         XRadius = 10.000000000000000000
         YRadius = 10.000000000000000000
-        object edtUsuarioConta: TEdit
+        object edtUsuario: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Client
           StyleLookup = 'editStyle'
@@ -581,9 +583,10 @@ object frmLogin: TfrmLogin
           Size.PlatformDefault = False
           TextPrompt = 'CPF ou CNPJ'
           StyledSettings = []
+          OnExit = edtCPFExit
         end
       end
-      object CheckBox1: TCheckBox
+      object cbLembrarSenha: TCheckBox
         StyledSettings = [Family, Size, Style]
         Position.X = 43.000000000000000000
         Position.Y = 290.000000000000000000

@@ -26,9 +26,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.CreateForm(TfrmPrincipal, frmPrincipal);
-  Application.CreateForm(TfrmLeitorCamera, frmLeitorCamera);
-  Application.CreateForm(TfrmBase, frmBase);
   Application.CreateForm(TfrmLogin, frmLogin);
   Application.Run;
 end.

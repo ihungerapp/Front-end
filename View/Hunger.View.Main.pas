@@ -163,17 +163,17 @@ begin
       FAuthentication := TAuthentication.GetInstance(Self);
 
     try
-      if FAuthentication.Token = EmptyStr then
-      begin
-        FAuthentication.URLServer := FAuthentication.Connection.URLBase;
-        FAuthentication.BodyString :=
-          '{'+
-          '  "user":"hunger",'+
-          '  "password":"rm045369"' +
-          '}';
-        FAuthentication.UseURL := True;
-        FAuthentication.Authentication;
-      end;
+//      if FAuthentication.Token = EmptyStr then
+//      begin
+//        FAuthentication.URLServer := FAuthentication.Connection.URLBase;
+//        FAuthentication.BodyString :=
+//          '{'+
+//          '  "user":"hunger",'+
+//          '  "password":"rm045369"' +
+//          '}';
+//        FAuthentication.UseURL := True;
+//        FAuthentication.Authentication;
+//      end;
       if FAuthentication.Token <> EmptyStr then
       begin
         if MesaUUID = EmptyStr then
