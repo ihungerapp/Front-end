@@ -25,6 +25,7 @@ type
     Rectangle4: TRectangle;
     edtCPF: TEdit;
     cbLembrarSenha: TCheckBox;
+    lblContato: TLabel;
     procedure imgRMTiClick(Sender: TObject);
     procedure lblAcessarClick(Sender: TObject);
     procedure edtCPFExit(Sender: TObject);
@@ -86,6 +87,8 @@ begin
     edtUsuario.SetFocus
   else
     edtCPF.SetFocus;
+
+  cbLembrarSenha.Position.Y := Rectangle2.Position.Y + 85;
 end;
 
 procedure TfrmLogin.imgRMTiClick(Sender: TObject);
@@ -94,7 +97,7 @@ var
 
   idContato : Integer;
 begin
-  uri := 'https://rmti.tec.br';
+  uri := 'https://rmti.tec.br/contato';
   try
     {$IFDEF ANDROID}
     var
@@ -118,6 +121,25 @@ procedure TfrmLogin.lblAcessarClick(Sender: TObject);
 begin
   FLogin := TModelLogin.Create;
   try
+    if edtCPF.Text = EmptyStr then
+    begin
+      TDialogService.ShowMessage('Informe o CPF ou CNPJ!');
+      edtCPF.SetFocus;
+      Exit;
+    end;
+    if edtUsuario.Text = EmptyStr then
+    begin
+      TDialogService.ShowMessage('Informe o Usuário!');
+      edtUsuario.SetFocus;
+      Exit;
+    end;
+    if edtSenha.Text = EmptyStr then
+    begin
+      TDialogService.ShowMessage('Informe a Senha!');
+      edtSenha.SetFocus;
+      Exit;
+    end;
+
     FLogin.CpfCnpj := edtCPF.Text;
     FLogin.Usuario := edtUsuario.Text;
     FLogin.Senha := edtSenha.Text;

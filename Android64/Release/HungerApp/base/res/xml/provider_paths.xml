@@ -1,0 +1,19 @@
+
+Ä
+9
+android*http://schemas.android.com/apk/res/androidpaths*
+    B*?
+7
+files-path"nameinternal_private_files"	path.*
+    9*=
+5
+cache-path"nameinternal_cache_files"	path.*
+    7*A
+9external-path"nameexternal_public_files"	path.*
+    ;*H
+@external-files-path"nameexternal_private_files"	path.*
+    B*F
+>external-cache-path"nameexternal_cache_files"	path.*
+    @*F
+>external-media-path"nameexternal_media_files"	path.*	
+@

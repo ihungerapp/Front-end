@@ -424,6 +424,8 @@ begin
   else
   begin
     FContentImage := EmptyStr;
+    if not Assigned(frmLeitorCamera) then
+      Application.CreateForm(TfrmLeitorCamera, frmLeitorCamera);
     frmLeitorCamera.Codigo := EmptyStr;
     frmLeitorCamera.TipoQRCode := aTipoQRCode;
     frmLeitorCamera.ShowModal(procedure(ModalResult: TModalResult)

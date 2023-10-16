@@ -2,8 +2,8 @@
 <!-- BEGIN_INCLUDE(manifest) -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hungerapp.HungerApp"
-    android:versionCode="1"
-    android:versionName="1.0.0"
+    android:versionCode="2"
+    android:versionName="1.0.1"
     android:installLocation="auto">
     <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -23,7 +23,7 @@
         android:persistent="False"
         android:restoreAnyVersion="False"
         android:label="HungerApp"
-        android:debuggable="true"
+        android:debuggable="false"
         android:largeHeap="False"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"

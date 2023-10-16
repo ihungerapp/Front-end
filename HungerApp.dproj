@@ -4,8 +4,8 @@
         <ProjectVersion>19.3</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Android64</Platform>
         <TargetedPlatforms>168979</TargetedPlatforms>
         <AppType>Application</AppType>
         <MainSource>HungerApp.dpr</MainSource>
@@ -302,12 +302,14 @@
         <VerInfo_Keys>package=com.hungerapp.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Android64)'!=''">
-        <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_Keys>package=com.hungerapp.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_Keys>package=com.hungerapp.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=2;versionName=1.0.1;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
         <PF_KeyStore>..\AndroidPlayStore\HungerApp.keystore</PF_KeyStore>
         <PF_KeyStorePass>851D47C45FDD07D2CF25E563A4087BF5E4120861A007979E97FF0FD68E643CD0DB48A3D6E35F1C31C1B0572FFA95C375BABB3651043C2288165745F0E5F4228DC949F31ED506FADDBFCAAF0D071E1D0F92013E44</PF_KeyStorePass>
         <PF_AliasKey>hungerapp</PF_AliasKey>
         <PF_AliasKeyPass>851D47C45FDD07D2CF25E563A4087BF5E4120861A007979E97FF0FD68E643CD0DB48A3D6E35F1C31C1B0572FFA95C375BABB3651043C2288165745F0E5F4228DC949F31ED506FADDBFCAAF0D071E1D0F92013E44</PF_AliasKeyPass>
+        <BT_BuildType>AppStore</BT_BuildType>
+        <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -386,6 +388,20 @@
                     <Source Name="MainSource">HungerApp.dpr</Source>
                 </Source>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi\FortesReport\Binary\LibD28\frce.bpl">Fortes Report Comunity Edition</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\ZComponentDesign280.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\ZComponentDesign280.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrx28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrx28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxADO28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxADO28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxcs28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxcs28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxDB28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxDB28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxDBX28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxDBX28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxe28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxe28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxIntIO28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxIntIO28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxIntIOIndy28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfrxIntIOIndy28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfs28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfs28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfsADO28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfsADO28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfsDB28.bpl">File C:\Arquivos\ComponentesDelphi11\FastReport\FastReport 6.9.14 VCL Enterprise (Delphi 7 - Alexandria) Extracted Sources\LibD28\dclfsDB28.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\RESTDWDriverZEOS.bpl">REST Dataware - Driver ZEOS</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
@@ -554,6 +570,7 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\lib\android\debug\mips\libnative-activity.so" Configuration="Release" Class="AndroidLibnativeMipsFile">
                     <Platform Name="Android64">
+                        <Enabled>false</Enabled>
                         <RemoteName>libHungerApp.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -602,6 +619,7 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\lib\android\debug\armeabi-v7a\libnative-activity.so" Configuration="Release" Class="AndroidLibnativeArmeabiv7aFile">
                     <Platform Name="Android64">
+                        <Enabled>false</Enabled>
                         <RemoteName>libHungerApp.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -784,6 +802,7 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Configuration="Release" Class="AndroidLibnativeArmeabiFile">
                     <Platform Name="Android64">
+                        <Enabled>false</Enabled>
                         <RemoteName>libHungerApp.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -1847,10 +1866,10 @@
                 </DeployClass>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
